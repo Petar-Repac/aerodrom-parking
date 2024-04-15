@@ -1357,6 +1357,9 @@ section {
 .contact .info {
   width: 100%;
   background: #fff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .contact .info i {
@@ -1388,10 +1391,10 @@ section {
   color: #62176b;
 }
 
-.contact .info .email,
+/* .contact .info .email,
 .contact .info .phone {
   margin-top: 40px;
-}
+} */
 
 .contact .info .email:hover i,
 .contact .info .address:hover i,
