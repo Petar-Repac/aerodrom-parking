@@ -449,7 +449,7 @@ h6 {
 #hero {
   width: 100%;
   height: 100vh;
-  background: url("../img/hero-bg.jpg") top center;
+  background: url("../img/portfolio/bg-1.jpeg") top center;
   background-size: cover;
   position: relative;
   margin-bottom: -70px;
@@ -463,7 +463,7 @@ h6 {
 
 #hero:before {
   content: "";
-  background: rgba(21, 5, 23, 0.5) linear-gradient(rgba(26, 0, 33, 0.5) 0%, rgba(26, 0, 33, 0.5) 5%, rgba(38, 6, 51, 0.5) 40%, rgba(147, 47, 69, 0.7) 76%, rgba(236, 97, 93, 0.7) 94%, rgba(236, 97, 93, 0.5) 100%) repeat scroll 0% 0%;
+  background: rgba(21, 5, 23, 0.5) linear-gradient(rgba(26, 0, 33, 0.5) 0%, rgb(20 25 69 / 50%) 5%, rgb(108 30 99 / 50%) 40%, rgba(147, 47, 69, 0.7) 76%, rgb(156 40 37 / 70%) 94%, rgb(96 58 57 / 50%) 100%) repeat scroll 0% 0%;
   position: absolute;
   bottom: 0;
   top: 0;
@@ -514,8 +514,8 @@ h6 {
 }
 
 #hero .btn-get-started:hover {
-  background: #ff7f5d;
-  border: 2px solid #ff7f5d;
+  background: #b2cdd9;
+  
 }
 
 @media (min-width: 1024px) {
