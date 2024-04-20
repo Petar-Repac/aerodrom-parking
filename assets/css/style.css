@@ -514,7 +514,7 @@ h6 {
 }
 
 #hero .btn-get-started:hover {
-  background: #b2cdd9;
+  background: #f1a18b;
   
 }
 
@@ -551,6 +551,7 @@ section {
 .section-title {
   text-align: center;
   padding-bottom: 30px;
+
 }
 
 .section-title h2 {
@@ -576,6 +577,9 @@ section {
   margin-bottom: 0;
   color: #919191;
   font-size: 14px;
+  text-align: center;
+  border: 2px solid black;
+  
 }
 
 /*--------------------------------------------------------------
@@ -758,6 +762,7 @@ section {
 
 .services .icon-box:hover {
   transform: translateY(-5px);
+  
 }
 
 .services .icon {
@@ -770,6 +775,32 @@ section {
   font-size: 64px;
   line-height: 1;
   transition: 0.5s;
+}
+
+/*hover for icons in usluge section*/
+
+.bi-credit-card:hover {
+  color: #ff689b;
+}
+
+.bi-briefcase:hover {
+  color: #e9bf06;
+}
+
+.bi-bar-chart:hover {
+  color: #3fcdc7;
+}
+
+.bi-alarm:hover {
+  color: #41cf2e;
+}
+
+.bi-shield-check:hover {
+  color: #d6ff22;
+}
+
+.bi-airplane:hover {
+  color: #4680ff;
 }
 
 .services .title {
