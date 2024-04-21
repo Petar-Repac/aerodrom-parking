@@ -14,9 +14,11 @@ function sanitize($data)
 //&& isset($_POST['apiKey']) && $_POST['apiKey'] === API_KEY
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = sanitize($_POST['name']);
-    //    $email = sanitize($_POST['email']);
-    //    $date = sanitize($_POST['date']);
-    //    $time = sanitize($_POST['time']);
+    $email = sanitize($_POST['email']);
+    $phone = sanitize($_POST['phone']);
+    $passengers = sanitize($_POST['passengers']);
+    $date = sanitize($_POST['arrivalDate']);
+    $additionalInfo = sanitize($_POST['additionalInfo']);
 
     // Create a new PHPMailer instance
     $mail = new PHPMailer(true);
@@ -32,17 +34,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mail->Port = 587;                                    // TCP port to connect to
 
         //Recipients
-        $mail->setFrom('noreply@aerodromskiparking.rs', 'Mailer');
-        $mail->addAddress('rezervacije@aerodromskiparking.rs', 'Reservations');     // Add a recipient
-        //        $mail->addReplyTo('info@example.com', 'Information');
-        //        $mail->addCC('cc@example.com');
-        //        $mail->addBCC('bcc@example.com');
+        $mail->setFrom('noreply@aerodromskiparking.rs', 'noreply@aerodromskiparking.rs');
+        $mail->addAddress('rezervacije@aerodromskiparking.rs', 'Rezervacije');     // Add a recipient
+
 
         //Content
         $mail->isHTML(true);                                  // Set email format to HTML
-        $mail->Subject = 'New Reservation';
-        $mail->Body    = "Reservation Details:<br>Name: $name<br>";
-        $mail->AltBody = "Reservation Details:\nName: $name";
+        $mail->Subject = 'Nova rezervacija: ' . $name;
+        $mail->Body    =  <<<EMAILBODY
+            Ime: {$name} <br>
+            Email: {$email} <br>
+            Telefon: {$phone} <br>
+            Datum i vreme dolaska: {$date} <br>
+            Broj putnika: {$passengers} <br>
+            Dodatne napomene: {$additionalInfo} 
+EMAILBODY;
+
+        //        $mail->AltBody = "Reservation Details:\nName: $name";
 
         $mail->send();
         echo json_encode(['status' => 'success', 'message' => 'Reservation email sent']);
