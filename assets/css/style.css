@@ -598,6 +598,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 
+
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
@@ -1543,7 +1544,8 @@ body::-webkit-scrollbar-thumb {
 }
 
 .contact .php-email-form button[type=submit]:hover {
-  background: #ff9377;
+  background: #331e36;
+  color: #fff;
 }
 
 @keyframes animate-loading {
