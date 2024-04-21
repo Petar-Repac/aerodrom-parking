@@ -11,7 +11,6 @@ function sanitize($data)
     return htmlspecialchars(stripslashes(trim($data)));
 }
 
-
 //&& isset($_POST['apiKey']) && $_POST['apiKey'] === API_KEY
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = sanitize($_POST['name']);
