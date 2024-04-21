@@ -463,8 +463,8 @@ h6 {
 
 #hero:before {
   content: "";
-  background: rgb(2,0,36);
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(51,30,54,1) 0%, rgba(65,51,122,1) 100%, rgba(9,145,94,1) 100%);
+  background: rgb(2, 0, 36);
+  background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(51, 30, 54, 1) 0%, rgba(65, 51, 122, 1) 100%, rgba(9, 145, 94, 1) 100%);
   position: absolute;
   bottom: 0;
   top: 0;
@@ -578,9 +578,10 @@ section {
   color: #919191;
   font-size: 16px;
   text-align: center;
-  
-  
+
+
 }
+
 /*--------------------------------------------------------------
 # Scrollbar custom color
 --------------------------------------------------------------*/
@@ -800,7 +801,7 @@ body::-webkit-scrollbar-thumb {
 # icons hover
 --------------------------------------------------------------*/
 
- .icon-box:hover .bi-credit-card{ 
+.icon-box:hover .bi-credit-card {
   color: #ff689b;
 
 }
@@ -1437,6 +1438,15 @@ body::-webkit-scrollbar-thumb {
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+@media(max-width: 768px) {
+
+  .contact .info {
+    flex-wrap: wrap;
+    justify-content: start;
+  }
+
 }
 
 .container {
