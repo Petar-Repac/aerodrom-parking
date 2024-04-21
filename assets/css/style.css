@@ -590,11 +590,11 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-track {
-  background-color: #ecfee8;
+  background-color: #331e36;
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #6ea4bf;
+  background-color: #41337a;
 }
 
 
@@ -1309,7 +1309,27 @@ body::-webkit-scrollbar-thumb {
 
 .pricing .featured h3 {
   color: #fff;
-  background: #41337a;
+  background: #645992;
+}
+
+.pricing .featured .first-col {
+  color: #fff;
+  background: #17075c;
+}
+
+.pricing .featured .second-col {
+  color: #fff;
+  background: #48254d;
+}
+
+.pricing .featured .third-col {
+  color: #fff;
+  background: #6ea4bf;
+}
+
+.pricing .featured .fourth-col {
+  color: #fff;
+  background: #a2d6d1;
 }
 
 .pricing .advanced {
