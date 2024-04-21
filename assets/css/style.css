@@ -463,7 +463,8 @@ h6 {
 
 #hero:before {
   content: "";
-  background: rgb(71 46 74 / 50%) linear-gradient(rgba(26, 0, 33, 0.5) 0%, rgb(4 10 69 / 50%) 5%, rgba(38, 6, 51, 0.5) 40%, rgb(145 63 78 / 70%) 76%, rgb(125 69 68 / 70%) 94%, rgb(151 59 56 / 50%) 100%) repeat scroll 0% 0%;
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(51,30,54,1) 0%, rgba(65,51,122,1) 100%, rgba(9,145,94,1) 100%);
   position: absolute;
   bottom: 0;
   top: 0;
@@ -515,7 +516,6 @@ h6 {
 
 #hero .btn-get-started:hover {
   background: #331e36;
-  
 }
 
 @media (min-width: 1024px) {
@@ -576,11 +576,27 @@ section {
 .section-title p {
   margin-bottom: 0;
   color: #919191;
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
-  border: 2px solid black;
+  
   
 }
+/*--------------------------------------------------------------
+# Scrollbar custom color
+--------------------------------------------------------------*/
+
+body::-webkit-scrollbar {
+  width: 0.8em;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #ecfee8;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #6ea4bf;
+}
+
 
 /*--------------------------------------------------------------
 # About
@@ -765,8 +781,6 @@ section {
 
 .services .icon-box:hover {
   transform: translateY(-5px);
-
-  
 }
 
 .services .icon {
@@ -781,7 +795,9 @@ section {
   transition: 0.5s;
 }
 
-/*hover for icons in usluge section*/
+/*--------------------------------------------------------------
+# icons hover
+--------------------------------------------------------------*/
 
  .icon-box:hover .bi-credit-card{ 
   color: #ff689b;
@@ -1400,6 +1416,10 @@ section {
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+
+.container {
+  width: 100vw;
 }
 
 .contact .info i {
