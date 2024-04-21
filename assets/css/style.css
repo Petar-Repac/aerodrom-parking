@@ -631,6 +631,9 @@ section {
   animation-delay: 0.8s;
   margin-top: 6px;
   border: 2px solid #41337a;
+  height: 45px;
+  width: 240px;
+  text-align: center;
 }
 
 .about .content .btn-learn-more:hover {
@@ -762,6 +765,7 @@ section {
 
 .services .icon-box:hover {
   transform: translateY(-5px);
+
   
 }
 
@@ -779,27 +783,32 @@ section {
 
 /*hover for icons in usluge section*/
 
-.bi-credit-card:hover {
+ .icon-box:hover .bi-credit-card{ 
+  color: #ff689b;
+
+}
+
+.icon-box:hover .bi-credit-card {
   color: #ff689b;
 }
 
-.bi-briefcase:hover {
+.icon-box:hover .bi-briefcase {
   color: #e9bf06;
 }
 
-.bi-bar-chart:hover {
+.icon-box:hover .bi-bar-chart {
   color: #3fcdc7;
 }
 
-.bi-alarm:hover {
+.icon-box:hover .bi-alarm {
   color: #41cf2e;
 }
 
-.bi-shield-check:hover {
+.icon-box:hover .bi-shield-check {
   color: #d6ff22;
 }
 
-.bi-airplane:hover {
+.icon-box:hover .bi-airplane {
   color: #4680ff;
 }
 
