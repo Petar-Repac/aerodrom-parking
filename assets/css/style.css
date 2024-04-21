@@ -967,6 +967,22 @@ body::-webkit-scrollbar-thumb {
   color: #fff;
 }
 
+.navbar .cta-btn {
+  border: 2px solid #331e36;
+  border-radius: 4px;
+  width: 110px;
+  height: 36px;
+  background-color: #41337a;
+  
+}
+.rez-btn {
+  padding-left: 16px;
+}
+
+.cta-btn:hover {
+  background-color: #331e36;
+}
+
 .cta .cta-btn:hover {
   background: #41337a;
   border: 2px solid #41337a;
@@ -1332,6 +1348,14 @@ body::-webkit-scrollbar-thumb {
 .pricing .featured .fourth-col {
   color: #fff;
   background: #a2d6d1;
+}
+
+.featured li {
+  font-size: 1.1rem;
+}
+
+.featured h3 {
+  font-size: 1.2rem;
 }
 
 .pricing .advanced {
