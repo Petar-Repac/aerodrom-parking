@@ -261,6 +261,3 @@
 
 })()
 
-/* script for placeholder text in date input field */
-
-
