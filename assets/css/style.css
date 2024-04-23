@@ -467,7 +467,7 @@ h6 {
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
-#hero {
+#pocetna {
   width: 100%;
   height: 100vh;
   background: url("../img/landing-1.jpg") top center;
@@ -477,12 +477,12 @@ h6 {
 }
 
 @media (max-width: 992px) {
-  #hero {
+  #pocetna {
     margin-bottom: -60px;
   }
 }
 
-#hero:before {
+#pocetna:before {
   content: "";
   background: rgb(2, 0, 36);
   background: linear-gradient(90deg, rgba(2, 0, 36, 0.8) 0%, rgba(51, 30, 54, 0.8) 0%, rgba(65, 51, 122, 0.8) 100%, rgba(9, 145, 94, 0.8) 100%);
@@ -493,7 +493,7 @@ h6 {
   right: 0;
 }
 
-#hero .hero-container {
+#pocetna .pocetna-container {
   position: absolute;
   bottom: 0;
   top: 0;
@@ -506,7 +506,7 @@ h6 {
   text-align: center;
 }
 
-#hero h1 {
+#pocetna h1 {
   margin: 0;
   font-size: 64px;
   font-weight: 700;
@@ -515,13 +515,13 @@ h6 {
   color: #fff;
 }
 
-#hero h2 {
+#pocetna h2 {
   color: #eee;
   margin: 15px 0 0 0;
   font-size: 24px;
 }
 
-#hero .btn-get-started {
+#pocetna .btn-get-started {
   font-family: "Raleway", sans-serif;
   font-weight: 500;
   font-size: 16px;
@@ -535,23 +535,23 @@ h6 {
   color: #fff;
 }
 
-#hero .btn-get-started:hover {
+#pocetna .btn-get-started:hover {
   background: #331e36;
 }
 
 @media (min-width: 1024px) {
-  #hero {
+  #pocetna {
     background-attachment: fixed;
   }
 }
 
 @media (max-width: 768px) {
-  #hero h1 {
+  #pocetna h1 {
     font-size: 30px;
     line-height: 36px;
   }
 
-  #hero h2 {
+  #pocetna h2 {
     font-size: 18px;
     line-height: 24px;
   }
