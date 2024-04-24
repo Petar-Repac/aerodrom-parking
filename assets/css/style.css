@@ -1554,6 +1554,13 @@ body::-webkit-scrollbar-thumb {
   color: #62176b;
 }
 
+@media (max-width: 768px) {
+  .contact .info p {
+    font-size: 16px;
+    margin:0 0 0.75em 0;
+  }
+}
+
 /* .contact .info .email,
 .contact .info .phone {
   margin-top: 40px;

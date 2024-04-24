@@ -166,7 +166,7 @@
                     name="arrivalDate"
                     id="arrivalDate"
                     placeholder="Datum i vreme dolaska"
-                    onfocus="(this.type='date')"
+                    onfocus="(this.type='datetime-local')"
                     onblur="(this.type='text')"
                     required
                   />
@@ -275,6 +275,7 @@
           formData["phone"] = $("#phone").val();
           formData["arrivalDate"] = $("#arrivalDate").val();
           formData["additionalInfo"] = $("#additionalInfo").val();
+
 
           $.ajax({
             type: "POST",
