@@ -103,7 +103,7 @@ h6 {
   opacity: 1;
 }
 
-#header .cta-btn {
+#reserve-btn{
   display: inline-block;
   outline: none;
   border-radius: 4px;
@@ -111,18 +111,47 @@ h6 {
   background-color: #7a59ff;
   color: #fff;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   padding: 0.3em;
   position: fixed;
-  bottom: 80px;
-  right: 15px;
-  width: 100px;
+  bottom: 70px;
+  right: 40px;
+  width: 40px;
   height: 40px;
-
+  z-index: 99;
   transition: all 0.3s;
 }
 
-#header .cta-btn:hover {
+#reserve-btn:hover {
+  background: #331e36;
+  color: #fff;
+}
+
+
+#call-btn{
+  display: inline-block;
+  outline: none;
+  border-radius: 4px;
+  text-align: center;
+  background-color: #7a59ff;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 0.3em;
+  position: fixed;
+  bottom: 125px;
+  right: 40px;
+  width: 40px;
+  height: 40px;
+  z-index: 99;
+  transition: all 0.3s;
+}
+
+#call-btn.lower {
+  bottom: 70px;
+}
+
+#call-btn:hover {
   background: #331e36;
   color: #fff;
 }
@@ -1845,3 +1874,7 @@ body::-webkit-scrollbar-thumb {
   }
 }
 
+#footer-logo {
+  width: 8em;
+  height: auto;
+}
