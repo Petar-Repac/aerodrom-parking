@@ -1705,7 +1705,8 @@ body::-webkit-scrollbar-thumb {
 # Footer
 --------------------------------------------------------------*/
 #footer {
-  background: url("../img/footer-bg.jpg") center center no-repeat;
+  background: url("../img/footer.jpg") center center no-repeat;
+  background-size: cover;
   color: #fff;
   font-size: 14px;
   position: relative;
