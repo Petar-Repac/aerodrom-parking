@@ -1735,6 +1735,10 @@ body::-webkit-scrollbar-thumb {
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
+.workingHour {
+  font-size: 1.2rem;
+}
+
 #footer {
   background: url("../img/footer-1.webp") center center no-repeat;
   background-size: cover;
