@@ -116,6 +116,18 @@
     onscroll(document, toggleBacktotop)
   }
 
+
+  /**
+   * Mobile nav toggle
+   */
+  on('click', '.contact-links-toggle', function(e) {
+    select('#contact-links').classList.toggle('contact-links-visible')
+  })
+
+  on('click', '.contact-links-close', function(e) {
+    select('#contact-links').classList.toggle('contact-links-visible')
+  })
+
   /**
    * Mobile nav toggle
    */
@@ -124,6 +136,7 @@
     this.classList.toggle('bi-list')
     this.classList.toggle('bi-x')
   })
+
 
   /**
    * Mobile nav dropdowns activate
