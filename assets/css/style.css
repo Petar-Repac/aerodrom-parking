@@ -1951,7 +1951,11 @@ body::-webkit-scrollbar-thumb {
   font-size: 20px;
   padding: 0.6em 1.5em;
   position: fixed;
+<<<<<<< Updated upstream
   bottom: 50px;
+=======
+  bottom: 30px;
+>>>>>>> Stashed changes
   right: 30px;
   z-index: 99;
   transition: all 0.3s;
@@ -1996,3 +2000,4 @@ body::-webkit-scrollbar-thumb {
     box-shadow: 0 0 0 0 rgba(116, 44, 204, 0);
   }
 }
+
