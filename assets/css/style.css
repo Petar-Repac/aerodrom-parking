@@ -1953,7 +1953,7 @@ body::-webkit-scrollbar-thumb {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  z-index: 99;
+  z-index: 999;
   transition: all 0.3s;
 }
 
