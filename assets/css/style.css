@@ -622,6 +622,26 @@ section {
   left: calc(50% - 25px);
 }
 
+
+.section-title h3 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.section-title h3::after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 46px;
+  height: 3px;
+  background: #41337a;
+  bottom: 0;
+  left: calc(50% - 25px);
+}
+
 .section-title p {
   margin-bottom: 0;
   color: #000;
