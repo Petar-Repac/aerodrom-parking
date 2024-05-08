@@ -624,7 +624,7 @@ section {
 
 .section-title p {
   margin-bottom: 0;
-  color: #919191;
+  color: #000;
   font-size: 16px;
   text-align: center;
 
@@ -1397,12 +1397,17 @@ body::-webkit-scrollbar-thumb {
 
 .pricing .featured .third-col {
   color: #fff;
-  background: #6ea4bf;
+  /*background: #6ea4bf;*/
+  /*background: #437b99;*/
+  background: #335E75;
 }
 
 .pricing .featured .fourth-col {
   color: #fff;
-  background: #a2d6d1;
+  /*background: #a2d6d1;*/
+  /*background: #377b73;*/
+  background: #2A5F59;
+
 }
 
 .featured li {
