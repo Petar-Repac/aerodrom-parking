@@ -101,6 +101,22 @@
   }
 
   /**
+   * Reservations button
+   */
+  let reservationsBtn = select('#reserve-btn')
+  if (reservationsBtn) {
+    const reservationsBtnShow = () => {
+      if (window.scrollY > 100) {
+        reservationsBtn.classList.add('active')
+      } else {
+        reservationsBtn.classList.remove('active')
+      }
+    }
+    window.addEventListener('load', reservationsBtnShow)
+    onscroll(document, reservationsBtnShow)
+  }
+
+  /**
    * Back to top button
    */
   let backtotop = select('.back-to-top')

@@ -1964,6 +1964,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 #reserve-btn{
+  visibility: hidden;
   display: flex;
   gap: 0.5em;
   align-items: center;
@@ -1979,9 +1980,19 @@ body::-webkit-scrollbar-thumb {
   bottom: 30px;
   right: 30px;
   z-index: 999;
+  opacity: 0;
   transition: all 0.3s;
 }
 
+#reserve-btn.active {
+  visibility: visible; animation: fadeIn 1s;
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
 #reserve-btn:hover {
   background: #331e36;
   color: #fff;
