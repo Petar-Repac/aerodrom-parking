@@ -433,7 +433,27 @@
         let firstDate = new Date(arrivalDate);
         let secondDate = new Date(departureDate);
 
-        let output = Math.floor(Math.abs((secondDate - firstDate) / (1000 * 60 * 60 * 24)));
+        // invalid input
+        if (secondDate < firstDate) {
+          formCharge.textContent = "Datum odlaska mora biti posle polaska, molimo unesite ispravan datum!";
+          return;
+        }
+       
+        // number of days
+        let output = Math.ceil( ((secondDate - firstDate) / (1000 * 60 * 60 * 24)));
+
+        //  arrival after 22h
+        let arrivalHour = firstDate.getHours();
+        if (arrivalHour >= 22) {
+          output = output - 1;
+        }
+
+        // more then 40 days
+        if (output > 40 ) {
+          let charge40 = output * 200;
+          formCharge.textContent = `Za boravak od ${output} dana, cena iznosi ${charge40} dinara. `;
+          return;
+        }
 
         let final = 0;
         prices.map((item) => {
