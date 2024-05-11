@@ -39,13 +39,18 @@
     <link href="assets/css/style.css" rel="stylesheet" />
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MXC2HV1ZY2"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-MXC2HV1ZY2"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-MXC2HV1ZY2');
+      gtag("config", "G-MXC2HV1ZY2");
     </script>
 
     <script type="application/ld+json">
@@ -69,34 +74,39 @@
           "longitude": 20.300839
         },
         "image": "assets/img/android-chrome-512x512.png",
-        "openingHoursSpecification": [{
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
-          ],
-          "opens": "00:00",
-          "closes": "23:59"
-        }],
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday"
+            ],
+            "opens": "00:00",
+            "closes": "23:59"
+          }
+        ],
         "sameAs": [
           "https://www.instagram.com/parking.aero",
           "https://instagram.com/parking.aero"
         ]
       }
-
     </script>
   </head>
 
   <body>
     <!-- ======= Header ======= -->
     <header id="header" class="d-flex align-items-center">
-      <div id="header-container" class="container-fluid d-flex align-items-center justify-content-lg-between">
+      <div
+        id="header-container"
+        class="container-fluid d-flex align-items-center justify-content-lg-between"
+      >
         <div class="d-flex align-items-center justify-content-lg-between gap-3">
+
            <img src="./assets/img/logo-transparent-background-120x120.webp" width="45" height="45" alt="aero parking logo" class="rounded-5">
            <h2 class="logo me-auto me-lg-0">
              <a href="index.html">AERO PARKING</a>
@@ -160,11 +170,16 @@
         <div class="container aos-init aos-animate" data-aos="fade-up">
           <div class="row mt-2 pb-2">
             <p>
-              Rezervaciju parking mesta izvršite popunjavanjem forme ispod, pozivom na +381 69 445 4255 ili putem poruke (SMS, WhatsApp, Viber).
-              <br>
-              Uvid u detaljne cene po dužini boravka možete dobiti odabirom opcije <a href="index.html#cenovnik">„Cenovnik“</a> u meniju iznad. <br>
-              Transfer do i sa terminala je besplatan. <br>
-              Prilikom rezervacije, biće Vam prosleđene instrukcije za dolazak. <br>
+              Rezervaciju parking mesta izvršite popunjavanjem forme ispod,
+              pozivom na +381 69 445 4255 ili putem poruke (SMS, WhatsApp,
+              Viber).
+              <br />
+              Uvid u detaljne cene po dužini boravka možete dobiti odabirom
+              opcije <a href="index.html#cenovnik">„Cenovnik“</a> u meniju
+              iznad. <br />
+              Transfer do i sa terminala je besplatan. <br />
+              Prilikom rezervacije, biće Vam prosleđene instrukcije za dolazak.
+              <br />
               Polja označena zvezdicom (*) su obavezna.
             </p>
             <div class="col-lg-12 mt-5 mt-lg-0">
@@ -216,30 +231,44 @@
                       min="1"
                     />
                   </div>
-
                 </div>
                 <div class="row">
                   <div class="col-md-6 form-group mt-3 mx-auto d-flex">
                     <label>Datum i vreme dolaska *:</label>
                     <input
-                            type="datetime-local"
-                            class="form-control"
-                            name="arrivalDate"
-                            id="arrivalDate"
-                            placeholder="Datum i vreme dolaska"
-                            required
+                      type="datetime-local"
+                      class="form-control"
+                      name="arrivalDate"
+                      id="arrival-date"
+                      placeholder="Datum i vreme dolaska"
+                      required
                     />
                   </div>
-                  <div class="col-md-6 form-group mt-3 mx-auto">
-                  <textarea
-                          class="form-control"
-                          name="additionalInfo"
-                          id="additionalInfo"
-                          rows="1"
-                          placeholder="Dodatni zahtevi i napomene"
-                  ></textarea>
+
+                  <div class="col-md-6 form-group mt-3 mx-auto d-flex">
+                    <label>Datum i vreme odlaska *:</label>
+                    <input
+                      type="datetime-local"
+                      class="form-control"
+                      name="arrivalDate"
+                      id="departure-date"
+                      placeholder="Datum i vreme odlaska"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6 mt-3 mx-auto">
+                    <p id="form-charge">Cena: ---</p>
                   </div>
 
+                  <div class="col-md-6 form-group mt-3 mx-auto">
+                    <textarea
+                      class="form-control"
+                      name="additionalInfo"
+                      id="additionalInfo"
+                      rows="1"
+                      placeholder="Dodatni zahtevi i napomene"
+                    ></textarea>
+                  </div>
                 </div>
                 <div class="text-center mt-3">
                   <button type="submit">Pošalji rezervaciju</button>
@@ -248,6 +277,7 @@
             </div>
           </div>
         </div>
+
         <div class="container mt-3">
           <iframe style="border:0; width: 100%; height: 470px;" title="google maps"
                   src=https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11323.4418740816!2d20.300839014691345!3d44.804032171070865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475a6987e5962bc9%3A0x83125938d680c6f2!2sAerodromski%20parking!5e0!3m2!1ssr!2srs!4v1713703011247!5m2!1ssr!2srs"
@@ -269,7 +299,9 @@
                 Vaši utisci su naša najbolja preporuka<br />
                 Zajedno gradimo most ka poverenju koje traje!
               </p>
+
               <img id="footer-logo" src="assets/img/logo-transparent-180x180.webp" alt="Aero parking logo">
+
             </div>
             <p class="working-hours">Radno vreme 00-24</p>
           </div>
@@ -312,7 +344,9 @@
     <!-- End Footer
 
     <div id="preloader"></div>-->
-    <a id="call-btn" class="cta-btn lower" href="tel:0694454255"><i class="bi bi-telephone"></i></a>
+    <a id="call-btn" class="cta-btn lower" href="tel:0694454255"
+      ><i class="bi bi-telephone"></i
+    ></a>
 
     <a
       href="#"
@@ -334,6 +368,136 @@
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <!-- Reservation Form JS File -->
+    <script>
+      const formCharge = document.getElementById('form-charge');
+      const arrival = document.getElementById('arrival-date');
+      const departure = document.getElementById('departure-date');
+
+      const prices = [
+          { days: 1, price: 500 },
+          { days: 2, price: 900 },
+          { days: 3, price: 1300 },
+          { days: 4, price: 1700 },
+          { days: 5, price: 2100 },
+          { days: 6, price: 2500 },
+          { days: 7, price: 2900 },
+
+          { days: 8, price: 3300 },
+          { days: 9, price: 3700 },
+          { days: 10, price: 4100 },
+          { days: 11, price: 4500 },
+          { days: 12, price: 4900 },
+          { days: 13, price: 5100 },
+          { days: 14, price: 5300 },
+
+          { days: 15, price: 5500 },
+          { days: 16, price: 5700 },
+          { days: 17, price: 5800 },
+          { days: 18, price: 5900 },
+          { days: 19, price: 6000 },
+          { days: 20, price: 6100 },
+          { days: 21, price: 6200 },
+
+          { days: 22, price: 6300 },
+          { days: 23, price: 6400 },
+          { days: 24, price: 6500 },
+          { days: 25, price: 6600 },
+          { days: 26, price: 6700 },
+          { days: 27, price: 6800 },
+          { days: 28, price: 6900 },
+
+          { days: 29, price: 7000 },
+          { days: 30, price: 7100 },
+          { days: 31, price: 7200 },
+          { days: 32, price: 7300 },
+          { days: 33, price: 7400 },
+          { days: 34, price: 7500 },
+          { days: 35, price: 7600 },
+
+          { days: 36, price: 7700 },
+          { days: 37, price: 7800 },
+          { days: 38, price: 7900 },
+          { days: 39, price: 8000 },
+          { days: 40, price: 8100 }
+          
+        ];
+
+      document.addEventListener('input', function() {
+        let arrivalDate = arrival.value;
+        let departureDate = departure.value;
+
+        if (!arrivalDate || !departureDate) {
+          formCharge.textContent = `Cena: --- `;
+          return;
+        }
+
+        let firstDate = new Date(arrivalDate);
+        let secondDate = new Date(departureDate);
+
+        // invalid input
+        if (secondDate < firstDate) {
+          formCharge.textContent = "Datum dolaska mora biti pre datuma odlaska.";
+          return;
+        }
+
+        // Set both dates to midnight
+        let start = new Date(firstDate.getFullYear(), firstDate.getMonth(), firstDate.getDate());
+        let end = new Date(secondDate.getFullYear(), secondDate.getMonth(), secondDate.getDate());
+
+        // Calculate the difference in milliseconds
+        let diff = end - start;
+
+        // Convert milliseconds to days and add 1 to count both start and end dates
+        let numOfDays = Math.round(diff / (1000 * 60 * 60 * 24)) + 1;
+
+        //  arrival after 22h and departure before 2AM
+        let arrivalHour = firstDate.getHours();
+        let departureHour = secondDate.getHours();
+
+        // do not count arrival day if customer arrived late
+        if (arrivalHour >= 22) {
+          numOfDays = numOfDays - 1;
+        }
+
+        // do not count arrival day if customer left early
+        if (departureHour < 2) {
+          numOfDays = numOfDays - 1;
+        }
+
+        if(numOfDays === 0) {
+          formCharge.textContent = `Cena: --- `;
+          return;
+        }
+
+        let price;
+
+        // more than 40 days
+        if (numOfDays > 40 ) {
+          price = numOfDays * 200;
+        }
+        else {
+          // check for price in prices array
+          // AKA price lookup
+          prices.map((item) => {
+            if (item.days === numOfDays) {
+              price = item.price;
+            }
+          })
+        }
+
+        // correct string output
+        if (numOfDays % 10 === 1 && numOfDays !== 11) {
+          formCharge.textContent = `Cena za ${numOfDays} dan iznosi ${price} dinara. `;
+          return;
+        }
+
+        formCharge.textContent = `Cena za ${numOfDays} dana iznosi ${price} dinara.`;
+
+      })
+    
+    </script>
+
     <script>
       $(document).ready(function () {
         $("#php-email-form").submit(function (e) {
@@ -346,7 +510,6 @@
           formData["phone"] = $("#phone").val();
           formData["arrivalDate"] = $("#arrivalDate").val();
           formData["additionalInfo"] = $("#additionalInfo").val();
-
 
           $.ajax({
             type: "POST",
