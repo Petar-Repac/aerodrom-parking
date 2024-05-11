@@ -17,7 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = sanitize($_POST['email']);
     $phone = sanitize($_POST['phone']);
     $passengers = sanitize($_POST['passengers']);
-    $date = sanitize($_POST['arrivalDate']);
+    $arrivalDate = sanitize($_POST['arrivalDate']);
+    $departureDate = sanitize($_POST['departureDate']);
     $additionalInfo = sanitize($_POST['additionalInfo']);
 
     // Create a new PHPMailer instance
@@ -45,7 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             Ime: {$name} <br>
             Email: {$email} <br>
             Telefon: {$phone} <br>
-            Datum i vreme dolaska: {$date} <br>
+            Datum i vreme dolaska: {$arrivalDate} <br>
+            Datum i vreme odlaska: {$departureDate} <br>
             Broj putnika: {$passengers} <br>
             Dodatne napomene: {$additionalInfo} 
 EMAILBODY;
