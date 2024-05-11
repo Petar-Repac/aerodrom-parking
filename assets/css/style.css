@@ -1743,7 +1743,6 @@ body::-webkit-scrollbar-thumb {
 
 
 #footer {
-  background: url("../img/footer-1.webp") center center no-repeat;
   background-size: cover;
   color: #fff;
   font-size: 14px;
