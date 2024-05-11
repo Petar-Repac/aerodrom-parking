@@ -250,7 +250,7 @@
                     <input
                       type="datetime-local"
                       class="form-control"
-                      name="arrivalDate"
+                      name="departureDate"
                       id="departure-date"
                       placeholder="Datum i vreme odlaska"
                       required
@@ -508,7 +508,8 @@
           formData["email"] = $("#email").val();
           formData["passengers"] = $("#passengers").val();
           formData["phone"] = $("#phone").val();
-          formData["arrivalDate"] = $("#arrivalDate").val();
+          formData["arrivalDate"] = $("#arrival-date").val();
+          formData["departureDate"] = $("#departure-date").val();
           formData["additionalInfo"] = $("#additionalInfo").val();
 
           $.ajax({
