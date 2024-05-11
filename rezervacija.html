@@ -249,7 +249,7 @@
                       type="datetime-local"
                       class="form-control"
                       name="arrivalDate"
-                      id="arrivalDate"
+                      id="arrival-date"
                       placeholder="Datum i vreme dolaska"
                       required
                     />
@@ -261,7 +261,7 @@
                       type="datetime-local"
                       class="form-control"
                       name="arrivalDate"
-                      id="departureDate"
+                      id="departure-date"
                       placeholder="Datum i vreme odlaska"
                       required
                     />
@@ -388,8 +388,8 @@
     <!-- Reservation Form JS File -->
     <script>
       const formCharge = document.getElementById('form-charge');
-      const arrival = document.getElementById('arrivalDate');
-      const departure = document.getElementById('departureDate');
+      const arrival = document.getElementById('arrival-date');
+      const departure = document.getElementById('departure-date');
 
       const prices = [
           { days: 1, price: 500 },
@@ -423,6 +423,21 @@
           { days: 26, price: 6700 },
           { days: 27, price: 6800 },
           { days: 28, price: 6900 },
+
+          { days: 29, price: 7000 },
+          { days: 30, price: 7100 },
+          { days: 31, price: 7200 },
+          { days: 32, price: 7300 },
+          { days: 33, price: 7400 },
+          { days: 34, price: 7500 },
+          { days: 35, price: 7600 },
+
+          { days: 36, price: 7700 },
+          { days: 37, price: 7800 },
+          { days: 38, price: 7900 },
+          { days: 39, price: 8000 },
+          { days: 40, price: 8100 }
+          
         ];
 
       document.addEventListener('input', function() {
@@ -440,21 +455,24 @@
         }
        
         // number of days
-        let output = Math.ceil( ((secondDate - firstDate) / (1000 * 60 * 60 * 24)));
+        let output = Math.ceil(((secondDate - firstDate) / (1000 * 60 * 60 * 24)));
 
-        //  arrival after 22h
+        //  arrival after 22h and departure before 2AM
         let arrivalHour = firstDate.getHours();
-        if (arrivalHour >= 22) {
+        let departureHour = secondDate.getHours();
+        if (arrivalHour >= 22 || departureHour < 2) {
           output = output - 1;
+          return;
         }
 
         // more then 40 days
         if (output > 40 ) {
           let charge40 = output * 200;
-          formCharge.textContent = `Za boravak od ${output} dana, cena iznosi ${charge40} dinara. `;
+          formCharge.textContent = `Cena za ${output} dana iznosi ${charge40} dinara. `;
           return;
         }
 
+        // prices
         let final = 0;
         prices.map((item) => {
           if (item.days === output) {
@@ -464,11 +482,16 @@
 
         formCharge.textContent = `Cena za ${output} dana iznosi ${final} dinara.`;
 
+         // correct string output
+       if (output % 10 === 1 && output != 11) {
+          formCharge.textContent = `Cena za ${output} dan iznosi ${final} dinara. `;
+        }
+
       } else {
         formCharge.textContent = '';
         }
       })
-
+    
     </script>
 
     <script>
