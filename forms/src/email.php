@@ -29,14 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mail->isSMTP();                                      // Set mailer to use SMTP
         $mail->Host = 's4.webhostingsrbija.net';                       // Specify main and backup SMTP servers
         $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = 'noreply@aerodromskiparking.rs';    // SMTP username
+        $mail->Username = 'noreply@aeroparking.rs';    // SMTP username
         $mail->Password = 'noreplyPass123!';                    // SMTP password
         $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
         $mail->Port = 587;                                    // TCP port to connect to
 
         //Recipients
-        $mail->setFrom('noreply@aerodromskiparking.rs', 'noreply@aerodromskiparking.rs');
-        $mail->addAddress('rezervacije@aerodromskiparking.rs', 'Rezervacije');     // Add a recipient
+        $mail->setFrom('noreply@aeroparking.rs', 'noreply@aeroparking.rs');
+        $mail->addAddress('rezervacije@aeroparking.rs', 'Rezervacije');     // Add a recipient
 
 
         //Content
