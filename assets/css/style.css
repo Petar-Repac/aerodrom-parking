@@ -1963,7 +1963,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 #reserve-btn{
-  visibility: hidden;
+  /*visibility: hidden;*/
   display: flex;
   gap: 0.5em;
   align-items: center;
@@ -1979,13 +1979,13 @@ body::-webkit-scrollbar-thumb {
   bottom: 30px;
   right: 30px;
   z-index: 999;
-  opacity: 0;
   transition: all 0.3s;
+  animation: fadeIn 1s, pulse 1.5s infinite;
 }
 
 #reserve-btn.active {
   visibility: visible;
-  animation: fadeIn 1s, pulse 1.5s infinite;
+
   opacity: 1;
 }
 
@@ -2037,6 +2037,7 @@ body::-webkit-scrollbar-thumb {
 
 #reservation-form {
   display: flex;
+  visibility: hidden;
   flex-wrap: wrap;
   position: fixed;
   bottom: 0;
@@ -2186,3 +2187,37 @@ input[type=email] {
        background: #331e36;
      }
    }
+
+.date-inputs {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
+.date-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.date-input-container label {
+  position: relative;
+  top: 1em;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.date-input-container input[type="date"] {
+  padding: 10px;
+  font-size: 16px;
+  border: transparent;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.date-input-container input[type="date"]:focus {
+  border-color: #007bff;
+}

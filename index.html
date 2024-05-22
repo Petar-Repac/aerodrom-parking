@@ -97,6 +97,18 @@ Gratis transfer u oba smera.
   <div class="pocetna-container">
     <h1>AERO PARKING</h1>
     <h2>Parkirajte povoljno i bezbedno, letite bez brige!</h2>
+
+    <div class="date-inputs">
+      <div class="date-input-container">
+        <label for="park-in">Park in:</label>
+        <input type="date" id="park-in" name="park-in">
+      </div>
+      <div class="date-input-container">
+        <label for="park-out">Park out:</label>
+        <input type="date" id="park-out" name="park-out">
+      </div>
+    </div>
+
   </div>
 </section><!-- End Hero -->
 
@@ -483,16 +495,6 @@ Gratis transfer u oba smera.
         <h3>Vaša rezervacija.</h3>
         <div class="form-divider"></div>
         <div class="col-lg-12 mt-5 mt-lg-0">
-          <form
-                  method="post"
-                  role="form"
-                  class="php-email-form"
-                  id="php-email-form"
-          >
-
-
-
-
             <h4>Lični podaci</h4>
 
             <div class="contact-info">
@@ -531,33 +533,7 @@ Gratis transfer u oba smera.
 
             <div class="form-divider"></div>
             <h4>Vreme</h4>
-            <div class="contact-info">
-              <div class="col-md-12 form-group mt-3 mx-auto">
 
-                <p>Od *:</p>
-                <input
-                        type="datetime-local"
-                        class="form-control"
-                        name="arrivalDate"
-                        id="arrival-date"
-                        placeholder="Datum i vreme dolaska"
-                        required
-                />
-              </div>
-
-              <div class="col-md-12 form-group mt-3 mx-auto">
-                <p>Do *:</p>
-                <input
-                        type="datetime-local"
-                        class="form-control"
-                        name="departureDate"
-                        id="departure-date"
-                        placeholder="Datum i vreme odlaska"
-                        required
-                />
-
-              </div>
-            </div>
             <div class="row">
               <div class="form-divider"></div>
               <div class="col-md-12 mt-3 mx-auto">
@@ -570,7 +546,6 @@ Gratis transfer u oba smera.
             <div class="text-center mt-3">
               <button type="submit">Pošalji rezervaciju</button>
             </div>
-          </form>
         </div>
       </div>
   </section>
