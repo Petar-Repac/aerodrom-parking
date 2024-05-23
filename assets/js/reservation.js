@@ -1,6 +1,3 @@
-const formCharge = document.getElementById('form-charge');
-const arrival = document.getElementById('arrival-date');
-const departure = document.getElementById('departure-date');
 
 const prices = [
     { days: 1, price: 500 },
@@ -51,12 +48,35 @@ const prices = [
 
 ];
 
-document.addEventListener('input', function() {
+const formCharge = document.getElementById('form-charge');
+const ctaCharge  = document.getElementById('cta-charge');
+const arrival = document.getElementById('arrival-date');
+const departure = document.getElementById('departure-date');
+const ctaArrival = document.getElementById('cta-arrival-date');
+const ctaDeparture = document.getElementById('cta-departure-date');
+
+function syncInputs(event) {
+    const newValue = event.target.value;
+
+    if(event.target.name == 'arrival-date') {
+        arrival.value = newValue;
+        ctaArrival.value = newValue;
+    }
+    else{
+        departure.value = newValue;
+        ctaDeparture.value = newValue;
+    }
+
+    updatePrice();
+}
+
+ function updatePrice() {
     let arrivalDate = arrival.value;
     let departureDate = departure.value;
 
     if (!arrivalDate || !departureDate) {
-        formCharge.textContent = `Cena: --- `;
+        formCharge.textContent = `Cena: - - -`;
+        ctaCharge.textContent = `Cena: - - -`;
         return;
     }
 
@@ -66,6 +86,7 @@ document.addEventListener('input', function() {
     // invalid input
     if (secondDate < firstDate) {
         formCharge.textContent = "Datum dolaska mora biti pre datuma odlaska.";
+        ctaCharge.textContent = `Cena: - - -`;
         return;
     }
 
@@ -94,7 +115,8 @@ document.addEventListener('input', function() {
     }
 
     if(numOfDays === 0) {
-        formCharge.textContent = `Cena: --- `;
+        formCharge.textContent = `Cena: - - -`;
+        ctaCharge.textContent = `Cena: - - -`;
         return;
     }
 
@@ -116,13 +138,14 @@ document.addEventListener('input', function() {
 
     // correct string output
     if (numOfDays % 10 === 1 && numOfDays !== 11) {
-        formCharge.textContent = `Cena za ${numOfDays} dan iznosi ${price} dinara. `;
+        formCharge.textContent = `Cena za ${numOfDays} dan iznosi ${price} dinara.`;
+        ctaCharge.textContent = `Cena: ${price} din.`;
         return;
     }
 
     formCharge.textContent = `Cena za ${numOfDays} dana iznosi ${price} dinara.`;
-
-})
+    ctaCharge.textContent = `Cena: ${price} din.`;
+}
 
 // ajax call
 $(document).ready(function () {

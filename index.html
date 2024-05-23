@@ -100,16 +100,20 @@ Gratis transfer u oba smera.
     <div id="reservation-landing">
       <div class="date-inputs">
         <div class="date-input-container">
-          <input type="date" id="park-in" name="park-in" placeholder="Datum od:">
+          <input type="date" id="cta-arrival-date" name="arrival-date" placeholder="Datum od:" onclick="this.showPicker()" oninput="syncInputs(event)">
         </div>
         <div class="separator"></div>
         <div class="date-input-container">
-          <input type="date" id="park-out" name="park-out" placeholder="Datum do:">
+          <input type="date" id="cta-departure-date" name="departure-date" placeholder="Datum do:" onclick="this.showPicker()" oninput="syncInputs(event)">
         </div>
 
       </div>
 
-      <a  id="cta-landing">Rezervišite vaše parking mesto </a>
+      <div id="cta-landing">
+        <span>Rezervišite parking mesto</span>
+        <span class="divider"></span>
+        <span id="cta-charge">Cena: - - -</span>
+      </div>
     </div>
 
   </div>
@@ -494,9 +498,9 @@ Gratis transfer u oba smera.
       <div class="row mt-2 pb-2">
         <div class="d-flex align-items-center justify-content-lg-center gap-3 p-1 logo">
           <img src="./assets/img/logo-transparent-background-120x120.webp" width="45" height="45" alt="aero parking logo" class="rounded-5">
-          <h2 class="me-auto me-lg-0">AERO PARKING - REZERVACIJA</h2>
+          <h2 class="me-auto me-lg-0">AERO PARKING REZERVACIJA</h2>
         </div>
-
+        <form>
         <div class="form-divider"></div>
         <div class="col-lg-12 mt-5 mt-lg-0">
             <h4>Lični podaci</h4>
@@ -539,11 +543,10 @@ Gratis transfer u oba smera.
             <h4>Vreme</h4>
           <div class="date-inputs">
             <div class="date-input-container">
-              <input type="date" id="date-from"  placeholder="Datum od:">
+              <input type="date" id="arrival-date" name="arrival-date"  placeholder="Datum od:" onclick="this.showPicker()" oninput="syncInputs(event)">
             </div>
-            <div class="separator"></div>
             <div class="date-input-container">
-              <input type="date" id="date-to" placeholder="Datum do:">
+              <input type="date" id="departure-date" name="departure-date" placeholder="Datum do:" onclick="this.showPicker()" oninput="syncInputs(event)">
             </div>
 
           </div>
@@ -560,6 +563,7 @@ Gratis transfer u oba smera.
               <button type="submit">Pošalji rezervaciju</button>
             </div>
         </div>
+        </form>
       </div>
   </section>
 
@@ -576,6 +580,8 @@ Gratis transfer u oba smera.
 <!-- Template Main JS File -->
 <script src="assets/js/main.js" defer></script>
 
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- Sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" async defer></script>
 <!-- jQuery library -->

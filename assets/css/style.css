@@ -655,18 +655,17 @@ section {
 # Scrollbar custom color
 --------------------------------------------------------------*/
 
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 0.8em;
 }
 
-body::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background-color: #331e36;
 }
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background-color: #41337a;
 }
-
 
 
 /*--------------------------------------------------------------
@@ -2037,16 +2036,18 @@ body::-webkit-scrollbar-thumb {
 
 /* Input styling */
 
-   input[type=text] {
-     appearance: none;
-     border: none;
-     outline: none;
-     border-bottom: .2em solid rgba(116, 44, 204, 1);
-     background: rgba(116, 44, 204, 0.8);
-     border-radius: .2em .2em 0 0;
-     padding: .4em;
-     color: white;
-   }
+input[type=text] {
+ appearance: none;
+ border: none;
+ outline: none;
+ border-bottom: .2em solid rgba(116, 44, 204, 1);
+ background: rgba(116, 44, 204, 0.8);
+ border-radius: .2em .2em 0 0;
+ padding: .4em;
+ color: white;
+ font-size: 1.1em;
+
+}
 
 input[type=email] {
   appearance: none;
@@ -2057,27 +2058,29 @@ input[type=email] {
   border-radius: .2em .2em 0 0;
   padding: .4em;
   color: white;
+  font-size: 1.1em;
 }
 
 /*  Button*/
-   input[type=button] {
-     appearance: none;
-     border: .2em solid #742CCC;
-     background: hsl(0 0 0/0);
-     padding: .85em 1.5em;
-     color: #fff;
-     border-radius: 2em;
-     transition: 1s;
-     &:hover, &:focus, &:active {
-       background: #742CCC;
-       color: #fff;
-     }
-   }
+input[type=button] {
+ appearance: none;
+ border: .2em solid #742CCC;
+ background: hsl(0 0 0/0);
+ padding: .85em 1.5em;
+  font-size: 1.1em;
+ color: #fff;
+ border-radius: 2em;
+ transition: 1s;
+ &:hover, &:focus, &:active {
+   background: #742CCC;
+   color: #fff;
+ }
+}
 
-   input::placeholder {
-     color: #ddd;
-     opacity: 1; /* Firefox */
-   }
+input::placeholder {
+ color: #ddd;
+ opacity: 1; /* Firefox */
+}
 
 input:autofill {
   -webkit-box-shadow: 0 0 0 30px #742CCC inset !important;
@@ -2089,49 +2092,48 @@ input:-webkit-autofill {
   -webkit-text-fill-color: #fff;
 }
 /* Date*/
-   input[type=date] {
-     padding: .8em .9em;
-     border-radius: 2em;
-     text-align: left;
-     color: #742CCC;
-     &::-webkit-datetime-edit-text  { color: #742CCC;}
-     &::-webkit-datetime-edit-month-field { color: #742CCC; }
-     &::-webkit-datetime-edit-day-field  { color: #742CCC; }
-     &::-webkit-datetime-edit-year-field  { color: #742CCC; }
-     &::-webkit-inner-spin-button { color: #742CCC; }
-     &::-webkit-calendar-picker-indicator {
-       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23742CCC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
-     }
-   }
-    /* Hide the default placeholder */
-    input[type="date"]::-webkit-datetime-edit-text {
-      visibility: hidden;
-    }
+input[type=date] {
+  padding: .8em .9em;
+  border-radius: 2em;
+  text-align: left;
+  color: #742CCC;
+  font-size: 1.1em;
+  cursor: pointer;
+  &::-webkit-datetime-edit-text  { color: #742CCC;}
+  &::-webkit-datetime-edit-month-field { color: #742CCC; }
+  &::-webkit-datetime-edit-day-field  { color: #742CCC; }
+  &::-webkit-datetime-edit-year-field  { color: #742CCC;  }
+  &::-webkit-inner-spin-button { color: #742CCC; }
+  &::-webkit-calendar-picker-indicator {
+   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23742CCC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+   font-size: 2em;
+   position: relative;
+   bottom: 0.3em;
+   right: 0.4em;
+  }
+}
 
-    /* Style the input so it appears like a placeholder */
-    input[type="date"]::before {
-      content: attr(placeholder);
-      color: #999; /* Placeholder text color */
-      left: 0.5em;
-    }
+/* Style the input so it appears like a placeholder */
+input[type="date"]::before {
+  content: attr(placeholder);
+  color: #999; /* Placeholder text color */
+  left: 0.5em;
+}
 
 
 /* Number*/
-   input[type=number] {
-     width: 3em;
-     padding: 0.5em;
-     border: .2em solid rgba(116, 44, 204, 1);
-     background: rgba(116, 44, 204, 0.6);
-     border-radius: 1em;
-     text-align: center;
-     color: #fff;
-     appearance: textfield;
-     margin: 0;
-     &::-webkit-inner-spin-button {
-       opacity: 1;
-       background: #331e36;
-     }
-   }
+input[type=number] {
+ width: 3em;
+ padding: 0.5em;
+ border: .2em solid rgba(116, 44, 204, 1);
+ background: rgba(116, 44, 204, 0.6);
+  border-radius: .2em .2em 0 0;
+ text-align: center;
+ color: #fff;
+ appearance: textfield;
+ margin: 0;
+  font-size: 1.1em;
+}
 
 /* Reservation landing */
 #reservation-landing {
@@ -2151,6 +2153,7 @@ input:-webkit-autofill {
   background-color: white;
   padding: 1em;
   border-radius: 0.5em;
+  flex-wrap: wrap;
 }
 
 .date-input-container {
@@ -2184,6 +2187,8 @@ input:-webkit-autofill {
 #cta-landing {
   display: flex;
   align-items: center;
+  justify-content: space-around;
+  gap: 0.5em;
   outline: none;
   border-radius: 15px;
   text-align: center;
@@ -2197,6 +2202,54 @@ input:-webkit-autofill {
   transition: all 0.3s;
   animation: fadeIn 1s, pulse 1.5s 5;
 }
+
+#cta-landing .divider {
+  display: block;
+  min-height: 100%;
+}
+
+#cta-landing .divider:after {
+  content: '';
+  background-color: #fff;
+  width: 2px;
+  height: 2em;
+  top: 10px;
+  left: 50%;
+  display: block;
+}
+
+#reservation-form .date-inputs {
+  background-color: black;
+  gap: 1em;
+}
+
+/* Date*/
+#reservation-form input[type=date] {
+  padding: .8em .9em;
+  border-radius: 1em 0em 1em 0em;
+  text-align: left;
+  background-color: #742CCC;
+  color: #fff;
+  &::-webkit-datetime-edit-text  { color: #fff;}
+  &::-webkit-datetime-edit-month-field { color: #fff; }
+  &::-webkit-datetime-edit-day-field  { color: #fff; }
+  &::-webkit-datetime-edit-year-field  { color: #fff; }
+  &::-webkit-inner-spin-button { color: #fff; }
+  &::-webkit-calendar-picker-indicator {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+    font-size: 2em;
+    position: relative;
+    bottom: 0.3em;
+  }
+}
+
+/* Style the input so it appears like a placeholder */
+#reservation-form input[type="date"]::before {
+  content: attr(placeholder);
+  color: #ddd; /* Placeholder text color */
+  left: 0.5em;
+}
+
 
 #reservation-form {
   display: flex;
@@ -2212,13 +2265,26 @@ input:-webkit-autofill {
   z-index: 999;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
   border-left: 8px solid rgba(116, 44, 204, 0.6);
-  overflow-y: scroll;
   color: #ccc;
-
+  overflow-y: scroll;
   transform: translateX(100%);
   transition: all 0.5s;
 }
 
+
+#reservation-form button {
+  background: #41337a;
+  border: 0;
+  padding: 10px 24px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 4px;
+}
+
+#reservation-form button:hover {
+  background: #331e36;
+  color: #fff;
+}
 
 #reservation-form .logo {
   padding: 0 1em;
