@@ -2033,68 +2033,7 @@ body::-webkit-scrollbar-thumb {
   }
 }
 
-/* Reservation form css begin */
 
-#reservation-form {
-  display: flex;
-  visibility: hidden;
-  flex-wrap: wrap;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 33%;
-  height: 100%;
-  background-color: white ;
-  z-index: 999;
-  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-  border-left: 8px solid rgba(116, 44, 204, 0.6);
-  overflow-y: scroll;
-}
-
-#reservation-form section {
-  padding: 0;
-}
-
-#reservation-form .contact-links-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 1.5rem;
-}
-#reservation-form h3 {
-  font-size: 2.2em;
-  font-weight: bold;
-  padding-left: 1.5rem;
-}
-
-#reservation-form h4 {
-  font-size: 1.8em;
-  font-weight: bold;
-  text-align: center;
-}
-
-.form-divider {
-  display: block;
-  width: 100%;
-  margin: 1em 0 1em 0;
-}
-.form-divider::after {
-  content: "";
-  display: block;
-  border-bottom: 2px dashed rgba(116, 44, 204, 0.6);
-}
-
-#reservation-form .contact-info {
-  display: flex;
-  justify-content: center;
-  padding: 1em;
-  flex-wrap: wrap;
-}
-
-#reservation-form .contact-info input {
-  width: 100%;
-  margin-bottom: 0.8em;
-}
 
 /* Input styling */
 
@@ -2103,10 +2042,10 @@ body::-webkit-scrollbar-thumb {
      border: none;
      outline: none;
      border-bottom: .2em solid rgba(116, 44, 204, 1);
-     background: rgba(116, 44, 204, 0.2);
+     background: rgba(116, 44, 204, 0.8);
      border-radius: .2em .2em 0 0;
      padding: .4em;
-     color: #E91E63;
+     color: white;
    }
 
 input[type=email] {
@@ -2114,72 +2053,78 @@ input[type=email] {
   border: none;
   outline: none;
   border-bottom: .2em solid rgba(116, 44, 204, 1);
-  background: rgba(116, 44, 204, 0.2);
+  background: rgba(116, 44, 204, 0.8);
   border-radius: .2em .2em 0 0;
   padding: .4em;
-  color: rgba(116, 44, 204, 1);
+  color: white;
 }
 
 /*  Button*/
    input[type=button] {
      appearance: none;
-     border: .2em solid #E91E63;
+     border: .2em solid #742CCC;
      background: hsl(0 0 0/0);
      padding: .85em 1.5em;
-     color: #E91E63;
+     color: #fff;
      border-radius: 2em;
      transition: 1s;
      &:hover, &:focus, &:active {
-       background: #E91E63;
+       background: #742CCC;
        color: #fff;
      }
    }
 
-/* Date*/
-   input[type=date] {
-     border: .2em solid #E91E63;
-     padding: .8em .9em;
-     border-radius: 2em;
-     color: #E91E63;
-   // &::-webkit-datetime-edit { padding: 1em; }
-   // &::-webkit-datetime-edit-fields-wrapper { background: rgba(233, 30, 99, .2); }
-     &::-webkit-datetime-edit-text { color: red; padding: 0 0.3em; }
-   // &::-webkit-datetime-edit-month-field { color: #E91E63; }
-   // &::-webkit-datetime-edit-day-field { color: #E91E63; }
-   // &::-webkit-datetime-edit-year-field { color: #E91E63; }
-     &::-webkit-inner-spin-button { display: none; }
-     &::-webkit-calendar-picker-indicator {
-       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23E91E63' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
-     }
+   input::placeholder {
+     color: #ddd;
+     opacity: 1; /* Firefox */
    }
 
-/*// Date*/
-   input[type=datetime-local] {
-     border: .2em solid rgba(116, 44, 204, 1);
+input:autofill {
+  -webkit-box-shadow: 0 0 0 30px #742CCC inset !important;
+  -webkit-text-fill-color: #fff;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px #742CCC inset !important;
+  -webkit-text-fill-color: #fff;
+}
+/* Date*/
+   input[type=date] {
      padding: .8em .9em;
      border-radius: 2em;
-     color: rgba(116, 44, 204, 1);
-   // &::-webkit-datetime-edit { padding: 1em; }
-   // &::-webkit-datetime-edit-fields-wrapper { background: rgba(116, 44, 204, 0.2) }
-     &::-webkit-datetime-edit-text { color: red; padding: 0 0.3em; }
-   // &::-webkit-datetime-edit-month-field { color: #E91E63; }
-   // &::-webkit-datetime-edit-day-field { color: #E91E63; }
-   // &::-webkit-datetime-edit-year-field { color: #E91E63; }
-     &::-webkit-inner-spin-button { display: none; }
+     text-align: left;
+     color: #742CCC;
+     &::-webkit-datetime-edit-text  { color: #742CCC;}
+     &::-webkit-datetime-edit-month-field { color: #742CCC; }
+     &::-webkit-datetime-edit-day-field  { color: #742CCC; }
+     &::-webkit-datetime-edit-year-field  { color: #742CCC; }
+     &::-webkit-inner-spin-button { color: #742CCC; }
      &::-webkit-calendar-picker-indicator {
-       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23E91E63' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23742CCC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
      }
    }
+    /* Hide the default placeholder */
+    input[type="date"]::-webkit-datetime-edit-text {
+      visibility: hidden;
+    }
+
+    /* Style the input so it appears like a placeholder */
+    input[type="date"]::before {
+      content: attr(placeholder);
+      color: #999; /* Placeholder text color */
+      left: 0.5em;
+    }
+
 
 /* Number*/
    input[type=number] {
      width: 3em;
      padding: 0.5em;
      border: .2em solid rgba(116, 44, 204, 1);
-     background: rgba(116, 44, 204, 0.2);
+     background: rgba(116, 44, 204, 0.6);
      border-radius: 1em;
      text-align: center;
-     color: rgba(116, 44, 204, 1);
+     color: #fff;
      appearance: textfield;
      margin: 0;
      &::-webkit-inner-spin-button {
@@ -2187,6 +2132,18 @@ input[type=email] {
        background: #331e36;
      }
    }
+
+/* Reservation landing */
+#reservation-landing {
+  position: relative;
+  top: 20%;
+}
+
+#reservation-landing .separator {
+  width: 2px;
+  height: 100%; /* Adjust the height as needed */
+  background-color: #007bff; /* Adjust the color as needed */
+}
 
 .date-inputs {
   display: flex;
@@ -2220,4 +2177,110 @@ input[type=email] {
 
 .date-input-container input[type="date"]:focus {
   border-color: #007bff;
+}
+
+/* Reservation form css begin */
+
+#cta-landing {
+  display: flex;
+  align-items: center;
+  outline: none;
+  border-radius: 15px;
+  text-align: center;
+  background-color: #7a59ff;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 0.6em;
+  position: relative;
+  margin-top: 1em;
+  transition: all 0.3s;
+  animation: fadeIn 1s, pulse 1.5s 5;
+}
+
+#reservation-form {
+  display: flex;
+  visibility: visible;
+  flex-wrap: wrap;
+  position: fixed;
+  padding: 1em 0;
+  bottom: 0;
+  right: 0;
+  width: 33%;
+  height: 100%;
+  background-color: rgba(0,0,0, 0.96) ;
+  z-index: 999;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  border-left: 8px solid rgba(116, 44, 204, 0.6);
+  overflow-y: scroll;
+  color: #ccc;
+
+  transform: translateX(100%);
+  transition: all 0.5s;
+}
+
+
+#reservation-form .logo {
+  padding: 0 1em;
+}
+
+#reservation-form.active {
+  transform: translateX(0%);
+}
+
+#reservation-form section {
+  padding: 0;
+}
+
+#reservation-form .close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+}
+#reservation-form h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  padding-left: 1.5rem;
+}
+
+#reservation-form h4 {
+  font-size: 1.8em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.form-divider {
+  display: block;
+  width: 100%;
+  margin: 1em 0 1em 0;
+}
+.form-divider::after {
+  content: "";
+  display: block;
+  border-bottom: 2px dashed rgba(116, 44, 204, 0.6);
+}
+
+#reservation-form .contact-info {
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+  flex-wrap: wrap;
+}
+
+#reservation-form .contact-info input {
+  width: 100%;
+  margin-bottom: 0.8em;
+}
+
+@media (max-width: 1202px) {
+  #reservation-form {
+    width: 50%;
+  }
+}
+
+@media (max-width: 992px) {
+  #reservation-form {
+    width: 100%;
+  }
 }

@@ -89,7 +89,6 @@ Gratis transfer u oba smera.
  </script>
 </head>
 
-
 <body>
 
 <!-- ======= Hero Section ======= -->
@@ -98,15 +97,19 @@ Gratis transfer u oba smera.
     <h1>AERO PARKING</h1>
     <h2>Parkirajte povoljno i bezbedno, letite bez brige!</h2>
 
-    <div class="date-inputs">
-      <div class="date-input-container">
-        <label for="park-in">Park in:</label>
-        <input type="date" id="park-in" name="park-in">
+    <div id="reservation-landing">
+      <div class="date-inputs">
+        <div class="date-input-container">
+          <input type="date" id="park-in" name="park-in" placeholder="Datum od:">
+        </div>
+        <div class="separator"></div>
+        <div class="date-input-container">
+          <input type="date" id="park-out" name="park-out" placeholder="Datum do:">
+        </div>
+
       </div>
-      <div class="date-input-container">
-        <label for="park-out">Park out:</label>
-        <input type="date" id="park-out" name="park-out">
-      </div>
+
+      <a  id="cta-landing">Rezervišite vaše parking mesto </a>
     </div>
 
   </div>
@@ -120,7 +123,7 @@ Gratis transfer u oba smera.
       <h2 class="logo me-auto me-lg-0">
         <a href="index.html">AERO PARKING</a>
      </h2>
-   </div>
+    </div>
 
     <!-- Uncomment below if you prefer to use an image logo -->
     <!-- <a href="index.html" class="logo me-auto me-lg-0"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
@@ -170,7 +173,6 @@ Gratis transfer u oba smera.
       </div>
     </div>
   </section><!-- End About Section -->
-
 
   <!-- ======= Counts Section ======= -->
   <section id="counts" class="counts">
@@ -447,9 +449,7 @@ Gratis transfer u oba smera.
   </div>
 </footer><!-- End Footer -->
 
-
 <a  id="reserve-btn" class="pulse contact-links-toggle"><i class="fa fa-address-card "></i> REZERVIŠI</a>
-
 
 <!-- Contact links -->
 <nav id="contact-links"  >
@@ -489,10 +489,14 @@ Gratis transfer u oba smera.
 
 <!-- Contact links -->
 <section id="reservation-form"  >
-  <i  class="contact-links-close bi bi-x"></i>
+  <i  class="close bi bi-x"></i>
   <section id="contact" class="contact">
       <div class="row mt-2 pb-2">
-        <h3>Vaša rezervacija.</h3>
+        <div class="d-flex align-items-center justify-content-lg-center gap-3 p-1 logo">
+          <img src="./assets/img/logo-transparent-background-120x120.webp" width="45" height="45" alt="aero parking logo" class="rounded-5">
+          <h2 class="me-auto me-lg-0">AERO PARKING - REZERVACIJA</h2>
+        </div>
+
         <div class="form-divider"></div>
         <div class="col-lg-12 mt-5 mt-lg-0">
             <h4>Lični podaci</h4>
@@ -533,7 +537,16 @@ Gratis transfer u oba smera.
 
             <div class="form-divider"></div>
             <h4>Vreme</h4>
+          <div class="date-inputs">
+            <div class="date-input-container">
+              <input type="date" id="date-from"  placeholder="Datum od:">
+            </div>
+            <div class="separator"></div>
+            <div class="date-input-container">
+              <input type="date" id="date-to" placeholder="Datum do:">
+            </div>
 
+          </div>
             <div class="row">
               <div class="form-divider"></div>
               <div class="col-md-12 mt-3 mx-auto">

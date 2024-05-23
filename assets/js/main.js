@@ -201,6 +201,27 @@
     }
   }, true)
 
+
+
+  /**
+   * Mobile nav toggle
+   */
+  on('click', '#cta-landing', function (e) {
+
+    let reservationForm = select('#reservation-form');
+    reservationForm.classList.toggle('active')
+  })
+
+  /**
+   * Mobile nav toggle
+   */
+  on('click', '#reservation-form .close', function (e) {
+
+    let reservationForm = select('#reservation-form');
+    reservationForm.classList.toggle('active')
+  })
+
+
   /**
    * Scroll with ofset on page load with hash links in the url
    */
