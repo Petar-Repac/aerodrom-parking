@@ -85,7 +85,7 @@
    */
   let selectHeader = select('#header')
   if (selectHeader) {
-    let headerOffset = selectHeader.offsetTop
+    let headerOffset = 0;
     let nextElement = selectHeader.nextElementSibling
     const headerFixed = () => {
       if ((headerOffset - window.scrollY) <= 0) {
@@ -163,6 +163,7 @@
     select('#contact-links').classList.toggle('contact-links-visible')
   })
 
+
   /**
    * Mobile nav toggle
    */
@@ -200,6 +201,37 @@
       scrollto(this.hash)
     }
   }, true)
+
+
+
+  /**
+   * Mobile nav toggle
+   */
+  on('click', '#cta-landing', function (e) {
+    let reservationForm = select('#reservation-form');
+    reservationForm.classList.toggle('active')
+  })
+
+  on('click', '#cta-reserve', function(e) {
+    let reservationForm = select('#reservation-form');
+    reservationForm.classList.toggle('active')
+    select('#contact-links').classList.toggle('contact-links-visible')
+  })
+
+  on('click', '#cta-body', function(e) {
+    let reservationForm = select('#reservation-form');
+    reservationForm.classList.toggle('active');
+  })
+
+  /**
+   * Mobile nav toggle
+   */
+  on('click', '#reservation-form .close', function (e) {
+
+    let reservationForm = select('#reservation-form');
+    reservationForm.classList.toggle('active')
+  })
+
 
   /**
    * Scroll with ofset on page load with hash links in the url

@@ -89,7 +89,6 @@ Gratis transfer u oba smera.
  </script>
 </head>
 
-
 <body>
 
 <!-- ======= Hero Section ======= -->
@@ -97,6 +96,26 @@ Gratis transfer u oba smera.
   <div class="pocetna-container">
     <h1>AERO PARKING</h1>
     <h2>Parkirajte povoljno i bezbedno, letite bez brige!</h2>
+
+    <div id="reservation-landing">
+      <div class="date-inputs">
+        <div class="date-input-container">
+          <input type="date" id="cta-arrival-date" name="arrival-date" placeholder="Datum od:" onclick="this.showPicker()" oninput="syncInputs(event)">
+        </div>
+        <div class="separator"></div>
+        <div class="date-input-container">
+          <input type="date" id="cta-departure-date" name="departure-date" placeholder="Datum do:" onclick="this.showPicker()" oninput="syncInputs(event)">
+        </div>
+
+      </div>
+
+      <div id="cta-landing">
+        <span>Rezervišite parking mesto</span>
+        <span class="divider"></span>
+        <span id="cta-charge">Cena: - - -</span>
+      </div>
+    </div>
+
   </div>
 </section><!-- End Hero -->
 
@@ -108,7 +127,7 @@ Gratis transfer u oba smera.
       <h2 class="logo me-auto me-lg-0">
         <a href="index.html">AERO PARKING</a>
      </h2>
-   </div>
+    </div>
 
     <!-- Uncomment below if you prefer to use an image logo -->
     <!-- <a href="index.html" class="logo me-auto me-lg-0"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
@@ -159,7 +178,6 @@ Gratis transfer u oba smera.
     </div>
   </section><!-- End About Section -->
 
-
   <!-- ======= Counts Section ======= -->
   <section id="counts" class="counts">
     <div class="container">
@@ -201,7 +219,7 @@ Gratis transfer u oba smera.
           Putem Viber-a, Whatsapp-a i Instagram-a ili Facebook-a<br>
           Popunjavanjem kratkog formulara
         </p>
-        <a class="cta-btn" href="rezervacija">Rezerviši</a>
+        <a class="cta-btn" id="cta-body">Rezerviši</a>
       </div>
     </div>
   </section><!-- End Cta Section -->
@@ -435,17 +453,15 @@ Gratis transfer u oba smera.
   </div>
 </footer><!-- End Footer -->
 
-
 <a  id="reserve-btn" class="pulse contact-links-toggle"><i class="fa fa-address-card "></i> REZERVIŠI</a>
-
 
 <!-- Contact links -->
 <nav id="contact-links"  >
   <i  class="contact-links-close bi bi-x"></i>
 
   <ul>
-    <li>
-      <a href="rezervacija">
+    <li id="cta-reserve">
+      <a >
       <i class="bi bi-calendar-check"></i>
       Online rezervacija</a>
     </li>
@@ -474,6 +490,86 @@ Gratis transfer u oba smera.
 </nav><!-- .navbar -->
 
 
+
+<!-- Contact links -->
+<section id="reservation-form"  >
+  <i  class="close bi bi-x"></i>
+  <section id="contact" class="contact">
+      <div class="row mt-2 pb-2">
+        <div class="d-flex align-items-center justify-content-lg-center gap-3 p-1 logo">
+          <img src="./assets/img/logo-transparent-background-120x120.webp" width="45" height="45" alt="aero parking logo" class="rounded-5">
+          <h2 class="me-auto me-lg-0">AERO PARKING REZERVACIJA</h2>
+        </div>
+        <form id="email-form">
+        <div class="form-divider"></div>
+        <div class="col-lg-12 mt-5 mt-lg-0">
+            <h4>Lični podaci</h4>
+
+            <div class="contact-info">
+              <input
+                      type="text"
+                      name="name"
+                      class="form-control"
+                      id="name"
+                      placeholder="Ime i prezime*"
+                      required
+              />
+              <input
+                      type="email"
+                      class="form-control"
+                      name="email"
+                      id="email"
+                      placeholder="Email adresa"
+              />
+              <input
+                      type="text"
+                      name="phone"
+                      class="form-control"
+                      id="phone"
+                      placeholder="Kontakt telefon*"
+                      required
+              />
+              <input
+                      type="number"
+                      class="form-control"
+                      name="passengers"
+                      id="passengers"
+                      placeholder="Broj putnika"
+                      min="1"
+              />
+            </div>
+
+            <div class="form-divider"></div>
+            <h4>Vreme</h4>
+          <div class="date-inputs">
+            <div class="date-input-container">
+              <input type="date" id="arrival-date" name="arrival-date"  placeholder="Datum od:" onclick="this.showPicker()" oninput="syncInputs(event)">
+            </div>
+            <div class="date-input-container">
+              <input type="date" id="departure-date" name="departure-date" placeholder="Datum do:" onclick="this.showPicker()" oninput="syncInputs(event)">
+            </div>
+
+          </div>
+            <div class="row">
+              <div class="form-divider"></div>
+              <div class="col-md-12 mt-3 mx-auto">
+                <h4 id="form-charge">Cena: ---</h4>
+              </div>
+              <div class="form-divider"></div>
+
+
+            </div>
+            <div class="text-center mt-3">
+              <button type="submit">Pošalji rezervaciju</button>
+            </div>
+        </div>
+        </form>
+      </div>
+  </section>
+
+</section><!-- .navbar -->
+
+
 <!-- Vendor JS Files -->
 <script src="assets/vendor/purecounter/purecounter_vanilla.js"  defer></script>
 <!--<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>-->
@@ -483,6 +579,17 @@ Gratis transfer u oba smera.
 
 <!-- Template Main JS File -->
 <script src="assets/js/main.js" defer></script>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Sweetalert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" async defer></script>
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" async defer></script>
+
+<!-- Template Resevations JS File -->
+<script src="assets/js/reservation.js" async defer></script>
+
 
 </body>
 
