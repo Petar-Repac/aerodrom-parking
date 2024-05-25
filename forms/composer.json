@@ -1,6 +1,20 @@
 {
+    "name": "petarrepac/email-sender",
+    "description": "Simple php emailing script",
+    "type": "project",
     "require": {
-        "google/apiclient": "^2.0",
-        "sendgrid/sendgrid": "^8.1"
-    }
+        "phpmailer/phpmailer": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Petarrepac\\EmailSender\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Petar Repac",
+            "email": "petarr.repac@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
 }
