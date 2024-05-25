@@ -1678,8 +1678,10 @@ section {
 .contact .php-email-form button[type=submit] {
   background: #41337a;
   border: 0;
-  padding: 10px 24px;
-  color: #fff;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 1em;
+  color: #742CCC;
   transition: 0.4s;
   border-radius: 4px;
 }
@@ -1962,7 +1964,7 @@ section {
 }
 
 #reserve-btn{
-  /*visibility: hidden;*/
+  visibility: hidden;
   display: flex;
   gap: 0.5em;
   align-items: center;
@@ -1979,12 +1981,11 @@ section {
   right: 30px;
   z-index: 999;
   transition: all 0.3s;
-  animation: fadeIn 1s, pulse 1.5s infinite;
 }
 
 #reserve-btn.active {
   visibility: visible;
-
+  animation: fadeIn 1s, pulse 1.5s infinite;
   opacity: 1;
 }
 
@@ -2199,9 +2200,12 @@ input[type=number] {
   padding: 0.6em;
   position: relative;
   margin-top: 1em;
+  cursor: pointer;
   transition: all 0.3s;
   animation: fadeIn 1s, pulse 1.5s 5;
 }
+
+
 
 #cta-landing .divider {
   display: block;
@@ -2273,9 +2277,11 @@ input[type=number] {
 
 
 #reservation-form button {
-  background: #41337a;
+  background: #742CCC;
   border: 0;
-  padding: 10px 24px;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 1em;
   color: #fff;
   transition: 0.4s;
   border-radius: 4px;
@@ -2288,6 +2294,12 @@ input[type=number] {
 
 #reservation-form .logo {
   padding: 0 1em;
+}
+
+@media (min-width:1000px) {
+  #reservation-form .logo {
+    padding: 2em 1em 0 1em;
+  }
 }
 
 #reservation-form.active {

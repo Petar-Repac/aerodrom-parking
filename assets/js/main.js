@@ -163,6 +163,7 @@
     select('#contact-links').classList.toggle('contact-links-visible')
   })
 
+
   /**
    * Mobile nav toggle
    */
@@ -207,9 +208,19 @@
    * Mobile nav toggle
    */
   on('click', '#cta-landing', function (e) {
-
     let reservationForm = select('#reservation-form');
     reservationForm.classList.toggle('active')
+  })
+
+  on('click', '#cta-reserve', function(e) {
+    let reservationForm = select('#reservation-form');
+    reservationForm.classList.toggle('active')
+    select('#contact-links').classList.toggle('contact-links-visible')
+  })
+
+  on('click', '#cta-body', function(e) {
+    let reservationForm = select('#reservation-form');
+    reservationForm.classList.toggle('active');
   })
 
   /**

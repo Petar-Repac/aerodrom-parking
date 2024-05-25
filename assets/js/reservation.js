@@ -149,7 +149,7 @@ function syncInputs(event) {
 
 // ajax call
 $(document).ready(function () {
-    $("#php-email-form").submit(function (e) {
+    $("#email-form").submit(function (e) {
         e.preventDefault(); // Prevent default form submission
 
         let formData = {};
@@ -159,27 +159,51 @@ $(document).ready(function () {
         formData["phone"] = $("#phone").val();
         formData["arrivalDate"] = $("#arrival-date").val();
         formData["departureDate"] = $("#departure-date").val();
-        formData["additionalInfo"] = $("#additionalInfo").val();
 
         $.ajax({
             type: "POST",
             url: "https://aeroparking.rs/forms/src/email.php",
             data: formData,
             success: function (response) {
-                Swal.fire({
-                    title: "Zahtev za rezervacijom poslat!",
-                    text: "Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                });
+                try {
+                    let responseObj = JSON.parse(response);
+                    console.log('Parsed response:', responseObj);
+                    if (responseObj.status === "success") {
+                        Swal.fire({
+                            title: "Zahtev za rezervacijom poslat!",
+                            text: "Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Greška!",
+                            text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
+                            icon: "error",
+                            confirmButtonText: "OK",
+                        });
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    Swal.fire({
+                        title: "Greška!",
+                        text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
+                }
             },
             error: function (xhr, status, error) {
+                console.log('Status:' + status);
+                console.log('xhr:' + JSON.stringify(xhr));
+                console.log('error:' + JSON.stringify(error));
                 Swal.fire({
-                    title: "Greška!",
-                    text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
-                    icon: "error",
-                    confirmButtonText: "OK",
-                });
+                        title: "Greška!",
+                        text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    }
+                );
             },
         });
     });
