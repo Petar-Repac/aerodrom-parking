@@ -453,7 +453,7 @@ Gratis transfer u oba smera.
   </div>
 </footer><!-- End Footer -->
 
-<a  id="reserve-btn" class="pulse contact-links-toggle"><i class="fa fa-address-card "></i> REZERVIŠI</a>
+<a  id="reserve-btn" class="pulse contact-links-toggle"><i class="bi bi-telephone"></i> KONTAKT</a>
 
 <!-- Contact links -->
 <nav id="contact-links"  >
@@ -461,9 +461,9 @@ Gratis transfer u oba smera.
 
   <ul>
     <li id="cta-reserve">
-      <a >
+      <span>
       <i class="bi bi-calendar-check"></i>
-      Online rezervacija</a>
+      Online rezervacija</span>
     </li>
 
     <li><a href="https://wa.me/+381694454255">
@@ -543,10 +543,10 @@ Gratis transfer u oba smera.
             <h4>Vreme</h4>
           <div class="date-inputs">
             <div class="date-input-container">
-              <input type="date" id="arrival-date" name="arrival-date"  placeholder="Datum od:" onclick="this.showPicker()" oninput="syncInputs(event)">
+              <input type="date" id="arrival-date" name="arrival-date"  placeholder="Datum od:" onclick="this.showPicker()" oninput="syncInputs(event)" required>
             </div>
             <div class="date-input-container">
-              <input type="date" id="departure-date" name="departure-date" placeholder="Datum do:" onclick="this.showPicker()" oninput="syncInputs(event)">
+              <input type="date" id="departure-date" name="departure-date" placeholder="Datum do:" onclick="this.showPicker()" oninput="syncInputs(event)" required>
             </div>
 
           </div>
@@ -580,12 +580,10 @@ Gratis transfer u oba smera.
 <!-- Template Main JS File -->
 <script src="assets/js/main.js" defer></script>
 
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- Sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" async defer></script>
 <!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" async defer></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" async defer></script>-->
 
 <!-- Template Resevations JS File -->
 <script src="assets/js/reservation.js" async defer></script>
