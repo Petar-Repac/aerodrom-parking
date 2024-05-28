@@ -106,7 +106,7 @@
   let reservationsBtn = select('#reserve-btn')
   if (reservationsBtn) {
     const reservationsBtnShow = () => {
-      if (window.scrollY > 100) {
+      if (window.scrollY > 700) {
         reservationsBtn.classList.add('active')
       } else {
         reservationsBtn.classList.remove('active')
@@ -301,7 +301,7 @@
   });
 
   /**
-   * Initiate portfolio lightbox 
+   * Initiate portfolio lightbox
    */
   const portfolioLightbox = GLightbox({
     selector: '.portfolio-lightbox'
@@ -334,10 +334,11 @@
     });
   }
 
+
+
   /**
-   * Initiate Pure Counter 
+   * Initiate Pure Counter
    */
   new PureCounter();
 
 })()
-
