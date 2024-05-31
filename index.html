@@ -101,11 +101,11 @@ Gratis transfer u oba smera.
     <div id="reservation-landing">
       <div class="date-inputs">
         <div class="date-input-container">
-          <input  id="cta-arrival-date" name="arrival-date" placeholder="Datum od:" oninput="syncInputs(event)">
+          <input id="cta-arrival-date" name="arrival-date" placeholder="Datum od:" onchange="syncInputs(event)">
         </div>
         <div class="separator"></div>
         <div class="date-input-container">
-          <input id="cta-departure-date" name="departure-date" placeholder="Datum do:" oninput="syncInputs(event)">
+          <input id="cta-departure-date" name="departure-date" placeholder="Datum do:" onchange="syncInputs(event)">
         </div>
 
       </div>
@@ -544,12 +544,13 @@ Gratis transfer u oba smera.
           <h4>Vreme</h4>
           <div class="date-inputs">
             <div class="date-input-container">
-              <input id="arrival-date" class="date-picker" placeholder="Datum od:" required/>
+              <input type="text" id="arrival-date" name="arrival-date"  class="date-picker" placeholder="Datum od:" required onkeydown="return false;"
+                     style="caret-color: transparent !important;"    />
 <!--              <input type="date" id="arrival-date" name="arrival-date"  placeholder="Datum od:" onclick="this.showPicker()" oninput="syncInputs(event)" required>-->
             </div>
             <div class="date-input-container">
 <!--              <input type="date" id="departure-date" name="departure-date" placeholder="Datum do:" onclick="this.showPicker()" oninput="syncInputs(event)" required>-->
-              <input id="departure-date" class="date-picker" placeholder="Datum do:" required/>
+              <input type="text" id="departure-date" name="departure-date" class="date-picker" placeholder="Datum do:" required/>
 
             </div>
 
@@ -587,58 +588,11 @@ Gratis transfer u oba smera.
 <!-- Sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" async defer></script>
 
+<script src="assets/vendor/easepick/js/main.js"></script>
+
 <!-- Template Resevations JS File -->
 <script src="assets/js/reservation.js" async defer></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@easepick/bundle@1.2.1/dist/index.umd.min.js"></script>
-
-<script>
-  let calendarNum = (new Date().getDate() > 22)?2: 1;
-  console.log(calendarNum);
-  const picker = new easepick.create({
-    element: "#arrival-date",
-    css: [
-      "assets/vendor/easepick/css/index.css"
-    ],
-    zIndex: 10,
-    format: "DD MMMM YYYY",
-    calendars: calendarNum,
-    grid: calendarNum,
-    RangePlugin: {
-      elementEnd: "#departure-date"
-    },
-    LockPlugin: {
-      minDate: new Date().toISOString().split("T")[0]
-    },
-    plugins: [
-      "AmpPlugin",
-      "RangePlugin",
-      "LockPlugin"
-    ]
-  })
-
-  const cta_picker = new easepick.create({
-    element: "#cta-arrival-date",
-    css: [
-      "assets/vendor/easepick/css/index.css"
-    ],
-    zIndex: 10,
-    format: "DD MMMM YYYY",
-    calendars: calendarNum,
-    grid: calendarNum,
-    RangePlugin: {
-      elementEnd: "#cta-departure-date"
-    },
-    LockPlugin: {
-      minDate: new Date().toISOString().split("T")[0]
-    },
-    plugins: [
-      "AmpPlugin",
-      "RangePlugin",
-      "LockPlugin"
-    ]
-  })
-</script>
 </body>
 
 </html>

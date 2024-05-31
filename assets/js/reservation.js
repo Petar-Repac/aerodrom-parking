@@ -53,27 +53,80 @@ const ctaCharge  = document.getElementById('cta-charge');
 const today = new Date().toISOString().split('T')[0];
 
 const arrival = document.getElementById('arrival-date');
-arrival.min = today;
 const departure = document.getElementById('departure-date');
-departure.min = today;
 
-const ctaArrival = document.getElementById('cta-arrival-date');
-ctaArrival.min = today;
 
-const ctaDeparture = document.getElementById('cta-departure-date');
-ctaDeparture.min = today;
+let calendarNum = (new Date().getDate() > 22)?2: 1;
+const picker = new easepick.create({
+    element: "#arrival-date",
+    css: [
+        "assets/vendor/easepick/css/index.css"
+    ],
+    zIndex: 10,
+    format: "DD MMMM YYYY",
+    calendars: calendarNum,
+    grid: calendarNum,
+    RangePlugin: {
+        elementEnd: "#departure-date"
+    },
+    LockPlugin: {
+        minDate: new Date().toISOString().split("T")[0]
+    },
+    plugins: [
+        "AmpPlugin",
+        "RangePlugin",
+        "LockPlugin"
+    ],
+    AmpPlugin: {
+        resetButton: true
+    },
 
-function syncInputs(event) {
-    const newValue = event.target.value;
-
-    if(event.target.name == 'arrival-date') {
-        arrival.value = newValue;
-        ctaArrival.value = newValue;
+    setup(picker) {
+        picker.on('select', (e) => {
+            syncInputs(e.detail)
+        });
     }
-    else{
-        departure.value = newValue;
-        ctaDeparture.value = newValue;
+})
+
+const cta_picker = new easepick.create({
+    element: "#cta-arrival-date",
+    css: [
+        "assets/vendor/easepick/css/index.css"
+    ],
+    zIndex: 10,
+    format: "DD MMMM YYYY",
+    calendars: calendarNum,
+    grid: calendarNum,
+    RangePlugin: {
+        elementEnd: "#cta-departure-date"
+    },
+    LockPlugin: {
+        minDate: new Date().toISOString().split("T")[0]
+    },
+    required: true,
+    plugins: [
+        "AmpPlugin",
+        "RangePlugin",
+        "LockPlugin"
+    ],
+    AmpPlugin: {
+        resetButton: true
+    },
+    setup(picker) {
+        picker.on('select', (e) => {
+            syncInputs(e.detail)
+        });
     }
+})
+arrival.removeAttribute('readonly');
+
+
+function syncInputs(date) {
+
+    picker.setStartDate(date.start);
+    cta_picker.setStartDate(date.start);
+    picker.setEndDate(date.end);
+    cta_picker.setEndDate(date.end);
 
     updatePrice();
 }
@@ -90,8 +143,8 @@ function showFormFirstTime() {
     }
 }
 function updatePrice() {
-    let arrivalDate = arrival.value;
-    let departureDate = departure.value;
+    let arrivalDate = picker.getStartDate();
+    let departureDate = picker.getEndDate();
 
     if (!arrivalDate || !departureDate) {
         formCharge.textContent = `Cena: - - -`;
@@ -182,7 +235,7 @@ document.getElementById('email-form').addEventListener('submit', function (e) {
     formData.append("arrivalDate", document.getElementById('arrival-date').value);
     formData.append("departureDate", document.getElementById('departure-date').value);
 
-    fetch('https://aeroparking.rs/forms/src/email.php', {
+    fetch('https://localhost.rs/forms/src/email.php', {
         method: 'POST',
         body: formData
     })
