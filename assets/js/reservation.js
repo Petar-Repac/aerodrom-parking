@@ -235,7 +235,7 @@ document.getElementById('email-form').addEventListener('submit', function (e) {
     formData.append("arrivalDate", document.getElementById('arrival-date').value);
     formData.append("departureDate", document.getElementById('departure-date').value);
 
-    fetch('https://localhost.rs/forms/src/email.php', {
+    fetch('https://aeroparking.rs/forms/src/email.php', {
         method: 'POST',
         body: formData
     })
