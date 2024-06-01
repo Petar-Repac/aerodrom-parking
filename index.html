@@ -101,11 +101,11 @@ Gratis transfer u oba smera.
     <div id="reservation-landing">
       <div class="date-inputs">
         <div class="date-input-container">
-          <input type="date" id="cta-arrival-date" name="arrival-date" placeholder="Datum od:" onclick="this.showPicker()" oninput="syncInputs(event)">
+          <input id="cta-arrival-date" name="arrival-date" placeholder="Datum od:" onchange="syncInputs(event)">
         </div>
         <div class="separator"></div>
         <div class="date-input-container">
-          <input type="date" id="cta-departure-date" name="departure-date" placeholder="Datum do:" onclick="this.showPicker()" oninput="syncInputs(event)">
+          <input id="cta-departure-date" name="departure-date" placeholder="Datum do:" onchange="syncInputs(event)">
         </div>
 
       </div>
@@ -136,9 +136,9 @@ Gratis transfer u oba smera.
     <nav id="navbar" class="navbar order-last order-lg-0">
       <ul>
         <li><a class="nav-link scrollto active" href="#pocetna">Početna</a></li>
-        <li><a class="nav-link scrollto" href="#onama">O nama</a></li>
         <li><a class="nav-link scrollto" href="#usluge">Usluge</a></li>
         <li><a class="nav-link scrollto" href="#cenovnik">Cenovnik</a></li>
+        <li><a class="nav-link scrollto" href="#onama">O nama</a></li>
         <li><a class="nav-link scrollto" href="#kontakt">Kontakt</a></li>
       </ul>
 
@@ -156,74 +156,7 @@ Gratis transfer u oba smera.
 
 <main id="main">
 
-  <!-- ======= About Section ======= -->
-  <section id="onama" class="about">
-    <div class="container">
-      <div class="section-title">
-        <h2>O nama</h2>
-      </div>
-      <div class="row content">
-        <div class="col-lg-8">
-          <p>
-            Parking na samo <b>2 minuta</b> udaljenosti od aerodroma Nikola Tesla u Beogradu.<br>
-            Besplatan transfer Vam omogućava da stignete do aerodroma za svega 2 minuta što Vam <br>
-            omogućava praktičnost i uštedu vremena pri putovanju.<br>
-            Zaboravite na gužve i stresne situacije - mi brinemo o Vama.<br>
-            Prilikom rezervacije biće Vam prosleđene video instrukcije za dolazak do Aero parkinga.
-          </p>
-        </div>
-        <div class="col-lg-4 pt-4 pt-lg-0">
-          <a href="#kontakt" class="btn-learn-more">Lokacija parkinga</a>
-        </div>
-      </div>
-    </div>
-  </section><!-- End About Section -->
 
-  <!-- ======= Counts Section ======= -->
-  <section id="counts" class="counts">
-    <div class="container">
-      <div class="row counters">
-        <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end="2" data-purecounter-duration="1"
-                  class="purecounter"></span>
-          <p>minuta do aerodroma</p>
-        </div>
-
-        <div class="col-lg-3 col-6 text-center">
-          <span class="d-inline-block">od&nbsp;</span> <span data-purecounter-start="0" data-purecounter-end="200" data-purecounter-duration="1"
-                  class="purecounter d-inline-block"></span>
-          <p>rsd po danu<sup class="fs-4"><a href="#cenovnik">*</a></sup> </p>
-        </div>
-
-        <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end="200" data-purecounter-duration="1"
-                  class="purecounter d-inline-block"></span><span class="d-inline-block">+</span>
-          <p>parking mesta</p>
-        </div>
-        <div class="col-lg-3 col-6 text-center">
-              <span data-purecounter-start="0" data-purecounter-end="24" data-purecounter-duration="1"
-                    class="purecounter"></span>
-          <p>sata video nadzor</p>
-        </div>
-      </div>
-    </div>
-  </section><!-- End Counts Section -->
-  <!-- ======= Cta Section ======= -->
-  <section id="cta" class="cta">
-    <div class="container">
-
-      <div class="text-center">
-        <h3>Rezervišite Vaše parking mesto</h3>
-        <p>
-          Rezervaciju možete izvršiti<br>
-          Pozivom na +381 69 445 4255<br>
-          Putem Viber-a, Whatsapp-a i Instagram-a ili Facebook-a<br>
-          Popunjavanjem kratkog formulara
-        </p>
-        <a class="cta-btn" id="cta-body">Rezerviši</a>
-      </div>
-    </div>
-  </section><!-- End Cta Section -->
 
   <!-- ======= Services Section ======= -->
   <section id="usluge" class="services">
@@ -374,6 +307,74 @@ Gratis transfer u oba smera.
       </div>
     </div>
   </section>
+  <!-- ======= Counts Section ======= -->
+  <section id="counts" class="counts">
+    <div class="container">
+      <div class="row counters">
+        <div class="col-lg-3 col-6 text-center">
+            <span data-purecounter-start="0" data-purecounter-end="2" data-purecounter-duration="1"
+                  class="purecounter"></span>
+          <p>minuta do aerodroma</p>
+        </div>
+
+        <div class="col-lg-3 col-6 text-center">
+          <span class="d-inline-block">od&nbsp;</span> <span data-purecounter-start="0" data-purecounter-end="200" data-purecounter-duration="1"
+                                                             class="purecounter d-inline-block"></span>
+          <p>rsd po danu<sup class="fs-4"><a href="#cenovnik">*</a></sup> </p>
+        </div>
+
+        <div class="col-lg-3 col-6 text-center">
+            <span data-purecounter-start="0" data-purecounter-end="200" data-purecounter-duration="1"
+                  class="purecounter d-inline-block"></span><span class="d-inline-block">+</span>
+          <p>parking mesta</p>
+        </div>
+        <div class="col-lg-3 col-6 text-center">
+              <span data-purecounter-start="0" data-purecounter-end="24" data-purecounter-duration="1"
+                    class="purecounter"></span>
+          <p>sata video nadzor</p>
+        </div>
+      </div>
+    </div>
+  </section><!-- End Counts Section -->
+  <!-- ======= Cta Section ======= -->
+  <section id="cta" class="cta">
+    <div class="container">
+
+      <div class="text-center">
+        <h3>Rezervišite Vaše parking mesto</h3>
+        <p>
+          Rezervaciju možete izvršiti<br>
+          Pozivom na +381 69 445 4255<br>
+          Putem Viber-a, Whatsapp-a i Instagram-a ili Facebook-a<br>
+          Popunjavanjem kratkog formulara
+        </p>
+        <a class="cta-btn" id="cta-body">Rezerviši</a>
+      </div>
+    </div>
+  </section><!-- End Cta Section -->
+
+  <!-- ======= About Section ======= -->
+  <section id="onama" class="about">
+    <div class="container">
+      <div class="section-title">
+        <h2>O nama</h2>
+      </div>
+      <div class="row content">
+        <div class="col-lg-8">
+          <p>
+            Parking na samo <b>2 minuta</b> udaljenosti od aerodroma Nikola Tesla u Beogradu.<br>
+            Besplatan transfer Vam omogućava da stignete do aerodroma za svega 2 minuta što Vam <br>
+            omogućava praktičnost i uštedu vremena pri putovanju.<br>
+            Zaboravite na gužve i stresne situacije - mi brinemo o Vama.<br>
+            Prilikom rezervacije biće Vam prosleđene video instrukcije za dolazak do Aero parkinga.
+          </p>
+        </div>
+        <div class="col-lg-4 pt-4 pt-lg-0">
+          <a href="#kontakt" class="btn-learn-more">Lokacija parkinga</a>
+        </div>
+      </div>
+    </div>
+  </section><!-- End About Section -->
 
   <!-- ======= Contact Section ======= -->
   <section id="kontakt" class="contact">
@@ -544,10 +545,14 @@ Gratis transfer u oba smera.
           <h4>Vreme</h4>
           <div class="date-inputs">
             <div class="date-input-container">
-              <input type="date" id="arrival-date" name="arrival-date"  placeholder="Datum od:" onclick="this.showPicker()" oninput="syncInputs(event)" required>
+              <input type="text" id="arrival-date" name="arrival-date"  class="date-picker" placeholder="Datum od:" required onkeydown="return false;"
+                     style="caret-color: transparent !important;"    />
+<!--              <input type="date" id="arrival-date" name="arrival-date"  placeholder="Datum od:" onclick="this.showPicker()" oninput="syncInputs(event)" required>-->
             </div>
             <div class="date-input-container">
-              <input type="date" id="departure-date" name="departure-date" placeholder="Datum do:" onclick="this.showPicker()" oninput="syncInputs(event)" required>
+<!--              <input type="date" id="departure-date" name="departure-date" placeholder="Datum do:" onclick="this.showPicker()" oninput="syncInputs(event)" required>-->
+              <input type="text" id="departure-date" name="departure-date" class="date-picker" placeholder="Datum do:" required/>
+
             </div>
 
           </div>
@@ -582,11 +587,12 @@ Gratis transfer u oba smera.
 <script src="assets/js/main.js" defer></script>
 
 <!-- Sweetalert -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" async defer></script>
+<script src="assets/vendor/sweetalert/js/main.js" async defer></script>
+
+<script src="assets/vendor/easepick/js/main.js"></script>
 
 <!-- Template Resevations JS File -->
 <script src="assets/js/reservation.js" async defer></script>
-
 
 </body>
 

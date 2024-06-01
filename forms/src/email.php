@@ -10,10 +10,11 @@ use PHPMailer\PHPMailer\Exception;
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
+header('Content-Type: application/json; charset=utf-8');
 
 function sanitize($data)
 {
-    return htmlspecialchars(stripslashes(trim($data)));
+    return htmlspecialchars(stripslashes(trim($data)), ENT_QUOTES, 'UTF-8');
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -47,7 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mail->setFrom('noreply@aeroparking.rs', 'noreply@aeroparking.rs');
         $mail->addAddress('rezervacije@aeroparking.rs', 'Rezervacije');     // Add a recipient
 
-
+        // Set charset to UTF-8
+        $mail->CharSet = 'UTF-8';
         //Content
         $mail->isHTML(true);   // Set email format to HTML
         $mail->Subject = 'Nova rezervacija: ' . $name;

@@ -50,29 +50,103 @@ const prices = [
 
 const formCharge = document.getElementById('form-charge');
 const ctaCharge  = document.getElementById('cta-charge');
+const today = new Date().toISOString().split('T')[0];
+
 const arrival = document.getElementById('arrival-date');
 const departure = document.getElementById('departure-date');
-const ctaArrival = document.getElementById('cta-arrival-date');
-const ctaDeparture = document.getElementById('cta-departure-date');
 
-function syncInputs(event) {
-    const newValue = event.target.value;
 
-    if(event.target.name == 'arrival-date') {
-        arrival.value = newValue;
-        ctaArrival.value = newValue;
+let calendarNum = (new Date().getDate() > 22)?2: 1;
+const picker = new easepick.create({
+    element: "#arrival-date",
+    css: [
+        "assets/vendor/easepick/css/index.css"
+    ],
+    zIndex: 10,
+    format: "DD MMMM YYYY",
+    calendars: calendarNum,
+    autoApply: false,
+    grid: calendarNum,
+    RangePlugin: {
+        elementEnd: "#departure-date"
+    },
+    LockPlugin: {
+        minDate: new Date().toISOString().split("T")[0]
+    },
+    plugins: [
+        "AmpPlugin",
+        "RangePlugin",
+        "LockPlugin"
+    ],
+    AmpPlugin: {
+        resetButton: true
+    },
+
+    setup(picker) {
+        picker.on('select', (e) => {
+            syncInputs(e.detail)
+        });
     }
-    else{
-        departure.value = newValue;
-        ctaDeparture.value = newValue;
+})
+
+const cta_picker = new easepick.create({
+    element: "#cta-arrival-date",
+    css: [
+        "assets/vendor/easepick/css/index.css"
+    ],
+    zIndex: 10,
+    format: "DD MMMM YYYY",
+    calendars: calendarNum,
+    autoApply: false,
+    grid: calendarNum,
+    RangePlugin: {
+        elementEnd: "#cta-departure-date"
+    },
+    LockPlugin: {
+        minDate: new Date().toISOString().split("T")[0]
+    },
+    required: true,
+    plugins: [
+        "AmpPlugin",
+        "RangePlugin",
+        "LockPlugin"
+    ],
+    AmpPlugin: {
+        resetButton: true
+    },
+    setup(picker) {
+        picker.on('select', (e) => {
+            syncInputs(e.detail)
+        });
     }
+})
+arrival.removeAttribute('readonly');
+
+
+function syncInputs(date) {
+
+    picker.setStartDate(date.start);
+    cta_picker.setStartDate(date.start);
+    picker.setEndDate(date.end);
+    cta_picker.setEndDate(date.end);
 
     updatePrice();
 }
 
- function updatePrice() {
-    let arrivalDate = arrival.value;
-    let departureDate = departure.value;
+let showReservationForm = true;
+function showFormFirstTime() {
+    let reservationForm = document.getElementById('reservation-form');
+    console.log(reservationForm.classList)
+    console.log(reservationForm.classList.contains('active'))
+
+    if(!reservationForm.classList.contains('active') && showReservationForm) {
+        reservationForm.classList.toggle('active')
+        showReservationForm = false;
+    }
+}
+function updatePrice() {
+    let arrivalDate = picker.getStartDate();
+    let departureDate = picker.getEndDate();
 
     if (!arrivalDate || !departureDate) {
         formCharge.textContent = `Cena: - - -`;
@@ -87,6 +161,7 @@ function syncInputs(event) {
     if (secondDate < firstDate) {
         formCharge.textContent = "Datum dolaska mora biti pre datuma odlaska.";
         ctaCharge.textContent = `Cena: - - -`;
+        showFormFirstTime()
         return;
     }
 
@@ -140,71 +215,58 @@ function syncInputs(event) {
     if (numOfDays % 10 === 1 && numOfDays !== 11) {
         formCharge.textContent = `Cena za ${numOfDays} dan iznosi ${price} dinara.`;
         ctaCharge.textContent = `Cena: ${price} din.`;
+        showFormFirstTime()
         return;
     }
 
     formCharge.textContent = `Cena za ${numOfDays} dana iznosi ${price} dinara.`;
     ctaCharge.textContent = `Cena: ${price} din.`;
+    showFormFirstTime()
 }
 
 // ajax call
-$(document).ready(function () {
-    $("#email-form").submit(function (e) {
-        e.preventDefault(); // Prevent default form submission
 
-        let formData = {};
-        formData["name"] = $("#name").val();
-        formData["email"] = $("#email").val();
-        formData["passengers"] = $("#passengers").val();
-        formData["phone"] = $("#phone").val();
-        formData["arrivalDate"] = $("#arrival-date").val();
-        formData["departureDate"] = $("#departure-date").val();
+document.getElementById('email-form').addEventListener('submit', function (e) {
+    e.preventDefault();
 
-        $.ajax({
-            type: "POST",
-            url: "https://aeroparking.rs/forms/src/email.php",
-            data: formData,
-            success: function (response) {
-                try {
-                    let responseObj = JSON.parse(response);
-                    console.log('Parsed response:', responseObj);
-                    if (responseObj.status === "success") {
-                        Swal.fire({
-                            title: "Zahtev za rezervacijom poslat!",
-                            text: "Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.",
-                            icon: "success",
-                            confirmButtonText: "OK",
-                        });
-                    } else {
-                        Swal.fire({
-                            title: "Greška!",
-                            text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
-                            icon: "error",
-                            confirmButtonText: "OK",
-                        });
-                    }
-                } catch (e) {
-                    console.error('Error parsing response:', e);
-                    Swal.fire({
-                        title: "Greška!",
-                        text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
-                        icon: "error",
-                        confirmButtonText: "OK",
-                    });
-                }
-            },
-            error: function (xhr, status, error) {
-                console.log('Status:' + status);
-                console.log('xhr:' + JSON.stringify(xhr));
-                console.log('error:' + JSON.stringify(error));
+    let formData = new FormData();
+    formData.append("name", document.getElementById('name').value);
+    formData.append("email", document.getElementById('email').value);
+    formData.append("passengers", document.getElementById('passengers').value);
+    formData.append("phone", document.getElementById('phone').value);
+    formData.append("arrivalDate", document.getElementById('arrival-date').value);
+    formData.append("departureDate", document.getElementById('departure-date').value);
+
+    fetch('https://aeroparking.rs/forms/src/email.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(responseObj => {
+            console.log('Parsed response:', responseObj);
+            if (responseObj.status === "success") {
                 Swal.fire({
-                        title: "Greška!",
-                        text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
-                        icon: "error",
-                        confirmButtonText: "OK",
-                    }
-                );
-            },
+                    title: "Zahtev za rezervacijom poslat!",
+                    text: "Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
+            } else {
+                Swal.fire({
+                    title: "Greška!",
+                    text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: "Greška!",
+                text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
+                icon: "error",
+                confirmButtonText: "OK",
+            });
         });
-    });
 });
