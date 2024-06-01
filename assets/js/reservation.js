@@ -65,6 +65,7 @@ const picker = new easepick.create({
     zIndex: 10,
     format: "DD MMMM YYYY",
     calendars: calendarNum,
+    autoApply: false,
     grid: calendarNum,
     RangePlugin: {
         elementEnd: "#departure-date"
@@ -96,6 +97,7 @@ const cta_picker = new easepick.create({
     zIndex: 10,
     format: "DD MMMM YYYY",
     calendars: calendarNum,
+    autoApply: false,
     grid: calendarNum,
     RangePlugin: {
         elementEnd: "#cta-departure-date"
