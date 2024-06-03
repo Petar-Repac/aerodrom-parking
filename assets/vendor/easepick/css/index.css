@@ -106,6 +106,7 @@
     color:var(--color-btn-primary-hover-fg)
 }
 .container>footer .footer-buttons>button.apply-button:disabled{
+    visibility: hidden;
     background-color:var(--color-btn-primary-disabled-bg);
     border-color:var(--color-btn-primary-disabled-border);
     color:var(--color-btn-primary-disabled-fg);

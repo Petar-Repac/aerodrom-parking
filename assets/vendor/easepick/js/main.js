@@ -554,7 +554,7 @@
             firstDay: 1,
             grid: 1,
             calendars: 1,
-            lang: "en-US",
+            lang: "sr-Latn-RS",
             date: null,
             format: "YYYY-MM-DD",
             readonly: !0,
@@ -565,8 +565,8 @@
             locale: {
                 nextMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M2.748 16L0 13.333 5.333 8 0 2.667 2.748 0l7.919 8z" fill-rule="nonzero"/></svg>',
                 previousMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.919 0l2.748 2.667L5.333 8l5.334 5.333L7.919 16 0 8z" fill-rule="nonzero"/></svg>',
-                cancel: "Cancel",
-                apply: "Apply"
+                cancel: "Otkaži",
+                apply: "Potvrdi"
             },
             documentClick: this.binds.hidePicker,
             plugins: []
@@ -1199,7 +1199,7 @@
             onClick: this.onClick.bind(this)
         };
         options = {
-            customLabels: ["Today", "Yesterday", "Last 7 Days", "Last 30 Days", "This Month", "Last Month"],
+            customLabels: ["Danas", "Juče", "Prošla sedmica", "Prethodnih 30 dana", "Ovaj mesec", "Prošli mesec"],
             customPreset: {},
             position: "left"
         };
@@ -1306,11 +1306,11 @@
             tooltipNumber: t => t,
             locale: {
                 zero: "",
-                one: "day",
-                two: "",
-                few: "",
-                many: "",
-                other: "days"
+                one: "dan",
+                two: "dana",
+                few: "dana",
+                many: "dana",
+                other: "dana"
             },
             documentClick: this.hidePicker.bind(this)
         };

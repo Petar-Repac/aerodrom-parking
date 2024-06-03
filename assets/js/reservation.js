@@ -136,8 +136,6 @@ function syncInputs(date) {
 let showReservationForm = true;
 function showFormFirstTime() {
     let reservationForm = document.getElementById('reservation-form');
-    console.log(reservationForm.classList)
-    console.log(reservationForm.classList.contains('active'))
 
     if(!reservationForm.classList.contains('active') && showReservationForm) {
         reservationForm.classList.toggle('active')
@@ -179,15 +177,15 @@ function updatePrice() {
     let arrivalHour = firstDate.getHours();
     let departureHour = secondDate.getHours();
 
-    // do not count arrival day if customer arrived late
-    if (arrivalHour >= 22) {
-        numOfDays = numOfDays - 1;
-    }
-
-    // do not count arrival day if customer left early
-    if (departureHour < 2) {
-        numOfDays = numOfDays - 1;
-    }
+    // // do not count arrival day if customer arrived late
+    // if (arrivalHour >= 22) {
+    //     numOfDays = numOfDays - 1;
+    // }
+    //
+    // // do not count arrival day if customer left early
+    // if (departureHour < 2) {
+    //     numOfDays = numOfDays - 1;
+    // }
 
     if(numOfDays === 0) {
         formCharge.textContent = `Cena: - - -`;
