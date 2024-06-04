@@ -106,7 +106,7 @@
   let reservationsBtn = select('#reserve-btn')
   if (reservationsBtn) {
     const reservationsBtnShow = () => {
-      if (window.scrollY > 700) {
+      if (window.scrollY > 400) {
         reservationsBtn.classList.add('active')
       } else {
         reservationsBtn.classList.remove('active')
