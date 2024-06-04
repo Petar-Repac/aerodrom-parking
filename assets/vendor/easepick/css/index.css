@@ -86,14 +86,14 @@
     -moz-column-gap:5px;
     column-gap:5px;
     display:flex;
-    justify-content:flex-end
+    justify-content: center;
 }
 .container>footer .footer-buttons>button{
     background-color:transparent;
     border:1px solid transparent;
     border-radius:var(--border-radius);
     cursor:pointer;
-    padding:5px 10px
+    padding:10px 25px
 }
 .container>footer .footer-buttons>button.apply-button{
     background-color:var(--color-btn-primary-bg);

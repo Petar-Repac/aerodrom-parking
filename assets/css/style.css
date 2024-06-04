@@ -741,6 +741,15 @@ section {
   color: #41337a;
 }
 
+.counts .counters span.prefix {
+  font-size: 14px;
+  font-family: "Raleway", sans-serif;
+}
+
+.counts .counters sup {
+  top:0;
+}
+
 .counts .counters p {
   padding: 0;
   margin: 0 0 20px 0;
