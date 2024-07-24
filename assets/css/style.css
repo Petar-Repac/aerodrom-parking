@@ -2356,7 +2356,7 @@ input[type=number] {
 .form-divider::after {
   content: "";
   display: block;
-  border-bottom: 2px dashed rgba(116, 44, 204, 0.6);
+  border-bottom: 1px solid rgba(116, 44, 204, 0.6);
 }
 
 #reservation-form .contact-info {

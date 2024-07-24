@@ -56,8 +56,9 @@ const arrival = document.getElementById('arrival-date');
 const departure = document.getElementById('departure-date');
 
 
-let calendarNum = (new Date().getDate() > 22)?2: 1;
-const picker = new easepick.create({
+// let calendarNum = (new Date().getDate() > 22)?2: 1;
+let calendarNum = 1;
+const pickerFrom = new easepick.create({
     element: "#arrival-date",
     css: [
         "assets/vendor/easepick/css/index.css"
@@ -67,15 +68,11 @@ const picker = new easepick.create({
     calendars: calendarNum,
     autoApply: false,
     grid: calendarNum,
-    RangePlugin: {
-        elementEnd: "#departure-date"
-    },
     LockPlugin: {
         minDate: new Date().toISOString().split("T")[0]
     },
     plugins: [
         "AmpPlugin",
-        "RangePlugin",
         "LockPlugin"
     ],
     AmpPlugin: {
@@ -84,12 +81,40 @@ const picker = new easepick.create({
 
     setup(picker) {
         picker.on('select', (e) => {
-            syncInputs(e.detail)
+            syncInputs(e.detail.date, 'from')
         });
     }
 })
 
-const cta_picker = new easepick.create({
+const pickerTo = new easepick.create({
+    element: "#departure-date",
+    css: [
+        "assets/vendor/easepick/css/index.css"
+    ],
+    zIndex: 10,
+    format: "DD MMMM YYYY",
+    calendars: calendarNum,
+    autoApply: false,
+    grid: calendarNum,
+    LockPlugin: {
+        minDate: new Date().toISOString().split("T")[0]
+    },
+    plugins: [
+        "AmpPlugin",
+        "LockPlugin"
+    ],
+    AmpPlugin: {
+        resetButton: true
+    },
+
+    setup(picker) {
+        picker.on('select', (e) => {
+            syncInputs(e.detail.date, 'to')
+        });
+    }
+})
+
+const cta_pickerFrom = new easepick.create({
     element: "#cta-arrival-date",
     css: [
         "assets/vendor/easepick/css/index.css"
@@ -99,16 +124,12 @@ const cta_picker = new easepick.create({
     calendars: calendarNum,
     autoApply: false,
     grid: calendarNum,
-    RangePlugin: {
-        elementEnd: "#cta-departure-date"
-    },
     LockPlugin: {
         minDate: new Date().toISOString().split("T")[0]
     },
     required: true,
     plugins: [
         "AmpPlugin",
-        "RangePlugin",
         "LockPlugin"
     ],
     AmpPlugin: {
@@ -116,21 +137,59 @@ const cta_picker = new easepick.create({
     },
     setup(picker) {
         picker.on('select', (e) => {
-            syncInputs(e.detail)
+            console.log(e)
+            syncInputs(e.detail.date, 'from')
+        });
+    }
+})
+
+
+const cta_pickerTo = new easepick.create({
+    element: "#cta-departure-date",
+    css: [
+        "assets/vendor/easepick/css/index.css"
+    ],
+    zIndex: 10,
+    format: "DD MMMM YYYY",
+    calendars: calendarNum,
+    autoApply: false,
+    grid: calendarNum,
+    LockPlugin: {
+        minDate: new Date().toISOString().split("T")[0]
+    },
+    required: true,
+    plugins: [
+        "AmpPlugin",
+        "LockPlugin"
+    ],
+    AmpPlugin: {
+        resetButton: true
+    },
+    setup(picker) {
+        picker.on('select', (e) => {
+            syncInputs(e.detail.date, 'to')
         });
     }
 })
 arrival.removeAttribute('readonly');
 
 
-function syncInputs(date) {
+function syncInputs(date, fromOrTo) {
 
-    picker.setStartDate(date.start);
-    cta_picker.setStartDate(date.start);
-    picker.setEndDate(date.end);
-    cta_picker.setEndDate(date.end);
-
-    updatePrice();
+    if(fromOrTo === 'from'){
+        pickerFrom.setDate(date);
+        cta_pickerFrom.setDate(date);
+    }
+    else {
+        pickerTo.setDate(date);
+        cta_pickerTo.setDate(date);
+    }
+    console.log(pickerFrom.getDate())
+    console.log(pickerTo.getDate())
+    if(pickerFrom.getDate() && pickerTo.getDate()){
+        console.log('updating prices')
+        updatePrice()
+    }
 }
 
 let showReservationForm = true;
@@ -143,8 +202,8 @@ function showFormFirstTime() {
     }
 }
 function updatePrice() {
-    let arrivalDate = picker.getStartDate();
-    let departureDate = picker.getEndDate();
+    let arrivalDate = pickerFrom.getDate();
+    let departureDate = pickerTo.getDate();
 
     if (!arrivalDate || !departureDate) {
         formCharge.textContent = `Cena: - - -`;
