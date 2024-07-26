@@ -93,6 +93,8 @@
     border:1px solid transparent;
     border-radius:var(--border-radius);
     cursor:pointer;
+    text-transform: uppercase;
+    font-weight: bold;
     padding:10px 25px
 }
 .container>footer .footer-buttons>button.apply-button{
