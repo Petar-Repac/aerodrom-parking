@@ -587,19 +587,11 @@ Gratis transfer u oba smera.
 <script type="module" src="{{Vite::asset('public/vendor/glightbox/js/glightbox.min.js')}}"  defer></script>
 <script type="module" src="{{Vite::asset('public/vendor/isotope-layout/isotope.pkgd.min.js')}}"  async defer></script>
 <script type="module" src="{{Vite::asset('public/vendor/swiper/swiper-bundle.js')}}" defer  ></script>
-
-
-<!-- Sweetalert -->
 <script type="module" src="{{Vite::asset('public/vendor/sweetalert/js/main.js')}}" async defer></script>
+<script type="module" src="{{Vite::asset('public/vendor/easepick/js/main.js')}}" defer></script>
 
-<script type="module" src="{{Vite::asset('public/vendor/easepick/js/main.js')}}"></script>
-
-<!-- Template Resevations JS File -->
-<script src="{{Vite::asset('public/js/reservation.js')}}" async defer></script>
-
-
-<!-- Template Main JS File -->
-<script src="{{Vite::asset('public/js/main.js')}}" defer></script>
+<script  type="module" src="{{Vite::asset('public/js/reservation.js')}}" async defer></script>
+<script type="module" src="{{Vite::asset('public/js/main.js')}}" defer></script>
 </body>
 
 </html>

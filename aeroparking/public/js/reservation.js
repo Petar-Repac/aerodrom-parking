@@ -1,3 +1,4 @@
+import easepick from '../vendor/easepick/js/main.js'
 
 const prices = [
     { days: 1, price: 500 },
@@ -137,7 +138,6 @@ const cta_pickerFrom = new easepick.create({
     },
     setup(picker) {
         picker.on('select', (e) => {
-            console.log(e)
             syncInputs(e.detail.date, 'from')
         });
     }
@@ -184,10 +184,7 @@ function syncInputs(date, fromOrTo) {
         pickerTo.setDate(date);
         cta_pickerTo.setDate(date);
     }
-    console.log(pickerFrom.getDate())
-    console.log(pickerTo.getDate())
     if(pickerFrom.getDate() && pickerTo.getDate()){
-        console.log('updating prices')
         updatePrice()
     }
 }
@@ -300,7 +297,6 @@ document.getElementById('email-form').addEventListener('submit', function (e) {
     })
         .then(response => response.json())
         .then(responseObj => {
-            console.log('Parsed response:', responseObj);
             if (responseObj.status === "success") {
                 Swal.fire({
                     title: "Zahtev za rezervacijom poslat!",
@@ -318,7 +314,6 @@ document.getElementById('email-form').addEventListener('submit', function (e) {
             }
         })
         .catch(error => {
-            console.error('Error:', error);
             Swal.fire({
                 title: "Greška!",
                 text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",

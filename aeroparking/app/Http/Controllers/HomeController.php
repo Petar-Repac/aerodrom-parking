@@ -19,6 +19,12 @@ class HomeController extends Controller
      */
    public function index(): ResponseFactory|Application|Response
    {
+
+       // Render the view
+       $view = view('home')->render();
+
+       return response($view);
+
        // Define a cache key
        $cacheKey = 'home_page';
 

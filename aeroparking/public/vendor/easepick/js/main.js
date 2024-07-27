@@ -1,18 +1,4 @@
-/**
- * Skipped minification because the original files appears to be already minified.
- * Original file: /npm/@easepick/bundle@1.2.1/dist/index.umd.js
- *
- * Do NOT use SRI with dynamically generated files! More information: https://www.jsdelivr.com/using-sri-with-dynamic-files
- */
-/**
- * @license
- * Package: @easepick/bundle
- * Version: 1.2.1
- * https://easepick.com/
- * Copyright 2023 Rinat G.
- *
- * Licensed under the terms of GNU General Public License Version 2 or later. (http://www.gnu.org/licenses/gpl.html)
- */
+
 ! function(t, e) {
     "object" == typeof exports && "undefined" != typeof module ? e(exports) : "function" == typeof define && define.amd ? define(["exports"], e) : e((t = "undefined" != typeof globalThis ? globalThis : t || self).easepick = t.easepick || {})
 }(this, (function(t) {
@@ -1942,3 +1928,4 @@
         value: !0
     })
 }));
+export default easepick;

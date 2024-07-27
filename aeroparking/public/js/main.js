@@ -5,6 +5,7 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 */
+import Swiper from '../vendor/swiper/swiper-bundle.js'
 
 (function() {
   "use strict";
@@ -36,7 +37,7 @@
   }
 
   /**
-   * Easy on scroll event listener 
+   * Easy on scroll event listener
    */
   const onscroll = (el, listener) => {
     el.addEventListener('scroll', listener)
@@ -141,7 +142,7 @@
   if (footer) {
     const lazyLoadFooter = () => {
       if (window.scrollY > 400 && !footerLazyLoaded) {
-        footer.style.backgroundImage = 'url("assets/img/footer-1.webp")';
+        footer.style.backgroundImage = 'url("img/footer-1.webp")';
         footer.style.backgroundPosition = 'center center';
         footer.style.backgroundRepeat = 'no-repeat';
         footerLazyLoaded = true;
