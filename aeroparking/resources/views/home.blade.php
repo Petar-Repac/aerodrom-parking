@@ -101,11 +101,11 @@ Gratis transfer u oba smera.
         <div id="reservation-landing">
             <div class="date-inputs">
                 <div class="date-input-container">
-                    <input id="cta-arrival-date" name="arrival-date" placeholder="Datum od:" onchange="syncInputs(event)">
+                    <input id="cta-arrival-date" name="arrival-date" placeholder="Datum dolaska:" onchange="syncInputs(event)">
                 </div>
                 <div class="separator"></div>
                 <div class="date-input-container">
-                    <input id="cta-departure-date" name="departure-date" placeholder="Datum do:" onchange="syncInputs(event)">
+                    <input id="cta-departure-date" name="departure-date" placeholder="Datum povratka:" onchange="syncInputs(event)">
                 </div>
 
             </div>
@@ -543,13 +543,13 @@ Gratis transfer u oba smera.
                     <h4>Vreme</h4>
                     <div class="date-inputs">
                         <div class="date-input-container">
-                            <input type="text" id="arrival-date" name="arrival-date"  class="date-picker" placeholder="Datum od:" required onkeydown="return false;"
+                            <input type="text" id="arrival-date" name="arrival-date"  class="date-picker" placeholder="Datum dolaska:" required onkeydown="return false;"
                                    style="caret-color: transparent !important;"    />
-                            <!--              <input type="date" id="arrival-date" name="arrival-date"  placeholder="Datum od:" onclick="this.showPicker()" oninput="syncInputs(event)" required>-->
+                            <!--              <input type="date" id="arrival-date" name="arrival-date"  placeholder="Datum dolaska:" onclick="this.showPicker()" oninput="syncInputs(event)" required>-->
                         </div>
                         <div class="date-input-container">
-                            <!--              <input type="date" id="departure-date" name="departure-date" placeholder="Datum do:" onclick="this.showPicker()" oninput="syncInputs(event)" required>-->
-                            <input type="text" id="departure-date" name="departure-date" class="date-picker" placeholder="Datum do:" required/>
+                            <!--              <input type="date" id="departure-date" name="departure-date" placeholder="Datum povratka:" onclick="this.showPicker()" oninput="syncInputs(event)" required>-->
+                            <input type="text" id="departure-date" name="departure-date" class="date-picker" placeholder="Datum povratka:" required/>
 
                         </div>
 
