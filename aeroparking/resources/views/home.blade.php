@@ -16,25 +16,33 @@ Gratis transfer u oba smera.
     <link href="{{asset('img/android-chrome-512x512.png')}}" rel="icon">
 
     <!-- Google Fonts -->
-    <link href="{{asset('google-fonts/google-fonts.css')}}" rel="stylesheet">
+{{--    <link href="{{asset('google-fonts/google-fonts.css')}}" rel="stylesheet">--}}
 
     <!-- Vendor CSS Files -->
-    <link href="{{asset('vendor/bootstrap/css/bootstrap.optimized.min.css')}}" rel="stylesheet">
-    <link href="{{asset('vendor/bootstrap-icons/bootstrap-icons.optimized.min.css')}}" rel="stylesheet">
-    <link href="{{asset('vendor/boxicons/css/boxicons.optimized.min.css')}}" rel="stylesheet">
-    <!--  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">-->
-    <link href="{{asset('vendor/remixicon/remixicon.optimized.min.css')}}" rel="stylesheet">
-    <!--  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">-->
+{{--    <link href="{{asset('vendor/bootstrap/css/bootstrap.optimized.min.css')}}" rel="stylesheet">--}}
+{{--    <link href="{{asset('vendor/bootstrap-icons/bootstrap-icons.optimized.min.css')}}" rel="stylesheet">--}}
+{{--    <link href="{{asset('vendor/boxicons/css/boxicons.optimized.min.css')}}" rel="stylesheet">--}}
+{{--    <link href="{{asset('vendor/remixicon/remixicon.optimized.min.css')}}" rel="stylesheet">--}}
+{{--    <link href="{{asset('css/fontawesome-optimized.min.css')}}" rel="stylesheet">--}}
+
+
+
+    @vite([
+        'public/google-fonts/google-fonts.css',
+        'public/vendor/bootstrap/css/bootstrap.optimized.min.css',
+        'public/vendor/bootstrap-icons/bootstrap-icons.optimized.min.css',
+        'public/vendor/boxicons/css/boxicons.optimized.min.css',
+        'public/vendor/remixicon/remixicon.optimized.min.css',
+        'public/css/fontawesome-optimized.min.css',
+        'public/css/style.css',
+    ])
 
     <!-- Deferred css -->
-    <link rel="preload" href="{{asset('vendor/glightbox/css/glightbox.min.css')}}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{{asset('vendor/glightbox/css/glightbox.min.css')}}"></noscript>
-    <link rel="preload" href="{{asset('vendor/swiper/swiper-bundle.min.css')}}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="{{asset('vendor/swiper/swiper-bundle.min.css')}}"></noscript>
+    <link rel="preload" href="{{Vite::asset('public/vendor/glightbox/css/glightbox.min.css')}}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{Vite::asset('public/vendor/glightbox/css/glightbox.min.css')}}"></noscript>
+    <link rel="preload" href="{{Vite::asset('public/vendor/swiper/swiper-bundle.css')}}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{Vite::asset('public/vendor/swiper/swiper-bundle.css')}}"></noscript>
 
-    <!-- Template Main CSS File -->
-    <link href="{{asset('css/style.css')}}" rel="stylesheet">
-    <link href="{{asset('css/fontawesome-optimized.min.css')}}" rel="stylesheet">
 
     <!-- Google tag (gtag.js) -->
     <script>
@@ -575,23 +583,23 @@ Gratis transfer u oba smera.
 
 
 <!-- Vendor JS Files -->
-<script src="{{asset('vendor/purecounter/purecounter_vanilla.js')}}"  defer></script>
-<!--<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>-->
-<script src="{{asset('vendor/glightbox/js/glightbox.min.js')}}"  defer></script>
-<script src="{{asset('vendor/isotope-layout/isotope.pkgd.min.js')}}"  async defer></script>
-<script src="{{asset('vendor/swiper/swiper-bundle.min.js')}}" defer  ></script>
+<script type="module" src="{{Vite::asset('public/vendor/purecounter/purecounter_vanilla.js')}}"  defer></script>
+<script type="module" src="{{Vite::asset('public/vendor/glightbox/js/glightbox.min.js')}}"  defer></script>
+<script type="module" src="{{Vite::asset('public/vendor/isotope-layout/isotope.pkgd.min.js')}}"  async defer></script>
+<script type="module" src="{{Vite::asset('public/vendor/swiper/swiper-bundle.js')}}" defer  ></script>
 
-<!-- Template Main JS File -->
-<script src="{{asset('js/main.js')}}" defer></script>
 
 <!-- Sweetalert -->
-<script src="{{asset('vendor/sweetalert/js/main.js')}}" async defer></script>
+<script type="module" src="{{Vite::asset('public/vendor/sweetalert/js/main.js')}}" async defer></script>
 
-<script src="{{asset('vendor/easepick/js/main.js')}}"></script>
+<script type="module" src="{{Vite::asset('public/vendor/easepick/js/main.js')}}"></script>
 
 <!-- Template Resevations JS File -->
-<script src="{{asset('js/reservation.js')}}" async defer></script>
+<script src="{{Vite::asset('public/js/reservation.js')}}" async defer></script>
 
+
+<!-- Template Main JS File -->
+<script src="{{Vite::asset('public/js/main.js')}}" defer></script>
 </body>
 
 </html>
