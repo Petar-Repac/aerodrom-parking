@@ -1,28 +1,33 @@
 <?php
-declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Services\GraphQLService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
-class HomeController extends Controller
+class BlogController extends Controller
 {
+
     /**
-     * Load and cache the specified page.
-     *
-     * @param string $page The blade view name of the page to load.
-     * @return Response
+     * @param GraphQLService $graphQLService
+     */
+    public function __construct(protected readonly GraphQLService $graphQLService) {}
+
+    /**
+     * @return JsonResponse
      */
     public function index(): Response
     {
-//        $view = view('home')->render();
-//        return \response($view);
+        $articles = $this->graphQLService->fetchNewsArticles();
+        $view = view('blog', ['articles' => $articles['data']['NewsArticles']])->render();
+        return \response($view);
 
         // Define a cache key based on the page name
-        $cacheKey = 'home_page_cache';
+        $cacheKey = 'blog_page_cache';
 
         // Check if the page is cached
         if (Cache::has($cacheKey)) {
@@ -34,7 +39,9 @@ class HomeController extends Controller
 
         // Render the view, handle cases where the view might not exist
         try {
-            $view = view('home')->render();
+
+            $articles = $this->graphQLService->fetchNewsArticles();
+            $view = view('blog', ['articles' => $articles])->render();
         } catch (\InvalidArgumentException $e) {
             Log::error('Failed to render view: ' . $e->getMessage());
             // Optionally, return a default view or error page
@@ -46,5 +53,18 @@ class HomeController extends Controller
 
         // Return the view
         return response($view);
+    }
+
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
+    public function show(string $id): JsonResponse
+    {
+        $article = $this->graphQLService->fetchNewsArticleById($id);
+        if (empty($article)) {
+            return response()->json(['message' => 'Article not found'], 404);
+        }
+        return response()->json($article);
     }
 }
