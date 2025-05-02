@@ -14,11 +14,10 @@
 
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
-                <li><a class="nav-link scrollto active" href="#pocetna">Početna</a></li>
-                <li><a class="nav-link scrollto" href="#pogodnosti">Pogodnosti</a></li>
-                <li><a class="nav-link scrollto" href="#cenovnik">Cenovnik</a></li>
-                <li><a class="nav-link scrollto" href="#onama">O nama</a></li>
-                <li><a class="nav-link scrollto" href="#kontakt">Kontakt</a></li>
+                <li><a class="nav-link scrollto active" href="/">Početna</a></li>
+                <li><a class="nav-link scrollto" href="/pricing">Cenovnik</a></li>
+                <li><a class="nav-link scrollto" href="/about-us">O nama</a></li>
+                <li><a class="nav-link scrollto" href="/contact">Kontakt</a></li>
             </ul>
 
             <i class="bi bi-list mobile-nav-toggle"></i>
