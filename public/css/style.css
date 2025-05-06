@@ -1337,7 +1337,7 @@ section {
 # Pricing
 --------------------------------------------------------------*/
 .pricing .box {
-  padding: 20px;
+  padding: 0 20px 20px 20px !important;
   background: #fff;
   text-align: center;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12);
@@ -1347,10 +1347,10 @@ section {
 }
 
 .pricing h3 {
-  font-weight: 400;
   margin: -20px -20px 20px -20px;
   padding: 20px 15px;
   font-size: 16px;
+  border-radius: 5px 5px 0 0;
   font-weight: 600;
   color: #777777;
   background: #f8f8f8;
@@ -1474,6 +1474,52 @@ section {
   padding: 1px 0 3px 0;
   background: var(--clr-accent-light);
   color: #fff;
+}
+
+/*--------------------------------------------------------------
+# Procedure
+--------------------------------------------------------------*/
+/* Steps procedure styling */
+.box.featured {
+    position: relative;
+    padding-top: 30px; /* Add extra padding at top for the step number */
+    overflow: visible;
+}
+
+.step-number {
+    background-color: #fcb941;
+    color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    position: absolute;
+    top: -25px; /* Half of the height to make it "spill" over */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+.step-icon {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.step-icon i {
+    font-size: 3rem;
+    color: #fff; /* Icons will inherit the color from their parent h3 */
+}
+
+.pricing .featured h3 {
+    padding-top: 30px; /* Add more top padding to h3 for icon space */
+}
+
+#procedure .section-title {
+    margin-bottom: 2rem;
 }
 
 /*--------------------------------------------------------------

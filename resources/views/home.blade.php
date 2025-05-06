@@ -11,6 +11,7 @@
 <main id="main">
     @include('partials.page-sections.services')
     @include('partials.page-sections.pricing')
+    @include('partials.page-sections.parking-instructions')
     @include('partials.page-sections.counts')
     @include('partials.page-sections.cta')
     @include('partials.page-sections.about')
