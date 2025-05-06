@@ -23,6 +23,8 @@
 @include('partials.common.reservation-drawer')
 
 @include('partials.common.scripts-homepage')
+
+@include('partials.util.theme-customizer')
 </body>
 
 </html>

@@ -137,21 +137,21 @@ import Swiper from '../vendor/swiper/swiper-bundle.js'
   /**
    * Footer background lazy load
    */
-  let footer = select('#footer');
-  let footerLazyLoaded = false;
-  if (footer) {
-    const lazyLoadFooter = () => {
-      if (window.scrollY > 400 && !footerLazyLoaded) {
-        footer.style.backgroundImage = 'url("img/footer-1.webp")';
-        footer.style.backgroundPosition = 'center center';
-        footer.style.backgroundRepeat = 'no-repeat';
-        footerLazyLoaded = true;
-      }
-
-    }
-    window.addEventListener('load', lazyLoadFooter)
-    onscroll(document, lazyLoadFooter)
-  }
+  // let footer = select('#footer');
+  // let footerLazyLoaded = false;
+  // if (footer) {
+  //   const lazyLoadFooter = () => {
+  //     if (window.scrollY > 400 && !footerLazyLoaded) {
+  //       footer.style.backgroundImage = 'url("img/footer-1.webp")';
+  //       footer.style.backgroundPosition = 'center center';
+  //       footer.style.backgroundRepeat = 'no-repeat';
+  //       footerLazyLoaded = true;
+  //     }
+  //
+  //   }
+  //   window.addEventListener('load', lazyLoadFooter)
+  //   onscroll(document, lazyLoadFooter)
+  // }
 
   /**
    * Mobile nav toggle

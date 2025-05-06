@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-
+    <img class="footer-background" src="{{asset('img/footer-1.webp')}}" alt="" loading="lazy">
     <div class="container footer-bottom clearfix">
         <div class="copyright">
             Design by: <strong><span>Petar Repac & Zorica Urošević 2024</span></strong>.

@@ -24,11 +24,11 @@ class HomeController extends Controller
         // Define a cache key based on the page name
         $cacheKey = 'home_page_cache';
 
-        // Check if the page is cached
-        if (Cache::has($cacheKey)) {
-            Log::info('Page loaded from cache: home');
-            return response(Cache::get($cacheKey));
-        }
+//        // Check if the page is cached
+//        if (Cache::has($cacheKey)) {
+//            Log::info('Page loaded from cache: home');
+//            return response(Cache::get($cacheKey));
+//        }
 
         Log::info('Page not cached, rendering: home');
 

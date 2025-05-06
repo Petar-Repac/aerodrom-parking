@@ -3,7 +3,6 @@
 @include('partials.head.head')
 <body>
 
-@include('partials.page-sections.hero')
 
 <!-- ======= Header ======= -->
 @include('partials.common.header')
