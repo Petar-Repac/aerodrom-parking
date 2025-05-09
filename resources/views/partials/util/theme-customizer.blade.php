@@ -340,6 +340,85 @@
          font-family: monospace;
          font-size: 12px;
      }
+
+     /* Additional CSS for RGBA color picker - optimized UI */
+
+     /* Optimize the color picker layout */
+     .color-picker-group {
+         margin-bottom: 15px;
+         padding-bottom: 5px;
+     }
+
+     .color-picker-header {
+         display: flex;
+         align-items: center;
+         margin-bottom: 5px;
+     }
+
+     .color-picker-header label {
+         flex: 1;
+         margin-bottom: 0;
+         font-size: 14px;
+         color: var(--clr-text-primary, #444444);
+     }
+
+     .color-input-row {
+         display: flex;
+         align-items: center;
+     }
+
+     input[type="color"] {
+         flex: 1;
+         height: 35px;
+         border: 1px solid #ddd;
+         border-radius: 4px;
+         padding: 0;
+         cursor: pointer;
+         margin-right: 8px;
+     }
+
+     .color-preview {
+         width: 40px;
+         height: 35px;
+         border-radius: 4px;
+         border: 1px solid #ddd;
+         /* Checkered background to show transparency */
+         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==');
+     }
+
+     .alpha-control {
+         margin-top: 5px;
+     }
+
+     .alpha-slider-row {
+         display: flex;
+         align-items: center;
+         gap: 5px;
+     }
+
+     .alpha-label {
+         font-size: 12px;
+         color: #666;
+         min-width: 55px;
+     }
+
+     input[type="range"].alpha-slider {
+         flex: 1;
+         margin: 0;
+         height: 6px;
+     }
+
+     .alpha-value {
+         font-size: 12px;
+         color: #666;
+         min-width: 35px;
+         text-align: right;
+     }
+
+     /* Remove any unused elements from previous version */
+     .hex-value-row {
+         display: none;
+     }
  </style>
  <div id="theme-customizer" class="theme-customizer">
      <div class="theme-customizer-toggle">
@@ -442,11 +521,87 @@
      </div>
  </div>
 <script>
-    // public/js/theme-customizer.js
+    // Fixed theme customizer with RGBA support - Optimized UI
     document.addEventListener('DOMContentLoaded', function() {
         // Store CSS default values (not from localStorage)
         const cssDefaultValues = {};
-        const colorInputs = document.querySelectorAll('.color-picker-group input[type="color"]');
+
+        // Original RGB to Hex conversion
+        function rgbToHex(rgb) {
+            // If rgb is already an array of r,g,b values
+            if (Array.isArray(rgb)) {
+                return '#' + rgb.map(x => {
+                    const hex = Math.round(x).toString(16);
+                    return hex.length === 1 ? '0' + hex : hex;
+                }).join('');
+            }
+
+            // If rgb is a string like "rgb(r,g,b)" or "rgba(r,g,b,a)"
+            if (typeof rgb === 'string') {
+                // Handle hex format
+                if (rgb.startsWith('#')) {
+                    return rgb;
+                }
+
+                // Handle rgba format
+                if (rgb.startsWith('rgba(')) {
+                    const matches = rgb.match(/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)/);
+                    if (matches) {
+                        const [, r, g, b] = matches.map(v => parseInt(v));
+                        return rgbToHex([r, g, b]);
+                    }
+                }
+
+                // Handle rgb format
+                if (rgb.startsWith('rgb(')) {
+                    const matches = rgb.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
+                    if (matches) {
+                        const [, r, g, b] = matches.map(v => parseInt(v));
+                        return rgbToHex([r, g, b]);
+                    }
+                }
+
+                // Fallback for other formats
+                const rgbArray = rgb.match(/\d+/g);
+                if (rgbArray && rgbArray.length >= 3) {
+                    return '#' + rgbArray.slice(0, 3).map(x => {
+                        const hex = parseInt(x).toString(16);
+                        return hex.length === 1 ? '0' + hex : hex;
+                    }).join('');
+                }
+            }
+
+            // Fallback to black
+            return '#000000';
+        }
+
+        // Convert hex to RGBA
+        function hexToRgba(hex, alpha) {
+            if (!hex) return 'rgba(0, 0, 0, ' + alpha + ')';
+
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        // Convert alpha value (0-1) to hex (00-ff)
+        function alphaToHex(alpha) {
+            const decimal = Math.round(alpha * 255);
+            const hex = decimal.toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        }
+
+        // Extract alpha from rgba color
+        function extractAlphaFromRgba(rgba) {
+            if (rgba.startsWith('rgba(')) {
+                const matches = rgba.match(/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)/);
+                if (matches && matches[4]) {
+                    return parseFloat(matches[4]);
+                }
+            }
+            return 1; // Default alpha is 1 (fully opaque)
+        }
 
         // Get the root element for CSS variables
         const root = document.documentElement;
@@ -456,9 +611,118 @@
         let currentPage = 1;
         const totalPages = document.querySelectorAll('.color-page').length;
 
-        // Capture the original CSS default values BEFORE applying any saved theme
-        // This ensures we're storing the true defaults from the CSS stylesheet
-        captureDefaultCssValues();
+        // Initialize the color pickers with RGBA support
+        function initColorPickers() {
+            const colorGroups = document.querySelectorAll('.color-picker-group');
+
+            colorGroups.forEach(group => {
+                const originalLabel = group.querySelector('label');
+                const originalInput = group.querySelector('input[type="color"]');
+
+                if (!originalInput || !originalLabel) return;
+
+                const varName = originalInput.dataset.var;
+
+                // Get computed value from CSS
+                const computedStyle = getComputedStyle(root);
+                const cssValue = computedStyle.getPropertyValue(varName).trim();
+
+                // Store the original CSS value for reset
+                cssDefaultValues[varName] = cssValue || originalInput.value;
+
+                // Parse color and alpha
+                let hexColor = originalInput.value;
+                let alpha = 1;
+
+                if (cssValue) {
+                    if (cssValue.startsWith('rgba(')) {
+                        // Extract rgba values
+                        const matches = cssValue.match(/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)/);
+                        if (matches) {
+                            const [, r, g, b, a] = matches.map((v, i) => i === 4 ? parseFloat(v) : parseInt(v));
+                            hexColor = rgbToHex([r, g, b]);
+                            alpha = a;
+                        }
+                    } else if (cssValue.startsWith('rgb(')) {
+                        // Extract rgb values
+                        const matches = cssValue.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
+                        if (matches) {
+                            const [, r, g, b] = matches.map(v => parseInt(v));
+                            hexColor = rgbToHex([r, g, b]);
+                        }
+                    } else if (cssValue.startsWith('#')) {
+                        hexColor = cssValue;
+                    }
+                }
+
+                // Create the RGBA picker HTML with integrated preview
+                group.innerHTML = `
+                <div class="color-picker-header">
+                    <label for="${originalInput.id}">${originalLabel.textContent}</label>
+                </div>
+                <div class="color-input-row">
+                    <input type="color" id="${originalInput.id}" data-var="${varName}" value="${hexColor}">
+                    <div class="color-preview" id="preview-${originalInput.id}"></div>
+                </div>
+                <div class="alpha-control">
+                    <div class="alpha-slider-row">
+                        <span class="alpha-label">Opacity:</span>
+                        <input type="range" class="alpha-slider" id="alpha-${originalInput.id}"
+                               min="0" max="1" step="0.01" value="${alpha}">
+                        <span class="alpha-value" id="alpha-value-${originalInput.id}">${Math.round(alpha * 100)}%</span>
+                    </div>
+                </div>
+
+                <!-- Hidden hex value field - for internal use only -->
+                <input type="hidden" id="hex-${originalInput.id}" value="${hexColor}${alphaToHex(alpha)}">
+            `;
+
+                // Get the new elements
+                const colorInput = document.getElementById(originalInput.id);
+                const alphaSlider = document.getElementById(`alpha-${originalInput.id}`);
+                const alphaValue = document.getElementById(`alpha-value-${originalInput.id}`);
+                const hexValue = document.getElementById(`hex-${originalInput.id}`);
+                const colorPreview = document.getElementById(`preview-${originalInput.id}`);
+
+                // Update function to apply RGBA color
+                function updateColor() {
+                    const hexColor = colorInput.value;
+                    const alpha = parseFloat(alphaSlider.value);
+
+                    // Generate RGBA
+                    const rgbaColor = hexToRgba(hexColor, alpha);
+
+                    // Update CSS variable
+                    root.style.setProperty(varName, rgbaColor);
+
+                    // Update alpha percentage display
+                    alphaValue.textContent = `${Math.round(alpha * 100)}%`;
+
+                    // Update hidden hex value
+                    hexValue.value = `${hexColor}${alphaToHex(alpha)}`;
+
+                    // Update color preview
+                    colorPreview.style.backgroundColor = rgbaColor;
+
+                    // Store in theme colors (for save/export)
+                    themeColors[varName] = rgbaColor;
+                }
+
+                // Add event listeners
+                colorInput.addEventListener('input', updateColor);
+                alphaSlider.addEventListener('input', updateColor);
+
+                // Initialize with current values
+                updateColor();
+
+                // Style the color preview
+                colorPreview.style.width = '40px';
+                colorPreview.style.height = '35px';
+                colorPreview.style.marginLeft = '10px';
+                colorPreview.style.borderRadius = '4px';
+                colorPreview.style.border = '1px solid #ddd';
+            });
+        }
 
         // Try to load saved colors from localStorage
         if (localStorage.getItem('themeColors')) {
@@ -470,68 +734,13 @@
                     document.getElementById('theme-name').value = localStorage.getItem('themeName');
                 }
 
-                // Apply saved colors
+                // Apply saved colors to CSS variables
                 Object.keys(themeColors).forEach(varName => {
                     root.style.setProperty(varName, themeColors[varName]);
-
-                    // Update color input values
-                    const input = document.querySelector(`[data-var="${varName}"]`);
-                    if (input) {
-                        input.value = themeColors[varName];
-                    }
                 });
             } catch (e) {
                 console.error('Error loading saved theme:', e);
             }
-        }
-
-        // Set up all color inputs
-        setupColorInputs();
-
-        // Pagination setup
-        setupPagination();
-
-        // Setup toggle functionality
-        setupToggle();
-
-        // Setup buttons
-        setupButtons();
-
-        // ------- Helper Functions -------
-
-        // Capture default CSS values
-        function captureDefaultCssValues() {
-            const defaultStylesheet = getComputedStyle(root);
-
-            colorInputs.forEach(input => {
-                const varName = input.dataset.var;
-                // Get the default CSS value or fallback to input's value attribute
-                const defaultValue = defaultStylesheet.getPropertyValue(varName).trim() || input.value;
-                cssDefaultValues[varName] = defaultValue;
-
-                // For debugging
-                // console.log(`Captured default for ${varName}: ${defaultValue}`);
-            });
-        }
-
-        // Setup color inputs with listeners
-        function setupColorInputs() {
-            colorInputs.forEach(input => {
-                const varName = input.dataset.var;
-                const computedStyle = getComputedStyle(root);
-                const currentValue = computedStyle.getPropertyValue(varName).trim() || input.value;
-
-                // Set input value to match current CSS var value
-                input.value = currentValue.startsWith('#') ? currentValue : rgbToHex(currentValue);
-
-                // Add change event listener
-                input.addEventListener('input', function() {
-                    const varName = this.dataset.var;
-                    const value = this.value;
-                    root.style.setProperty(varName, value);
-                    themeColors[varName] = value;
-                });
-            });
         }
 
         // Setup pagination
@@ -596,7 +805,7 @@
 
         // Setup buttons
         function setupButtons() {
-            // Reset button - Important: Reset to CSS defaults, not localStorage values
+            // Reset button
             document.getElementById('reset-theme').addEventListener('click', function() {
                 resetToDefaults();
             });
@@ -621,13 +830,58 @@
         function resetToDefaults() {
             // Apply original CSS default values
             Object.keys(cssDefaultValues).forEach(varName => {
-                root.style.setProperty(varName, cssDefaultValues[varName]);
+                const originalValue = cssDefaultValues[varName];
 
-                // Update color input values
+                // Apply to CSS variable
+                root.style.setProperty(varName, originalValue);
+
+                // Update color picker UI
                 const input = document.querySelector(`[data-var="${varName}"]`);
                 if (input) {
-                    input.value = cssDefaultValues[varName].startsWith('#') ?
-                        cssDefaultValues[varName] : rgbToHex(cssDefaultValues[varName]);
+                    // Extract color and alpha
+                    let hexColor;
+                    let alpha = 1;
+
+                    if (originalValue.startsWith('rgba(')) {
+                        const matches = originalValue.match(/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)/);
+                        if (matches) {
+                            const [, r, g, b, a] = matches.map((v, i) => i === 4 ? parseFloat(v) : parseInt(v));
+                            hexColor = rgbToHex([r, g, b]);
+                            alpha = a;
+                        }
+                    } else if (originalValue.startsWith('rgb(')) {
+                        const matches = originalValue.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
+                        if (matches) {
+                            const [, r, g, b] = matches.map(v => parseInt(v));
+                            hexColor = rgbToHex([r, g, b]);
+                        }
+                    } else if (originalValue.startsWith('#')) {
+                        hexColor = originalValue;
+                    } else {
+                        // Default for unknown formats
+                        hexColor = '#000000';
+                    }
+
+                    // Update color input
+                    input.value = hexColor;
+
+                    // Update alpha slider
+                    const alphaSlider = document.getElementById(`alpha-${input.id}`);
+                    if (alphaSlider) {
+                        alphaSlider.value = alpha;
+                    }
+
+                    // Update alpha value display
+                    const alphaValue = document.getElementById(`alpha-value-${input.id}`);
+                    if (alphaValue) {
+                        alphaValue.textContent = `${Math.round(alpha * 100)}%`;
+                    }
+
+                    // Update color preview
+                    const colorPreview = document.getElementById(`preview-${input.id}`);
+                    if (colorPreview) {
+                        colorPreview.style.backgroundColor = originalValue;
+                    }
                 }
             });
 
@@ -715,13 +969,61 @@
 
                     // Apply theme colors
                     themeColors = themeData.colors;
-                    Object.keys(themeColors).forEach(varName => {
-                        root.style.setProperty(varName, themeColors[varName]);
 
-                        // Update color input values
+                    // Apply colors to CSS and update UI
+                    Object.keys(themeColors).forEach(varName => {
+                        const colorValue = themeColors[varName];
+
+                        // Apply to CSS variable
+                        root.style.setProperty(varName, colorValue);
+
+                        // Update color picker UI
                         const input = document.querySelector(`[data-var="${varName}"]`);
                         if (input) {
-                            input.value = themeColors[varName];
+                            // Extract color and alpha
+                            let hexColor;
+                            let alpha = 1;
+
+                            if (colorValue.startsWith('rgba(')) {
+                                const matches = colorValue.match(/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)/);
+                                if (matches) {
+                                    const [, r, g, b, a] = matches.map((v, i) => i === 4 ? parseFloat(v) : parseInt(v));
+                                    hexColor = rgbToHex([r, g, b]);
+                                    alpha = a;
+                                }
+                            } else if (colorValue.startsWith('rgb(')) {
+                                const matches = colorValue.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
+                                if (matches) {
+                                    const [, r, g, b] = matches.map(v => parseInt(v));
+                                    hexColor = rgbToHex([r, g, b]);
+                                }
+                            } else if (colorValue.startsWith('#')) {
+                                hexColor = colorValue;
+                            } else {
+                                // Default for unknown formats
+                                hexColor = '#000000';
+                            }
+
+                            // Update color input
+                            input.value = hexColor;
+
+                            // Update alpha slider
+                            const alphaSlider = document.getElementById(`alpha-${input.id}`);
+                            if (alphaSlider) {
+                                alphaSlider.value = alpha;
+                            }
+
+                            // Update alpha value display
+                            const alphaValue = document.getElementById(`alpha-value-${input.id}`);
+                            if (alphaValue) {
+                                alphaValue.textContent = `${Math.round(alpha * 100)}%`;
+                            }
+
+                            // Update color preview
+                            const colorPreview = document.getElementById(`preview-${input.id}`);
+                            if (colorPreview) {
+                                colorPreview.style.backgroundColor = colorValue;
+                            }
                         }
                     });
 
@@ -738,23 +1040,6 @@
             };
 
             reader.readAsText(file);
-        }
-
-        // Helper: Convert RGB to Hex
-        function rgbToHex(rgb) {
-            // Check if already hex
-            if (rgb.startsWith('#')) {
-                return rgb;
-            }
-
-            // Handle rgb() format
-            let rgbArray = rgb.match(/\d+/g);
-            if (!rgbArray) return '#000000';
-
-            return '#' + rgbArray.map(x => {
-                const hex = parseInt(x).toString(16);
-                return hex.length === 1 ? '0' + hex : hex;
-            }).join('');
         }
 
         // Helper: Show confirmation on button
@@ -819,563 +1104,11 @@
                 }, 300);
             }, 3000);
         }
-    });
 
-
-    // Extend theme-customizer.js with RGBA color picking capabilities
-    document.addEventListener('DOMContentLoaded', function() {
-        // Add RGBA functionality after the original customizer script has loaded
-        setupRgbaColorPickers();
-
-        function setupRgbaColorPickers() {
-            // Wait a short time to ensure main script has initialized
-            setTimeout(() => {
-                // Find all color input groups
-                const colorGroups = document.querySelectorAll('.color-picker-group');
-
-                colorGroups.forEach(group => {
-                    // Get the original elements
-                    const originalLabel = group.querySelector('label');
-                    const originalInput = group.querySelector('input[type="color"]');
-                    const varName = originalInput.dataset.var;
-
-                    // Create new structure for RGBA picker
-                    enhanceColorPickerWithAlpha(group, originalLabel, originalInput, varName);
-                });
-
-                // Extend the original reset function to properly handle RGBA values
-                extendResetFunction();
-
-                // Extend the original export/import functions
-                extendExportImportFunctions();
-            }, 100);
-        }
-
-        function enhanceColorPickerWithAlpha(group, originalLabel, originalInput, varName) {
-            // Current color state
-            const colorState = {
-                hexColor: originalInput.value,
-                alpha: 1, // Default to 100% opacity
-                originalValue: getComputedStyle(document.documentElement).getPropertyValue(varName).trim()
-            };
-
-            // Determine initial alpha value from current CSS value
-            if (colorState.originalValue.startsWith('rgba(')) {
-                const matches = colorState.originalValue.match(/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)/);
-                if (matches) {
-                    colorState.alpha = parseFloat(matches[4]);
-
-                    // Convert RGB to hex for the color input
-                    const r = parseInt(matches[1]);
-                    const g = parseInt(matches[2]);
-                    const b = parseInt(matches[3]);
-                    colorState.hexColor = rgbToHex(r, g, b);
-                    originalInput.value = colorState.hexColor;
-                }
-            }
-
-            // Save original CSS value for reset functionality
-            // Store in a global object if it doesn't exist yet
-            if (!window.originalCssValues) {
-                window.originalCssValues = {};
-            }
-            window.originalCssValues[varName] = colorState.originalValue;
-
-            // Save original HTML structure
-            const originalHtml = group.innerHTML;
-
-            // Create new RGBA picker HTML
-            group.innerHTML = `
-            <div class="color-picker-header">
-                <label for="${originalInput.id}">${originalLabel.textContent}</label>
-                <div class="color-preview" id="preview-${originalInput.id}"></div>
-            </div>
-            <div class="color-input-row">
-                <input type="color" id="${originalInput.id}" data-var="${varName}" value="${colorState.hexColor}">
-            </div>
-            <div class="alpha-control">
-                <div class="alpha-slider-row">
-                    <span class="alpha-label">Opacity:</span>
-                    <input type="range" class="alpha-slider" id="alpha-${originalInput.id}"
-                           min="0" max="1" step="0.01" value="${colorState.alpha}">
-                    <span class="alpha-value" id="alpha-value-${originalInput.id}">${Math.round(colorState.alpha * 100)}%</span>
-                </div>
-            </div>
-            <div class="hex-value-row">
-                <input type="text" class="hex-value-input" id="hex-${originalInput.id}"
-                       value="${colorState.hexColor}${alphaToHex(colorState.alpha)}" readonly>
-            </div>
-        `;
-
-            // Get the new elements
-            const colorInput = document.getElementById(originalInput.id);
-            const alphaSlider = document.getElementById(`alpha-${originalInput.id}`);
-            const alphaValue = document.getElementById(`alpha-value-${originalInput.id}`);
-            const hexValue = document.getElementById(`hex-${originalInput.id}`);
-            const colorPreview = document.getElementById(`preview-${originalInput.id}`);
-
-            // Update function to apply RGBA color
-            function updateColor() {
-                // Update color state
-                colorState.hexColor = colorInput.value;
-                colorState.alpha = parseFloat(alphaSlider.value);
-
-                // Generate RGBA
-                const rgbaColor = hexToRgba(colorState.hexColor, colorState.alpha);
-
-                // Update CSS variable
-                document.documentElement.style.setProperty(varName, rgbaColor);
-
-                // Update alpha percentage display
-                alphaValue.textContent = `${Math.round(colorState.alpha * 100)}%`;
-
-                // Update hex + alpha value
-                hexValue.value = `${colorState.hexColor}${alphaToHex(colorState.alpha)}`;
-
-                // Update color preview
-                colorPreview.style.backgroundColor = rgbaColor;
-
-                // Store in theme colors (for save/export)
-                if (window.themeColors) {
-                    window.themeColors[varName] = rgbaColor;
-                }
-            }
-
-            // Add event listeners
-            colorInput.addEventListener('input', updateColor);
-            alphaSlider.addEventListener('input', updateColor);
-
-            // Initialize
-            updateColor();
-        }
-
-        function extendResetFunction() {
-            // Store the original reset function
-            const originalResetFunction = window.resetToDefaults;
-
-            if (originalResetFunction) {
-                // Override with our extended version
-                window.resetToDefaults = function() {
-                    // Apply original CSS values stored when we first captured them
-                    if (window.originalCssValues) {
-                        Object.keys(window.originalCssValues).forEach(varName => {
-                            const originalValue = window.originalCssValues[varName];
-
-                            // Apply to CSS variable
-                            document.documentElement.style.setProperty(varName, originalValue);
-
-                            // Update color picker UI
-                            const input = document.querySelector(`[data-var="${varName}"]`);
-                            if (input) {
-                                // Find the group containing this input
-                                const group = input.closest('.color-picker-group');
-                                if (group) {
-                                    // Extract RGB/RGBA values
-                                    let r, g, b, a = 1;
-
-                                    if (originalValue.startsWith('rgba(')) {
-                                        const matches = originalValue.match(/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)/);
-                                        if (matches) {
-                                            [, r, g, b, a] = matches.map((v, i) => i === 4 ? parseFloat(v) : parseInt(v));
-                                        }
-                                    } else if (originalValue.startsWith('rgb(')) {
-                                        const matches = originalValue.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
-                                        if (matches) {
-                                            [, r, g, b] = matches.map(v => parseInt(v));
-                                        }
-                                    } else if (originalValue.startsWith('#')) {
-                                        const hex = originalValue.substring(1);
-                                        r = parseInt(hex.substr(0, 2), 16);
-                                        g = parseInt(hex.substr(2, 2), 16);
-                                        b = parseInt(hex.substr(4, 2), 16);
-                                        // Check if it's a 8-digit hex with alpha
-                                        if (hex.length === 8) {
-                                            a = parseInt(hex.substr(6, 2), 16) / 255;
-                                        }
-                                    }
-
-                                    if (r !== undefined && g !== undefined && b !== undefined) {
-                                        // Convert to hex
-                                        const hexColor = rgbToHex(r, g, b);
-
-                                        // Update color input
-                                        input.value = hexColor;
-
-                                        // Update alpha slider if it exists
-                                        const alphaSlider = document.getElementById(`alpha-${input.id}`);
-                                        if (alphaSlider) {
-                                            alphaSlider.value = a;
-                                        }
-
-                                        // Update alpha value display
-                                        const alphaValue = document.getElementById(`alpha-value-${input.id}`);
-                                        if (alphaValue) {
-                                            alphaValue.textContent = `${Math.round(a * 100)}%`;
-                                        }
-
-                                        // Update hex value display
-                                        const hexValue = document.getElementById(`hex-${input.id}`);
-                                        if (hexValue) {
-                                            hexValue.value = `${hexColor}${alphaToHex(a)}`;
-                                        }
-
-                                        // Update color preview
-                                        const colorPreview = document.getElementById(`preview-${input.id}`);
-                                        if (colorPreview) {
-                                            colorPreview.style.backgroundColor = originalValue;
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    }
-
-                    // Reset themeColors object
-                    window.themeColors = {};
-
-                    // Clear theme name
-                    document.getElementById('theme-name').value = '';
-
-                    // Show reset confirmation
-                    showConfirmation(document.getElementById('reset-theme'), 'Reset!', '#6c757d');
-                };
-            }
-        }
-
-        function extendExportImportFunctions() {
-            // No need to extend export as it already uses the themeColors object
-            // which is updated by our RGBA picker
-
-            // Extend import function to handle RGBA values
-            const originalImportTheme = window.importTheme;
-
-            if (originalImportTheme) {
-                window.importTheme = function(e) {
-                    const file = e.target.files[0];
-                    if (!file) return;
-
-                    const reader = new FileReader();
-
-                    reader.onload = function(event) {
-                        try {
-                            const themeData = JSON.parse(event.target.result);
-
-                            // Validate theme data
-                            if (!themeData.colors || typeof themeData.colors !== 'object') {
-                                throw new Error('Invalid theme file format');
-                            }
-
-                            // Apply theme name if available
-                            if (themeData.name) {
-                                document.getElementById('theme-name').value = themeData.name;
-                            }
-
-                            // Apply theme colors
-                            window.themeColors = themeData.colors;
-                            Object.keys(window.themeColors).forEach(varName => {
-                                const colorValue = window.themeColors[varName];
-                                document.documentElement.style.setProperty(varName, colorValue);
-
-                                // Update color picker UI
-                                const input = document.querySelector(`[data-var="${varName}"]`);
-                                if (input) {
-                                    // Find the group containing this input
-                                    const group = input.closest('.color-picker-group');
-                                    if (group) {
-                                        // Extract RGB/RGBA values
-                                        let r, g, b, a = 1;
-
-                                        if (colorValue.startsWith('rgba(')) {
-                                            const matches = colorValue.match(/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)/);
-                                            if (matches) {
-                                                [, r, g, b, a] = matches.map((v, i) => i === 4 ? parseFloat(v) : parseInt(v));
-                                            }
-                                        } else if (colorValue.startsWith('rgb(')) {
-                                            const matches = colorValue.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
-                                            if (matches) {
-                                                [, r, g, b] = matches.map(v => parseInt(v));
-                                            }
-                                        } else if (colorValue.startsWith('#')) {
-                                            const hex = colorValue.substring(1);
-                                            r = parseInt(hex.substr(0, 2), 16);
-                                            g = parseInt(hex.substr(2, 2), 16);
-                                            b = parseInt(hex.substr(4, 2), 16);
-                                            // Check if it's a 8-digit hex with alpha
-                                            if (hex.length === 8) {
-                                                a = parseInt(hex.substr(6, 2), 16) / 255;
-                                            }
-                                        }
-
-                                        if (r !== undefined && g !== undefined && b !== undefined) {
-                                            // Convert to hex
-                                            const hexColor = rgbToHex(r, g, b);
-
-                                            // Update color input
-                                            input.value = hexColor;
-
-                                            // Update alpha slider if it exists
-                                            const alphaSlider = document.getElementById(`alpha-${input.id}`);
-                                            if (alphaSlider) {
-                                                alphaSlider.value = a;
-                                            }
-
-                                            // Update alpha value display
-                                            const alphaValue = document.getElementById(`alpha-value-${input.id}`);
-                                            if (alphaValue) {
-                                                alphaValue.textContent = `${Math.round(a * 100)}%`;
-                                            }
-
-                                            // Update hex value display
-                                            const hexValue = document.getElementById(`hex-${input.id}`);
-                                            if (hexValue) {
-                                                hexValue.value = `${hexColor}${alphaToHex(a)}`;
-                                            }
-
-                                            // Update color preview
-                                            const colorPreview = document.getElementById(`preview-${input.id}`);
-                                            if (colorPreview) {
-                                                colorPreview.style.backgroundColor = colorValue;
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-
-                            // Show import success
-                            showNotification('Theme imported successfully!', 'success');
-
-                        } catch (error) {
-                            console.error('Error importing theme:', error);
-                            showNotification('Error importing theme. Invalid format.', 'error');
-                        }
-
-                        // Reset file input
-                        e.target.value = '';
-                    };
-
-                    reader.readAsText(file);
-                };
-            }
-        }
-
-        // Helper functions
-
-        // Convert RGB to Hex
-        function rgbToHex(r, g, b) {
-            return '#' + [r, g, b].map(x => {
-                const hex = x.toString(16);
-                return hex.length === 1 ? '0' + hex : hex;
-            }).join('');
-        }
-
-        // Convert Hex to RGBA
-        function hexToRgba(hex, alpha) {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        }
-
-        // Convert alpha value (0-1) to hex (00-ff)
-        function alphaToHex(alpha) {
-            const decimal = Math.round(alpha * 255);
-            const hex = decimal.toString(16);
-            return hex.length === 1 ? '0' + hex : hex;
-        }
-
-        // Notification helper (if not defined in main script)
-        if (typeof showNotification !== 'function') {
-            window.showNotification = function(message, type) {
-                // Create notification element if it doesn't exist
-                let notification = document.getElementById('theme-notification');
-
-                if (!notification) {
-                    notification = document.createElement('div');
-                    notification.id = 'theme-notification';
-                    notification.style.position = 'fixed';
-                    notification.style.bottom = '20px';
-                    notification.style.right = '20px';
-                    notification.style.padding = '12px 20px';
-                    notification.style.borderRadius = '4px';
-                    notification.style.color = '#fff';
-                    notification.style.fontWeight = 'bold';
-                    notification.style.zIndex = '10000';
-                    notification.style.boxShadow = '0 3px 10px rgba(0,0,0,0.2)';
-                    notification.style.transition = 'all 0.3s ease';
-                    document.body.appendChild(notification);
-                }
-
-                // Set styling based on notification type
-                if (type === 'success') {
-                    notification.style.backgroundColor = '#28a745';
-                } else if (type === 'error') {
-                    notification.style.backgroundColor = '#dc3545';
-                } else {
-                    notification.style.backgroundColor = '#17a2b8';
-                }
-
-                // Set message
-                notification.textContent = message;
-
-                // Show notification
-                notification.style.opacity = '1';
-
-                // Hide after 3 seconds
-                setTimeout(() => {
-                    notification.style.opacity = '0';
-
-                    // Remove from DOM after fade out
-                    setTimeout(() => {
-                        if (notification.parentNode) {
-                            notification.parentNode.removeChild(notification);
-                        }
-                    }, 300);
-                }, 3000);
-            };
-        }
-
-        // Button confirmation helper (if not defined in main script)
-        if (typeof showConfirmation !== 'function') {
-            window.showConfirmation = function(button, message, color) {
-                const originalText = button.textContent;
-                const originalBg = button.style.backgroundColor;
-
-                button.textContent = message;
-                button.style.backgroundColor = color;
-
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.style.backgroundColor = originalBg;
-                }, 2000);
-            };
-        }
-
-        // Add these helper functions to your theme-customizer.js file
-
-// Helper: Convert RGB to Hex
-        function rgbToHex(r, g, b) {
-            return '#' + [r, g, b].map(x => {
-                const hex = x.toString(16);
-                return hex.length === 1 ? '0' + hex : hex;
-            }).join('');
-        }
-
-// Helper: Convert Hex to RGBA
-        function hexToRgba(hex, alpha) {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        }
-
-// Helper: Convert alpha value (0-1) to hex (00-ff)
-        function alphaToHex(alpha) {
-            const decimal = Math.round(alpha * 255);
-            const hex = decimal.toString(16);
-            return hex.length === 1 ? '0' + hex : hex;
-        }
-
-// Setup RGBA functionality
-        function setupRgbaColorPickers() {
-            // Find all color input groups
-            const colorGroups = document.querySelectorAll('.color-picker-group');
-
-            colorGroups.forEach(group => {
-                // Get the original elements
-                const originalLabel = group.querySelector('label');
-                const originalInput = group.querySelector('input[type="color"]');
-
-                if (!originalInput || !originalLabel) return;
-
-                const varName = originalInput.dataset.var;
-
-                // Current color state
-                const colorState = {
-                    hexColor: originalInput.value,
-                    alpha: 1, // Default to 100% opacity
-                    originalValue: getComputedStyle(document.documentElement).getPropertyValue(varName).trim()
-                };
-
-                // Determine initial alpha value from current CSS value
-                if (colorState.originalValue.startsWith('rgba(')) {
-                    const matches = colorState.originalValue.match(/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)/);
-                    if (matches) {
-                        colorState.alpha = parseFloat(matches[4]);
-
-                        // Convert RGB to hex for the color input
-                        const r = parseInt(matches[1]);
-                        const g = parseInt(matches[2]);
-                        const b = parseInt(matches[3]);
-                        colorState.hexColor = rgbToHex(r, g, b);
-                        originalInput.value = colorState.hexColor;
-                    }
-                }
-
-                // Save original HTML structure
-                const originalHtml = group.innerHTML;
-
-                // Create new RGBA picker HTML
-                group.innerHTML = `
-            <div class="color-picker-header">
-                <label for="${originalInput.id}">${originalLabel.textContent}</label>
-                <div class="color-preview" id="preview-${originalInput.id}"></div>
-            </div>
-            <div class="color-input-row">
-                <input type="color" id="${originalInput.id}" data-var="${varName}" value="${colorState.hexColor}">
-            </div>
-            <div class="alpha-control">
-                <div class="alpha-slider-row">
-                    <span class="alpha-label">Opacity:</span>
-                    <input type="range" class="alpha-slider" id="alpha-${originalInput.id}"
-                           min="0" max="1" step="0.01" value="${colorState.alpha}">
-                    <span class="alpha-value" id="alpha-value-${originalInput.id}">${Math.round(colorState.alpha * 100)}%</span>
-                </div>
-            </div>
-        `;
-
-                // Get the new elements
-                const colorInput = document.getElementById(originalInput.id);
-                const alphaSlider = document.getElementById(`alpha-${originalInput.id}`);
-                const alphaValue = document.getElementById(`alpha-value-${originalInput.id}`);
-                const colorPreview = document.getElementById(`preview-${originalInput.id}`);
-
-                // Update function to apply RGBA color
-                function updateColor() {
-                    // Update color state
-                    colorState.hexColor = colorInput.value;
-                    colorState.alpha = parseFloat(alphaSlider.value);
-
-                    // Generate RGBA
-                    const rgbaColor = hexToRgba(colorState.hexColor, colorState.alpha);
-
-                    // Update CSS variable
-                    document.documentElement.style.setProperty(varName, rgbaColor);
-
-                    // Update alpha percentage display
-                    alphaValue.textContent = `${Math.round(colorState.alpha * 100)}%`;
-
-                    // Update color preview
-                    colorPreview.style.backgroundColor = rgbaColor;
-
-                    // Store in theme colors (for save/export)
-                    if (window.themeColors) {
-                        window.themeColors[varName] = rgbaColor;
-                    }
-                }
-
-                // Add event listeners
-                colorInput.addEventListener('input', updateColor);
-                alphaSlider.addEventListener('input', updateColor);
-
-                // Initialize
-                updateColor();
-            });
-        }
-
-// Call setup after page is fully loaded
-        window.addEventListener('load', function() {
-            // Add a small delay to ensure everything is initialized
-            setTimeout(setupRgbaColorPickers, 500);
-        });
+        // Initialize everything
+        initColorPickers();
+        setupPagination();
+        setupToggle();
+        setupButtons();
     });
 </script>
