@@ -4,8 +4,7 @@
 
         <div class="section-title">
             <h2>Kako koristiti našu uslugu</h2>
-            <p>Pratite ove jednostavne korake da biste rezervisali i koristili naš aerodromski parking.<br>
-                <b>Transfer do terminala i nazad je besplatan.</b>
+            <p>Pratite ove jednostavne korake da biste rezervisali i koristili usluge našeg aerodromskog parkinga.
             </p>
         </div>
         <div class="row">
@@ -20,8 +19,11 @@
                         Rezervišite parking
                     </h3>
                     <ul>
-                        <li>Prvi korak je <a href="#">rezervacija parkinga</a>.</li>
-                        <li>Aerodrom parking možete rezervisati online ili slanjem poruke putem email-a, Viber i WhatsApp aplikacije.</li>
+                        <li>Prvi korak je <a href="#">rezervacija parking mesta</a>.</li>
+                        <li>
+                            Parking na aerodromu možete rezervisati na našem veb sajtu odabirom datuma na vrhu stranice, putem WhatsApp i Viber aplikacija,
+                            <br> kao i putem e-mail adrese <a href="mailto:rezervacije@aeroparking.rs"> rezervacije@aeroparking.rs</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -36,8 +38,9 @@
                         Potvrda rezervacije
                     </h3>
                     <ul>
-                        <li>Nakon obavljene rezervacije parking mesta, na navedeni kontakt koji ste ostavili, će vam stići potvrda rezervacije</li>
-                        <li>Kao i <a href="#">smernice do parkinga</a> u formi slike i video klipa.</li>
+                        <li>Drugi korak je potvrda nakon obavljene rezervacije, kontaktiraćemo Vas sa potvrdom u kojoj
+                            <br> će se nalaziti smernice do parkinga koji je udaljen na samo 2 minuta od aerodroma Nikola Tesla.
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -52,8 +55,8 @@
                         Parkiranje i transfer
                     </h3>
                     <ul>
-                        <li>Kada stignete na parking i parkirate vaše vozilo</li>
-                        <li>Naši ljubazni vozači vas voze službenim automobilima do odlaznog terminala aerodroma Nikola Tesla.</li>
+                        <li>Treći korak je dolazak na parking nakon čega vas naši zaposleni službenim vozilima voze do terminala za odlazne letove na aerodromu Nikola Tesla.
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -68,11 +71,8 @@
                         Dolazak i preuzimanje vozila
                     </h3>
                     <ul>
-                        <li>Po vašem povratku sa putovanja</li>
-                        <li>Naši vozači će vas dočekati na terminalu aerodroma i prevesti nazad do vašeg automobila.</li>
-                        <li></li>
-                        <li></li>
-
+                        <li>Po povratku sa putovanja dočekaćemo vas kod terminala i vratiti do vašeg vozila.
+                        </li>
                     </ul>
                 </div>
             </div>

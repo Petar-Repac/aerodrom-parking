@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end="200" data-purecounter-duration="1"
+            <span data-purecounter-start="0" data-purecounter-end="500" data-purecounter-duration="1"
                   class="purecounter d-inline-block"></span><span class="d-inline-block">+</span>
                     <p>parking mesta</p>
                 </div>

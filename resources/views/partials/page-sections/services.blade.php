@@ -10,17 +10,17 @@
                     <div class="icon-box" id="credit-card">
                         <div class="icon"><i class="bi bi-credit-card"></i></div>
                         <h4 class="title">Najpovoljniji parking na aerodromu</h4>
-                        <p class="description">Cene koje će Vaš novčanik obožavati! Garantovano najpovoljniji parking, kao naš doprinos vašem
-                            udobnom putovanju.<br> Proverite detaljnu ponudu klikom na opciju cenovnik ili pozivom na <a href="tel:0694454255"> 069 445 4255</a>.</p>
+                        <p class="description">Nudimo garantovano najpovoljnije cene parkiranja na aerodromu.
+                            Proverite detaljnu ponudu klikom na opciju cenovnik u meniju ili putem kontakt centra <a href="tel:381694454255"> +381 69 445 4255 </a>
+
+                            udobnom putovanju.<br> Proverite detaljnu ponudu klikom na opciju cenovnik ili pozivom na 069 445 4255.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mt-4 mt-md-0">
                     <div class="icon-box">
                         <div class="icon"><i class="bi bi-briefcase"></i></div>
                         <h4 class="title">Besplatno Vas vozimo!</h4>
-                        <p class="description">Besplatan transfer, uz brojne usluge<br>
-                            poput pranja vozila, strečovanje kofera i ostalo.<br>
-                            Zaboravite na gužve i stresne situacije, <br>mi brinemo o Vama!
+                        <p class="description">Transfer do i sa terminala je uz korišćenje usluga parkinga besplatan!
                         </p>
                     </div>
                 </div>
@@ -29,10 +29,9 @@
                     <div class="icon-box">
                         <div class="icon"><i class="bi bi-bar-chart"></i></div>
                         <h4 class="title">Rezervacije</h4>
-                        <p class="description">Naš jednostavan sistem rezervacija omogućava Vam da brzo i lako rezervišete parking
-                            mesto pre puta.
-                            Ne čekajte do poslednjeg trenutka - rezervišite svoje parking mesto sada i uživajte u bezbrižnom
-                            putovanju!</p>
+                        <p class="description">Laka i brza rezervacija osigurava parking mesto na aerodromu pre puta.
+                            <br> Ne čekajte do poslednjeg trenutka, rezervišite svoje mesto unapred.
+                        </p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mt-4">
@@ -40,8 +39,7 @@
                         <div class="icon"><i class="bi bi-alarm"></i></div>
                         <h4 class="title">Radno vreme</h4>
                         <p class="description">
-                            Dostupnost - 24/7, 365 dana godišnje - možete računati na nas da osiguramo
-                            povoljno i bezbedno mesto za Vaše vozilo.
+                            Radno vreme parkinga je 24 časa dnevno, 365 dana u godini.
                         </p>
                     </div>
                 </div>
@@ -50,16 +48,19 @@
                     <div class="icon-box">
                         <div class="icon"><i class="bi bi-shield-check"></i></div>
                         <h4 class="title">Čuvamo Vaše vozilo</h4>
-                        <p class="description">Vaša sigurnost je naš prioritet, možemo se pohvaliti najsavremenijim 24-časovnim
-                            video nadzorom, kompletnom osvetljenošću kao i fizičkim obezbeđenjem.</p>
+                        <p class="description">Sigurnost vozila naših klijenata je najveći prioritet, <br>
+                            Aero Parking je u potpunosti ogradjen, osvetljen, pokriven 24 časovnim savremenim video nadzorom,
+                            <br> uz to imamo i prisustvo fizičkog obezbedjenja.
+                        </p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 mt-4">
                     <div class="icon-box">
                         <div class="icon"><i class="bi bi-airplane"></i></div>
                         <h4 class="title">Izaberite najbolju opciju!</h4>
-                        <p class="description">Aero Parking je tu da vaše putovanje učini još prijatnijim, nudeći najbolji odnos cene i kvaliteta.
-                            Obezbedite svoje mesto već danas i prepustite nama brigu o vašem vozilu dok Vi u potpunosti uživate u svojoj putničkoj avanturi.
+                        <p class="description">Trudimo se da vaše putovanje učinimo što prjatnijim, uz profesionalnu uslugu, brz i besplatan transfer u oba smera,
+                            <br> niz pratećih usluga povoljnijih nego na samom aerodromu poput zaštite kofera, ponude hladnih i toplih napitaka.
+
                         </p>
                     </div>
                 </div>
