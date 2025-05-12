@@ -1,13 +1,10 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BlogController;
 
 
-Route::get('/blog', [BlogController::class, 'index']);
-
-Route::get('/blog/{id}', [BlogController::class, 'show']);
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -20,4 +17,14 @@ Route::get('/contact', function () {
 });
 Route::get('/pricing', function () {
     return view('pricing');
+});
+
+// News
+Route::get('/blog', [NewsController::class, 'index'])->name('news');
+Route::get('/blog/tag/{tag}', [NewsController::class, 'filterByTag'])->name('news.tag');
+Route::get('/blog/{slug}', [NewsController::class, 'single'])->name('news.single');
+
+
+Route::fallback(function () {
+    return response()->view('page-not-found.blade.php', [], 404);
 });

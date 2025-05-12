@@ -21,7 +21,7 @@ class DirectusService
      *
      * @var string
      */
-    protected $url = 'https://cms.worldprocoach.com/graphql';
+    protected $url = 'https://cms.aeroparking.rs/graphql';
 
     /**
      * Default cache duration in minutes
@@ -65,7 +65,8 @@ class DirectusService
     protected function executeQuery(array $query, string $cacheKey, ?int $customDuration = null): array
     {
         $duration = $customDuration ?? $this->cacheDuration;
-        Log::info('URL USED TO SEND REQUEST: ' . $this->url);
+        Log::info('URL USED TO SEND REQUEST: ' . $this->url . ' with token ' . env('DIRECTUS_API_TOKEN'));
+
         return Cache::remember($cacheKey, now()->addMinutes($duration), function () use ($query) {
             try {
                 $response = $this->client->post($this->url, [

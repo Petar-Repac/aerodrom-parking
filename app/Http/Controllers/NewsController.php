@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\DirectusService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -17,7 +18,9 @@ class NewsController extends Controller
     /**
      * @param DirectusService $directusService
      */
-    public function __construct(protected readonly DirectusService $directusService) {}
+    public function __construct(protected readonly DirectusService $directusService) {
+        Carbon::setLocale('sr');
+    }
 
     /**
      * @param Request $request
@@ -46,7 +49,7 @@ class NewsController extends Controller
             $pagination = $result['pagination'];
 
             $view = view(
-                'pages.news',
+                'blog',
                 [
                     'articles' => $articles,
                     'pagination' => $pagination,
@@ -78,8 +81,6 @@ class NewsController extends Controller
         return redirect()->route('news', ['tag' => $tag, 'page' => $request->query('page', 1)]);
     }
 
-
-
     /**
      * @param string $slug
      * @return Response
@@ -90,13 +91,13 @@ class NewsController extends Controller
         try {
             $article = $this->directusService->fetchNewsArticleBySlug($slug);
             if(!isset($article)){
-                return response()->view('pages.page-not-found', [], 404);
+                return response()->view('page-not-found.blade.php', [], 404);
             }
-            $view = view('pages.news-single', ['article' => $article])->render();
+            $view = view('blog-single', ['article' => $article])->render();
         } catch (\InvalidArgumentException $e) {
             Log::error('Failed to render view: ' . $e->getMessage());
             // Optionally, return a default view or error page
-            return response()->view('pages.page-not-found', [], 404);
+            return response()->view('page-not-found', [], 404);
         }
         // Return the view
         return response($view);

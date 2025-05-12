@@ -16,6 +16,7 @@
             <ul>
                 <li><a class="nav-link scrollto {{ request()->is('/')  ? 'active' : '' }}" href="/">Početna</a></li>
                 <li><a class="nav-link scrollto {{ request()->is('pricing')  ? 'active' : '' }}" href="/pricing">Cenovnik</a></li>
+                <li><a class="nav-link scrollto {{ request()->is('blog')  ? 'active' : '' }}" href="/blog">Blog</a></li>
                 <li><a class="nav-link scrollto {{ request()->is('about-us')  ? 'active' : '' }}" href="/about-us">O nama</a></li>
                 <li><a class="nav-link scrollto {{ request()->is('contact')  ? 'active' : '' }}" href="/contact">Kontakt</a></li>
             </ul>
