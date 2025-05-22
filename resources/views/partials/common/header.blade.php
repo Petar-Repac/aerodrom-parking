@@ -1,6 +1,6 @@
 
 <!-- ======= Header ======= -->
-<header id="header" class="d-flex align-items-center ">
+<header id="header" class="d-flex align-items-center fixed-top">
     <div id="header-container" class="container-fluid d-flex align-items-center justify-content-lg-between">
         <div class="d-flex align-items-center justify-content-lg-between gap-3">
             <img src="/img/logo-transparent-background-120x120.webp" width="45" height="45" alt="aero parking logo" class="rounded-5">

@@ -46,16 +46,14 @@ const prices = [
     { days: 38, price: 7900 },
     { days: 39, price: 8000 },
     { days: 40, price: 8100 }
-
 ];
 
 const formCharge = document.getElementById('form-charge');
-const ctaCharge  = document.getElementById('cta-charge');
+const ctaCharge = document.getElementById('cta-charge');
 const today = new Date().toISOString().split('T')[0];
 
 const arrival = document.getElementById('arrival-date');
 const departure = document.getElementById('departure-date');
-
 
 // let calendarNum = (new Date().getDate() > 22)?2: 1;
 let calendarNum = 1;
@@ -143,7 +141,6 @@ const cta_pickerFrom = new easepick.create({
     }
 })
 
-
 const cta_pickerTo = new easepick.create({
     element: "#cta-departure-date",
     css: [
@@ -171,11 +168,12 @@ const cta_pickerTo = new easepick.create({
         });
     }
 })
-arrival.removeAttribute('readonly');
 
+if (arrival) {
+    arrival.removeAttribute('readonly');
+}
 
 function syncInputs(date, fromOrTo) {
-
     if(fromOrTo === 'from'){
         pickerFrom.setDate(date);
         cta_pickerFrom.setDate(date);
@@ -193,18 +191,19 @@ let showReservationForm = true;
 function showFormFirstTime() {
     let reservationForm = document.getElementById('reservation-form');
 
-    if(!reservationForm.classList.contains('active') && showReservationForm) {
+    if(reservationForm && !reservationForm.classList.contains('active') && showReservationForm) {
         reservationForm.classList.toggle('active')
         showReservationForm = false;
     }
 }
+
 function updatePrice() {
     let arrivalDate = pickerFrom.getDate();
     let departureDate = pickerTo.getDate();
 
     if (!arrivalDate || !departureDate) {
-        formCharge.textContent = `Cena: - - -`;
-        ctaCharge.textContent = `Cena: - - -`;
+        if (formCharge) formCharge.textContent = `Cena: - - -`;
+        if (ctaCharge) ctaCharge.textContent = `Cena: - - -`;
         return;
     }
 
@@ -213,8 +212,8 @@ function updatePrice() {
 
     // invalid input
     if (secondDate < firstDate) {
-        formCharge.textContent = "Datum dolaska mora biti pre datuma odlaska.";
-        ctaCharge.textContent = `Cena: - - -`;
+        if (formCharge) formCharge.textContent = "Datum dolaska mora biti pre datuma odlaska.";
+        if (ctaCharge) ctaCharge.textContent = `Cena: - - -`;
         showFormFirstTime()
         return;
     }
@@ -244,8 +243,8 @@ function updatePrice() {
     // }
 
     if(numOfDays === 0) {
-        formCharge.textContent = `Cena: - - -`;
-        ctaCharge.textContent = `Cena: - - -`;
+        if (formCharge) formCharge.textContent = `Cena: - - -`;
+        if (ctaCharge) ctaCharge.textContent = `Cena: - - -`;
         return;
     }
 
@@ -258,7 +257,7 @@ function updatePrice() {
     else {
         // check for price in prices array
         // AKA price lookup
-        prices.map((item) => {
+        prices.forEach((item) => {
             if (item.days === numOfDays) {
                 price = item.price;
             }
@@ -267,58 +266,113 @@ function updatePrice() {
 
     // correct string output
     if (numOfDays % 10 === 1 && numOfDays !== 11) {
-        formCharge.textContent = `Cena za ${numOfDays} dan iznosi ${price} dinara.`;
-        ctaCharge.textContent = `Cena: ${price} din.`;
+        if (formCharge) formCharge.textContent = `Cena za ${numOfDays} dan iznosi ${price} dinara.`;
+        if (ctaCharge) ctaCharge.textContent = `Cena: ${price} din.`;
         showFormFirstTime()
         return;
     }
 
-    formCharge.textContent = `Cena za ${numOfDays} dana iznosi ${price} dinara.`;
-    ctaCharge.textContent = `Cena: ${price} din.`;
+    if (formCharge) formCharge.textContent = `Cena za ${numOfDays} dana iznosi ${price} dinara.`;
+    if (ctaCharge) ctaCharge.textContent = `Cena: ${price} din.`;
     showFormFirstTime()
 }
 
-// ajax call
+// Pricing table click functionality - SIMPLIFIED
+// document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, setting up pricing table...');
 
-document.getElementById('email-form').addEventListener('submit', function (e) {
-    e.preventDefault();
+    const pricingCells = document.querySelectorAll('.pricing .pricing-cell:not(.info-cell)');
+    console.log('Found pricing cells:', pricingCells.length);
 
-    let formData = new FormData();
-    formData.append("name", document.getElementById('name').value);
-    formData.append("email", document.getElementById('email').value);
-    formData.append("passengers", document.getElementById('passengers').value);
-    formData.append("phone", document.getElementById('phone').value);
-    formData.append("arrivalDate", document.getElementById('arrival-date').value);
-    formData.append("departureDate", document.getElementById('departure-date').value);
+    pricingCells.forEach(cell => {
+        cell.addEventListener('click', function() {
+            console.log('Pricing cell clicked - opening form');
 
-    fetch('https://aeroparking.rs/forms/src/email.php', {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.json())
-        .then(responseObj => {
-            if (responseObj.status === "success") {
-                Swal.fire({
-                    title: "Zahtev za rezervacijom poslat!",
-                    text: "Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                });
+            // Remove selected class from all cells
+            pricingCells.forEach(c => c.classList.remove('selected'));
+
+            // Add selected class to clicked cell
+            this.classList.add('selected');
+
+            // Simply show the reservation form without any date/price updates
+
+            const reservationForm = document.getElementById('reservation-form');
+            if (reservationForm) {
+                console.log('Found reservation form, making it active');
+                reservationForm.classList.toggle('active')
             } else {
-                Swal.fire({
-                    title: "Greška!",
-                    text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
-                    icon: "error",
-                    confirmButtonText: "OK",
-                });
+                console.log('Reservation form not found');
             }
-        })
-        .catch(error => {
-            Swal.fire({
-                title: "Greška!",
-                text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
         });
-});
+    });
+
+    // Add keyboard navigation
+    pricingCells.forEach(cell => {
+        cell.setAttribute('tabindex', '0');
+        cell.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
+        });
+    });
+
+// Ajax call for form submission
+const emailForm = document.getElementById('email-form');
+if (emailForm) {
+    emailForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        let formData = new FormData();
+        formData.append("name", document.getElementById('name')?.value || '');
+        formData.append("email", document.getElementById('email')?.value || '');
+        formData.append("passengers", document.getElementById('passengers')?.value || '');
+        formData.append("phone", document.getElementById('phone')?.value || '');
+        formData.append("arrivalDate", document.getElementById('arrival-date')?.value || '');
+        formData.append("departureDate", document.getElementById('departure-date')?.value || '');
+
+        fetch('https://aeroparking.rs/forms/src/email.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(responseObj => {
+                if (responseObj.status === "success") {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            title: "Zahtev za rezervacijom poslat!",
+                            text: "Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                        });
+                    } else {
+                        alert("Zahtev za rezervacijom poslat! Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.");
+                    }
+                } else {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            title: "Greška!",
+                            text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
+                            icon: "error",
+                            confirmButtonText: "OK",
+                        });
+                    } else {
+                        alert("Greška! Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.");
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Form submission error:', error);
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        title: "Greška!",
+                        text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
+                } else {
+                    alert("Greška! Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.");
+                }
+            });
+    });
+}

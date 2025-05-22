@@ -1,5 +1,5 @@
 <!-- ======= How to Use Section ======= -->
-<section id="procedure" class="pricing">
+<section id="procedure" class="procedure">
     <div class="container">
 
         <div class="section-title">
