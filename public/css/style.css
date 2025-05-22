@@ -70,7 +70,7 @@ a {
 }
 
 a:hover {
-  color: var(--clr-background);
+  color: var(--clr-accent-light);
   text-decoration: none;
 }
 
@@ -144,7 +144,7 @@ h6 {
 }
 
 .back-to-top:hover {
-  background: var(--clr-background);
+  background: var(--clr-accent-light);
   color: #fff;
 }
 
@@ -179,7 +179,7 @@ h6 {
 }
 
 #call-btn:hover {
-  background: var(--clr-background);
+  background: var(--clr-accent-light);
   color: #fff;
 }
 /*--------------------------------------------------------------
@@ -191,6 +191,8 @@ h6 {
   z-index: 997;
   position: relative;
   height: 70px;
+    font-family: "Roboto" !important;
+    font-weight: bold;
 }
 
 .header-logo {
@@ -489,6 +491,7 @@ h6 {
 
 .navbar-mobile>ul>li {
   padding: 0;
+    border-bottom: 1px solid var(--clr-accent-light);
 }
 
 .navbar-mobile a:hover:before,
@@ -1113,7 +1116,7 @@ section {
 }
 
 .cta-btn:hover {
-  background-color: var(--clr-background);
+  background-color: var(--clr-accent-light);
 }
 
 .cta .cta-btn:hover {
@@ -2118,13 +2121,13 @@ section {
   100% { opacity: 1; }
 }
 #reserve-btn:hover {
-  background: var(--clr-background);
+  background: var(--clr-accent-light);
   color: #fff;
 }
 
 .pulse {
   cursor: pointer;
-  box-shadow: 0 0 0 rgba(116, 44, 204, 0.6);
+  box-shadow: 0 0 0 var(--clr-accent-form);
   animation: pulse 1.5s infinite;
 }
 .pulse:hover {
@@ -2133,7 +2136,7 @@ section {
 
 @-webkit-keyframes pulse {
   0% {
-    -webkit-box-shadow: 0 0 0 0 rgba(116, 44, 204, 0.6);
+    -webkit-box-shadow: 0 0 0 0 var(--clr-accent-form);
   }
   70% {
     -webkit-box-shadow: 0 0 0 16px rgba(116, 44, 204, 0);
@@ -2144,8 +2147,8 @@ section {
 }
 @keyframes pulse {
   0% {
-    -moz-box-shadow: 0 0 0 0 rgba(116, 44, 204, 0.6);
-    box-shadow: 0 0 0 0 rgba(116, 44, 204, 0.6);
+    -moz-box-shadow: 0 0 0 0 var(--clr-accent-form);
+    box-shadow: 0 0 0 0 var(--clr-accent-form);
   }
   70% {
     -moz-box-shadow: 0 0 0 16px rgba(116, 44, 204, 0);
@@ -2165,8 +2168,8 @@ input[type=text] {
   appearance: none;
   border: none;
   outline: none;
-  border-bottom: .2em solid rgba(116, 44, 204, 1);
-  background: rgba(116, 44, 204, 0.8);
+  border-bottom: .2em solid var(--clr-accent-form);
+  background: var(--clr-accent-form);
   border-radius: .2em .2em 0 0;
   padding: .4em;
   color: white;
@@ -2178,8 +2181,8 @@ input[type=email] {
   appearance: none;
   border: none;
   outline: none;
-  border-bottom: .2em solid rgba(116, 44, 204, 1);
-  background: rgba(116, 44, 204, 0.8);
+  border-bottom: .2em solid var(--clr-accent-form);
+  background: var(--clr-accent-form);
   border-radius: .2em .2em 0 0;
   padding: .4em;
   color: white;
@@ -2251,8 +2254,8 @@ input[type="date"]::before {
 input[type=number] {
   width: 3em;
   padding: 0.5em;
-  border: .2em solid rgba(116, 44, 204, 1);
-  background: rgba(116, 44, 204, 0.6);
+  border: .2em solid var(--clr-accent-form);
+  background: var(--clr-accent-form);
   border-radius: .2em .2em 0 0;
   text-align: center;
   color: #fff;
@@ -2397,8 +2400,8 @@ input[type=number] {
   height: 100%;
   background-color: rgba(0,0,0, 0.96) ;
   z-index: 999;
-  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-  border-left: 8px solid rgba(116, 44, 204, 0.6);
+  box-shadow: var(--clr-accent-dark) 0px 20px 30px -10px;
+  border-left: 8px solid var(--clr-accent-form);
   color: #ccc;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -2419,7 +2422,7 @@ input[type=number] {
 }
 
 #reservation-form button:hover {
-  background: var(--clr-background);
+  background: var(--clr-accent-light);
   color: #fff;
 }
 
@@ -2472,7 +2475,7 @@ input[type=number] {
 .form-divider::after {
   content: "";
   display: block;
-  border-bottom: 1px solid rgba(116, 44, 204, 0.6);
+  border-bottom: 1px solid var(--clr-accent-form);
 }
 
 #reservation-form .contact-info {

@@ -11,14 +11,16 @@
 
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html" class="logo me-auto me-lg-0"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-
+        @php
+            $theme = request()->query('theme');
+        @endphp
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
-                <li><a class="nav-link scrollto {{ request()->is('/')  ? 'active' : '' }}" href="/">Početna</a></li>
-                <li><a class="nav-link scrollto {{ request()->is('pricing')  ? 'active' : '' }}" href="/pricing">Cenovnik</a></li>
-                <li><a class="nav-link scrollto {{ request()->is('blog')  ? 'active' : '' }}" href="/blog">Blog</a></li>
-                <li><a class="nav-link scrollto {{ request()->is('about-us')  ? 'active' : '' }}" href="/about-us">O nama</a></li>
-                <li><a class="nav-link scrollto {{ request()->is('contact')  ? 'active' : '' }}" href="/contact">Kontakt</a></li>
+                <li><a class="nav-link scrollto {{ request()->is('/')  ? 'active' : '' }}" href="/?theme={{$theme}}">Početna</a></li>
+                <li><a class="nav-link scrollto {{ request()->is('pricing')  ? 'active' : '' }}" href="/pricing?theme={{$theme}}">Cenovnik</a></li>
+                <li><a class="nav-link scrollto {{ request()->is('blog')  ? 'active' : '' }}" href="/blog?theme={{$theme}}">Blog</a></li>
+                <li><a class="nav-link scrollto {{ request()->is('about-us')  ? 'active' : '' }}" href="/about-us?theme={{$theme}}">O nama</a></li>
+                <li><a class="nav-link scrollto {{ request()->is('contact')  ? 'active' : '' }}" href="/contact?theme={{$theme}}">Kontakt</a></li>
             </ul>
 
             <i class="bi bi-list mobile-nav-toggle"></i>

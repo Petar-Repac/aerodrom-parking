@@ -33,7 +33,7 @@
 
 @include('partials.common.scripts-homepage')
 
-@include('partials.util.theme-customizer')
+{{--@include('partials.util.theme-customizer')--}}
 </body>
 
 </html>

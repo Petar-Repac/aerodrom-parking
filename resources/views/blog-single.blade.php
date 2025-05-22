@@ -16,7 +16,7 @@
             <h1> {{ $article['title'] ?? '' }} </h1>
             <nav class="breadcrumbs">
                 <ol>
-                    <li><a href="/">Početna</a></li>
+                    <li><a href="/blog">Blog</a></li>
                     <li class="current"> {{ $article['title'] ?? '' }} </li>
                 </ol>
             </nav>
@@ -93,7 +93,7 @@
 
 @include('partials.common.scripts-homepage')
 
-@include('partials.util.theme-customizer')
+{{--@include('partials.util.theme-customizer')--}}
 </body>
 
 </html>
