@@ -67,6 +67,7 @@ const pickerFrom = new easepick.create({
     calendars: calendarNum,
     autoApply: false,
     grid: calendarNum,
+    positionOverride:"center",
     LockPlugin: {
         minDate: new Date().toISOString().split("T")[0]
     },
@@ -95,6 +96,8 @@ const pickerTo = new easepick.create({
     calendars: calendarNum,
     autoApply: false,
     grid: calendarNum,
+    positionOverride:"center",
+
     LockPlugin: {
         minDate: new Date().toISOString().split("T")[0]
     },
