@@ -552,6 +552,7 @@
             header: !1,
             inline: !1,
             scrollToDate: !0,
+            positionOverride: null,
             locale: {
                 nextMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M2.748 16L0 13.333 5.333 8 0 2.667 2.748 0l7.919 8z" fill-rule="nonzero"/></svg>',
                 previousMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.919 0l2.748 2.667L5.333 8l5.334 5.333L7.919 16 0 8z" fill-rule="nonzero"/></svg>',
@@ -727,18 +728,186 @@
                 t.appendChild(e), this.ui.shadowRoot.append(t), this.ui.wrapper.style.display = ""
             } else "function" == typeof this.options.css && (this.options.css.call(this, this), this.ui.wrapper.style.display = "")
         }
+        // adjustPosition(t) {
+        //     const e = t.getBoundingClientRect(),
+        //         i = this.ui.wrapper.getBoundingClientRect();
+        //     this.ui.container.classList.add("calc");
+        //     const n = this.ui.container.getBoundingClientRect();
+        //     this.ui.container.classList.remove("calc");
+        //     let s = e.bottom - i.bottom,
+        //         o = e.left - i.left;
+        //     return "undefined" != typeof window && (window.innerHeight < s + n.height && s - n.height >= 0 && (s = e.top - i.top - n.height), window.innerWidth < o + n.width && e.right - n.width >= 0 && (o = e.right - i.right - n.width)), {
+        //         left: o,
+        //         top: s
+        //     }
+        // }
+
+        // 2. Then REPLACE the adjustPosition method with this enhanced version:
+
         adjustPosition(t) {
             const e = t.getBoundingClientRect(),
                 i = this.ui.wrapper.getBoundingClientRect();
+
             this.ui.container.classList.add("calc");
             const n = this.ui.container.getBoundingClientRect();
             this.ui.container.classList.remove("calc");
-            let s = e.bottom - i.bottom,
-                o = e.left - i.left;
-            return "undefined" != typeof window && (window.innerHeight < s + n.height && s - n.height >= 0 && (s = e.top - i.top - n.height), window.innerWidth < o + n.width && e.right - n.width >= 0 && (o = e.right - i.right - n.width)), {
-                left: o,
-                top: s
+
+            // Get viewport dimensions
+            const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+            let s = e.bottom - i.bottom; // default: below input
+            let o = e.left - i.left;     // default: align with left edge of input
+
+            // CHECK FOR POSITION OVERRIDE
+            if (this.options.positionOverride) {
+                const override = this.options.positionOverride.toLowerCase();
+
+                switch (override) {
+                    case 'center':
+                        // Center in viewport
+                        s = (viewportHeight - n.height) / 2 - i.top;
+                        o = (viewportWidth - n.width) / 2 - i.left;
+                        break;
+
+                    case 'top':
+                        // Above input
+                        s = e.top - i.top - n.height - 5;
+                        o = e.left - i.left;
+                        break;
+
+                    case 'bottom':
+                        // Below input
+                        s = e.bottom - i.bottom + 5;
+                        o = e.left - i.left;
+                        break;
+
+                    case 'left':
+                        // Left of input
+                        s = e.top - i.top;
+                        o = e.left - i.left - n.width - 5;
+                        break;
+
+                    case 'right':
+                        // Right of input
+                        s = e.top - i.top;
+                        o = e.right - i.left + 5;
+                        break;
+
+                    case 'top-center':
+                        // Above input, centered horizontally
+                        s = e.top - i.top - n.height - 5;
+                        o = (e.left + e.width / 2) - i.left - (n.width / 2);
+                        break;
+
+                    case 'bottom-center':
+                        // Below input, centered horizontally
+                        s = e.bottom - i.bottom + 5;
+                        o = (e.left + e.width / 2) - i.left - (n.width / 2);
+                        break;
+
+                    case 'left-center':
+                        // Left of input, centered vertically
+                        s = (e.top + e.height / 2) - i.top - (n.height / 2);
+                        o = e.left - i.left - n.width - 5;
+                        break;
+
+                    case 'right-center':
+                        // Right of input, centered vertically
+                        s = (e.top + e.height / 2) - i.top - (n.height / 2);
+                        o = e.right - i.left + 5;
+                        break;
+
+                    case 'top-left':
+                        // Above input, aligned to left edge
+                        s = e.top - i.top - n.height - 5;
+                        o = e.left - i.left;
+                        break;
+
+                    case 'top-right':
+                        // Above input, aligned to right edge
+                        s = e.top - i.top - n.height - 5;
+                        o = e.right - i.left - n.width;
+                        break;
+
+                    case 'bottom-left':
+                        // Below input, aligned to left edge
+                        s = e.bottom - i.bottom + 5;
+                        o = e.left - i.left;
+                        break;
+
+                    case 'bottom-right':
+                        // Below input, aligned to right edge
+                        s = e.bottom - i.bottom + 5;
+                        o = e.right - i.left - n.width;
+                        break;
+
+                    default:
+                        // If invalid override, fall back to auto positioning
+                        return this.autoPosition(t, e, i, n, viewportWidth, viewportHeight);
+                }
+
+                // Constrain to viewport when using override
+                const finalLeft = o + i.left;
+                const finalTop = s + i.top;
+
+                if (finalLeft < 10) o = 10 - i.left;
+                if (finalLeft + n.width > viewportWidth - 10) o = viewportWidth - 10 - n.width - i.left;
+                if (finalTop < 10) s = 10 - i.top;
+                if (finalTop + n.height > viewportHeight - 10) s = viewportHeight - 10 - n.height - i.top;
+
+                return { left: o, top: s };
             }
+
+            // If no override, use auto positioning
+            return this.autoPosition(t, e, i, n, viewportWidth, viewportHeight);
+        }
+
+// 3. ADD this new method right after adjustPosition:
+
+        autoPosition(t, e, i, n, viewportWidth, viewportHeight) {
+            // Calculate available space in all directions
+            const spaceAbove = e.top;
+            const spaceBelow = viewportHeight - e.bottom;
+            const spaceLeft = e.left;
+            const spaceRight = viewportWidth - e.right;
+
+            let s = e.bottom - i.bottom; // default: below input
+            let o = e.left - i.left;     // default: align with left edge of input
+
+            // VERTICAL POSITIONING
+            if (spaceBelow < n.height && spaceAbove >= n.height) {
+                s = e.top - i.top - n.height;
+            }
+            else if (spaceBelow < n.height && spaceAbove < n.height) {
+                s = (viewportHeight - n.height) / 2 - i.top;
+            }
+
+            // HORIZONTAL POSITIONING
+            if (spaceRight >= n.width) {
+                o = e.left - i.left;
+            }
+            else if (spaceLeft >= n.width) {
+                o = e.right - i.right - n.width;
+            }
+            else if (e.left + (e.width / 2) - (n.width / 2) >= 0 &&
+                e.left + (e.width / 2) + (n.width / 2) <= viewportWidth) {
+                o = (e.left + e.width / 2) - i.left - (n.width / 2);
+            }
+            else {
+                o = (viewportWidth - n.width) / 2 - i.left;
+            }
+
+            // Constrain to viewport
+            const finalLeft = o + i.left;
+            const finalTop = s + i.top;
+
+            if (finalLeft < 10) o = 10 - i.left;
+            if (finalLeft + n.width > viewportWidth - 10) o = viewportWidth - 10 - n.width - i.left;
+            if (finalTop < 10) s = 10 - i.top;
+            if (finalTop + n.height > viewportHeight - 10) s = viewportHeight - 10 - n.height - i.top;
+
+            return { left: o, top: s };
         }
     }
     var o = Object.freeze({

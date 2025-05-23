@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{{asset("vendor/boxicons/css/boxicons.optimized.min.css")}}">
     <link rel="stylesheet" href="{{asset("vendor/remixicon/remixicon.optimized.min.css")}}">
     <link rel="stylesheet" href="{{asset("css/fontawesome-optimized.min.css")}}">
-    <link rel="stylesheet" href="{{asset("css/style.css")}}">
+    <link rel="stylesheet" href="{{asset("css/style.css") . "?" . env('APP_VERSION')}}">
 
     <!-- Deferred css -->
     <link rel="preload" href="{{asset('vendor/glightbox/css/glightbox.min.css')}}" as="style" onload="this.onload=null;this.rel='stylesheet'">

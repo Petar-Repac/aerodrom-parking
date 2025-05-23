@@ -105,7 +105,6 @@ const pickerTo = new easepick.create({
     AmpPlugin: {
         resetButton: true
     },
-
     setup(picker) {
         picker.on('select', (e) => {
             syncInputs(e.detail.date, 'to')
