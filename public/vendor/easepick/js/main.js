@@ -765,9 +765,9 @@
 
                 switch (override) {
                     case 'center':
-                        // Center in viewport
-                        s = (viewportHeight - n.height) / 2 - i.top;
-                        o = (viewportWidth - n.width) / 2 - i.left;
+                        // Center relative to input element
+                        s = (e.top + e.height / 2) - i.top - (n.height / 2);
+                        o = (e.left + e.width / 2) - i.left - (n.width / 2);
                         break;
 
                     case 'top':
@@ -862,8 +862,7 @@
             // If no override, use auto positioning
             return this.autoPosition(t, e, i, n, viewportWidth, viewportHeight);
         }
-
-// 3. ADD this new method right after adjustPosition:
+ 
 
         autoPosition(t, e, i, n, viewportWidth, viewportHeight) {
             // Calculate available space in all directions
