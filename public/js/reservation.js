@@ -55,6 +55,10 @@ const today = new Date().toISOString().split('T')[0];
 const arrival = document.getElementById('arrival-date');
 const departure = document.getElementById('departure-date');
 
+// Check if CTA elements exist
+const ctaArrivalElement = document.getElementById('cta-arrival-date');
+const ctaDepartureElement = document.getElementById('cta-departure-date');
+
 // let calendarNum = (new Date().getDate() > 22)?2: 1;
 let calendarNum = 1;
 const pickerFrom = new easepick.create({
@@ -115,61 +119,69 @@ const pickerTo = new easepick.create({
     }
 })
 
-const cta_pickerFrom = new easepick.create({
-    element: "#cta-arrival-date",
-    css: [
-        "vendor/easepick/css/index.css"
-    ],
-    zIndex: 10,
-    format: "DD MMMM YYYY",
-    calendars: calendarNum,
-    autoApply: false,
-    grid: calendarNum,
-    LockPlugin: {
-        minDate: new Date().toISOString().split("T")[0]
-    },
-    required: true,
-    plugins: [
-        "AmpPlugin",
-        "LockPlugin"
-    ],
-    AmpPlugin: {
-        resetButton: true
-    },
-    setup(picker) {
-        picker.on('select', (e) => {
-            syncInputs(e.detail.date, 'from')
-        });
-    }
-})
+// Only create CTA pickers if the elements exist
+let cta_pickerFrom = null;
+let cta_pickerTo = null;
 
-const cta_pickerTo = new easepick.create({
-    element: "#cta-departure-date",
-    css: [
-        "vendor/easepick/css/index.css"
-    ],
-    zIndex: 10,
-    format: "DD MMMM YYYY",
-    calendars: calendarNum,
-    autoApply: false,
-    grid: calendarNum,
-    LockPlugin: {
-        minDate: new Date().toISOString().split("T")[0]
-    },
-    required: true,
-    plugins: [
-        "AmpPlugin",
-        "LockPlugin"
-    ],
-    AmpPlugin: {
-        resetButton: true
-    },
-    setup(picker) {
-        picker.on('select', (e) => {
-            syncInputs(e.detail.date, 'to')
-        });
-    }
-})
+if (ctaArrivalElement) {
+    cta_pickerFrom = new easepick.create({
+        element: "#cta-arrival-date",
+        css: [
+            "vendor/easepick/css/index.css"
+        ],
+        zIndex: 10,
+        format: "DD MMMM YYYY",
+        calendars: calendarNum,
+        autoApply: false,
+        grid: calendarNum,
+        LockPlugin: {
+            minDate: new Date().toISOString().split("T")[0]
+        },
+        required: true,
+        plugins: [
+            "AmpPlugin",
+            "LockPlugin"
+        ],
+        AmpPlugin: {
+            resetButton: true
+        },
+        setup(picker) {
+            picker.on('select', (e) => {
+                syncInputs(e.detail.date, 'from')
+            });
+        }
+    })
+}
+
+if (ctaDepartureElement) {
+    cta_pickerTo = new easepick.create({
+        element: "#cta-departure-date",
+        css: [
+            "vendor/easepick/css/index.css"
+        ],
+        zIndex: 10,
+        format: "DD MMMM YYYY",
+        calendars: calendarNum,
+        autoApply: false,
+        grid: calendarNum,
+        LockPlugin: {
+            minDate: new Date().toISOString().split("T")[0]
+        },
+        required: true,
+        plugins: [
+            "AmpPlugin",
+            "LockPlugin"
+        ],
+        AmpPlugin: {
+            resetButton: true
+        },
+        setup(picker) {
+            picker.on('select', (e) => {
+                syncInputs(e.detail.date, 'to')
+            });
+        }
+    })
+}
 
 if (arrival) {
     arrival.removeAttribute('readonly');
@@ -178,11 +190,17 @@ if (arrival) {
 function syncInputs(date, fromOrTo) {
     if(fromOrTo === 'from'){
         pickerFrom.setDate(date);
-        cta_pickerFrom.setDate(date);
+        // Only sync CTA picker if it exists
+        if (cta_pickerFrom) {
+            cta_pickerFrom.setDate(date);
+        }
     }
     else {
         pickerTo.setDate(date);
-        cta_pickerTo.setDate(date);
+        // Only sync CTA picker if it exists
+        if (cta_pickerTo) {
+            cta_pickerTo.setDate(date);
+        }
     }
     if(pickerFrom.getDate() && pickerTo.getDate()){
         updatePrice()
@@ -281,43 +299,43 @@ function updatePrice() {
 
 // Pricing table click functionality - SIMPLIFIED
 // document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, setting up pricing table...');
+console.log('DOM loaded, setting up pricing table...');
 
-    const pricingCells = document.querySelectorAll('.pricing .pricing-cell:not(.info-cell)');
-    console.log('Found pricing cells:', pricingCells.length);
+const pricingCells = document.querySelectorAll('.pricing .pricing-cell:not(.info-cell)');
+console.log('Found pricing cells:', pricingCells.length);
 
-    pricingCells.forEach(cell => {
-        cell.addEventListener('click', function() {
-            console.log('Pricing cell clicked - opening form');
+pricingCells.forEach(cell => {
+    cell.addEventListener('click', function() {
+        console.log('Pricing cell clicked - opening form');
 
-            // Remove selected class from all cells
-            pricingCells.forEach(c => c.classList.remove('selected'));
+        // Remove selected class from all cells
+        pricingCells.forEach(c => c.classList.remove('selected'));
 
-            // Add selected class to clicked cell
-            this.classList.add('selected');
+        // Add selected class to clicked cell
+        this.classList.add('selected');
 
-            // Simply show the reservation form without any date/price updates
+        // Simply show the reservation form without any date/price updates
 
-            const reservationForm = document.getElementById('reservation-form');
-            if (reservationForm) {
-                console.log('Found reservation form, making it active');
-                reservationForm.classList.toggle('active')
-            } else {
-                console.log('Reservation form not found');
-            }
-        });
+        const reservationForm = document.getElementById('reservation-form');
+        if (reservationForm) {
+            console.log('Found reservation form, making it active');
+            reservationForm.classList.toggle('active')
+        } else {
+            console.log('Reservation form not found');
+        }
     });
+});
 
-    // Add keyboard navigation
-    pricingCells.forEach(cell => {
-        cell.setAttribute('tabindex', '0');
-        cell.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                this.click();
-            }
-        });
+// Add keyboard navigation
+pricingCells.forEach(cell => {
+    cell.setAttribute('tabindex', '0');
+    cell.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+        }
     });
+});
 
 // Ajax call for form submission
 const emailForm = document.getElementById('email-form');
