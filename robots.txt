@@ -1,2 +1,4 @@
 User-agent: *
 Disallow: /*?s=
+
+Sitemap: https://www.areoparking.rs/sitemap.xml

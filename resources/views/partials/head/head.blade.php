@@ -3,8 +3,10 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Aero Parking | Najniže cene parkinga na aerodromu Nikola Tesla</title>
-    <meta content='Aero Parking je uslužni parking na 2 minuta od aerodroma Nikola Tesla. Najpovoljnije cene i sezonske akcije do 50%. Gratis transfer u oba smera. +381 69 445 4255' name="description">
+
+    <!-- Meta -->
+    <title>Aero Parking | Najpovoljniji parking na aerodromu Nikola Tesla</title>
+    <meta name="description" content="Aero Parking – Siguran i povoljan parking nadomak Aerodroma Beograd. Najpovoljniji parking, 24/7 nadzor i besplatan transfer do terminala. Rezervišite online!">
     <meta content="parking aerodrom nikola tesla" name="keywords">
 
     <!-- Favicons -->
