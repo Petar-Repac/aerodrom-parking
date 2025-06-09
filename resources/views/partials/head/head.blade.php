@@ -26,7 +26,6 @@
     <noscript><link rel="stylesheet" href="{{asset('vendor/glightbox/css/glightbox.min.css')}}"></noscript>
     <link rel="preload" href="{{asset('vendor/swiper/swiper-bundle.css')}}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="{{asset('vendor/swiper/swiper-bundle.css')}}"></noscript>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     @include('partials.head.google-analytics')
 
