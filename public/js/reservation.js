@@ -298,7 +298,6 @@ function updatePrice() {
 }
 
 // Pricing table click functionality - SIMPLIFIED
-// document.addEventListener('DOMContentLoaded', function() {
 console.log('DOM loaded, setting up pricing table...');
 
 const pricingCells = document.querySelectorAll('.pricing .pricing-cell:not(.info-cell)');
@@ -315,7 +314,6 @@ pricingCells.forEach(cell => {
         this.classList.add('selected');
 
         // Simply show the reservation form without any date/price updates
-
         const reservationForm = document.getElementById('reservation-form');
         if (reservationForm) {
             console.log('Found reservation form, making it active');
@@ -337,62 +335,182 @@ pricingCells.forEach(cell => {
     });
 });
 
-// Ajax call for form submission
+// Configuration for API endpoint
+const API_CONFIG = {
+    // Change this to your Laravel app URL
+    baseUrl: 'https://aeroparking.rs', // or your Laravel app domain
+    endpoints: {
+        reservations: '/api/reservations'
+    }
+};
+
+// Helper function to show loading state
+function setFormLoading(isLoading) {
+    const submitButton = document.querySelector('#email-form button[type="submit"]');
+    if (submitButton) {
+        if (isLoading) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Šalje se...';
+        } else {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Pošaljite zahtev';
+        }
+    }
+}
+
+// Helper function to validate form data
+function validateFormData(formData) {
+    const errors = [];
+
+    if (!formData.name || formData.name.trim().length < 2) {
+        errors.push('Ime mora imati najmanje 2 karaktera');
+    }
+
+    if (!formData.email || !formData.email.includes('@')) {
+        errors.push('Unesite valjan email');
+    }
+
+    if (!formData.phone || formData.phone.trim().length < 6) {
+        errors.push('Unesite valjan broj telefona');
+    }
+
+    if (!formData.passengers || parseInt(formData.passengers) < 1) {
+        errors.push('Broj putnika mora biti najmanje 1');
+    }
+
+    if (!formData.arrivalDate) {
+        errors.push('Unesite datum dolaska');
+    }
+
+    if (!formData.departureDate) {
+        errors.push('Unesite datum odlaska');
+    }
+
+    return errors;
+}
+
+// Ajax call for form submission - Updated for Laravel API
 const emailForm = document.getElementById('email-form');
 if (emailForm) {
-    emailForm.addEventListener('submit', function (e) {
+    emailForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        let formData = new FormData();
-        formData.append("name", document.getElementById('name')?.value || '');
-        formData.append("email", document.getElementById('email')?.value || '');
-        formData.append("passengers", document.getElementById('passengers')?.value || '');
-        formData.append("phone", document.getElementById('phone')?.value || '');
-        formData.append("arrivalDate", document.getElementById('arrival-date')?.value || '');
-        formData.append("departureDate", document.getElementById('departure-date')?.value || '');
+        // Get form data
+        const formData = {
+            name: document.getElementById('name')?.value?.trim() || '',
+            email: document.getElementById('email')?.value?.trim() || '',
+            passengers: document.getElementById('passengers')?.value || '',
+            phone: document.getElementById('phone')?.value?.trim() || '',
+            arrivalDate: document.getElementById('arrival-date')?.value || '',
+            departureDate: document.getElementById('departure-date')?.value || '',
+            additionalInfo: document.getElementById('additional-info')?.value?.trim() || ''
+        };
 
-        fetch('https://aeroparking.rs/forms/src/email.php', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(responseObj => {
-                if (responseObj.status === "success") {
-                    if (typeof Swal !== 'undefined') {
-                        Swal.fire({
-                            title: "Zahtev za rezervacijom poslat!",
-                            text: "Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.",
-                            icon: "success",
-                            confirmButtonText: "OK",
-                        });
-                    } else {
-                        alert("Zahtev za rezervacijom poslat! Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.");
-                    }
+        // Validate form data
+        const validationErrors = validateFormData(formData);
+        if (validationErrors.length > 0) {
+            const errorMessage = validationErrors.join('\n');
+            if (typeof Sweetalert2 !== 'undefined') {
+                Sweetalert2.fire({
+                    title: "Greška u podacima!",
+                    text: errorMessage,
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                });
+            } else {
+                alert(`Greška u podacima:\n${errorMessage}`);
+            }
+            return;
+        }
+
+        // Show loading state
+        setFormLoading(true);
+
+        try {
+            // Send request to Laravel API
+            const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.reservations}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    // Add CSRF token if needed (for web routes)
+                    // 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const responseData = await response.json();
+
+            if (response.ok && responseData.status === "success") {
+                // Success
+                if (typeof Sweetalert2 !== 'undefined') {
+                    Sweetalert2.fire({
+                        title: "Zahtev za rezervacijom poslat!",
+                        text: "Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    }).then(() => {
+                        // Reset form
+                        emailForm.reset();
+                        // Hide reservation form
+                        const reservationForm = document.getElementById('reservation-form');
+                        if (reservationForm) {
+                            reservationForm.classList.remove('active');
+                        }
+                        showReservationForm = true;
+                    });
                 } else {
-                    if (typeof Swal !== 'undefined') {
-                        Swal.fire({
-                            title: "Greška!",
-                            text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
-                            icon: "error",
-                            confirmButtonText: "OK",
-                        });
-                    } else {
-                        alert("Greška! Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.");
-                    }
+                    alert("Zahtev za rezervacijom poslat! Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.");
+                    emailForm.reset();
                 }
-            })
-            .catch(error => {
-                console.error('Form submission error:', error);
-                if (typeof Swal !== 'undefined') {
-                    Swal.fire({
+            } else {
+                // Handle validation errors from Laravel
+                let errorMessage = "Došlo je do greške na serveru.";
+
+                if (responseData.errors) {
+                    // Laravel validation errors
+                    const errors = Object.values(responseData.errors).flat();
+                    errorMessage = errors.join('\n');
+                } else if (responseData.message) {
+                    errorMessage = responseData.message;
+                }
+
+                if (typeof Sweetalert2 !== 'undefined') {
+                    Sweetalert2.fire({
                         title: "Greška!",
-                        text: "Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.",
+                        text: errorMessage,
                         icon: "error",
                         confirmButtonText: "OK",
                     });
                 } else {
-                    alert("Greška! Došlo je do greške na serveru. Molimo kontaktirajte nas drugim putem.");
+                    alert(`Greška: ${errorMessage}`);
                 }
-            });
+            }
+        } catch (error) {
+            console.error('Form submission error:', error);
+
+            let errorMessage = "Došlo je do greške prilikom slanja zahteva.";
+
+            // Check if it's a network error
+            if (!navigator.onLine) {
+                errorMessage = "Proverite internetsku konekciju i pokušajte ponovo.";
+            } else if (error.name === 'TypeError') {
+                errorMessage = "Greška u komunikaciji sa serverom. Molimo pokušajte ponovo.";
+            }
+
+            if (typeof Sweetalert2 !== 'undefined') {
+                Sweetalert2.fire({
+                    title: "Greška!",
+                    text: errorMessage,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
+            } else {
+                alert(`Greška: ${errorMessage}`);
+            }
+        } finally {
+            // Remove loading state
+            setFormLoading(false);
+        }
     });
 }
