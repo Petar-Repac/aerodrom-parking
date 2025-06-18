@@ -11,25 +11,32 @@
     <!-- ======= About Section ======= -->
     <section id="onama" class="about">
         <div class="container">
-            <div class="section-title">
-                <h2>Stranica nije pronađena!</h2>
+            <div class="section-title" style="margin-top: 200px;">
             </div>
             <div class="row content">
-                <div class="col-lg-8">
-                    <p></p>
-                </div>
+                <!-- ======= Cta Section ======= -->
+                <section id="cta" class="cta">
+                    <div class="container">
+
+                        <div class="text-center">
+                            <h3>Stranica nije pronađena!</h3>
+                            <p>
+                                Sadržaj koji tražite je možda uklonjen, ili se ne nalazi na ovoj lokaciji.
+                            </p>
+                            <a class="cta-btn"  href="/">Povratak na početnu</a>
+                        </div>
+                    </div>
+                </section><!-- End Cta Section -->
+
             </div>
         </div>
     </section><!-- End About Section -->
 
 
-    @include('partials.page-sections.cta')
 
 </main><!-- End #main -->
 
 @include('partials.common.footer')
-
-@include('partials.common.reservation-drawer')
 
 @include('partials.common.scripts-homepage')
 

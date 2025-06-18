@@ -17,7 +17,7 @@
                     </p>
                 </div>
                 <div class="col-lg-4 pt-4 pt-lg-0">
-                    <a href="/contact" class="btn-learn-more">Lokacija parkinga</a>
+                    <a href="/kontakt" class="btn-learn-more">Lokacija parkinga</a>
                 </div>
             </div>
         </div>

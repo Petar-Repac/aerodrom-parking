@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index']);
 
 
-Route::get('/about-us', function () {
+Route::get('/o-nama', function () {
     return view('about');
 });
-Route::get('/contact', function () {
+Route::get('/kontakt', function () {
     return view('contact');
 });
-Route::get('/pricing', function () {
+Route::get('/cenovnik', function () {
     return view('pricing');
 });
 
@@ -26,5 +26,5 @@ Route::get('/blog/{slug}', [NewsController::class, 'single'])->name('news.single
 
 
 Route::fallback(function () {
-    return response()->view('page-not-found.blade.php', [], 404);
+    return response()->view('page-not-found', [], 404);
 });

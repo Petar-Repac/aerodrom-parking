@@ -10,7 +10,7 @@
 
     <!-- About Us Page -->
     <url>
-        <loc>https://aeroparking.rs/about-us</loc>
+        <loc>https://aeroparking.rs/o-nama</loc>
         <lastmod>2025-06-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
@@ -18,7 +18,7 @@
 
     <!-- Contact Page -->
     <url>
-        <loc>https://aeroparking.rs/contact</loc>
+        <loc>https://aeroparking.rs/kontakt</loc>
         <lastmod>2025-06-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
@@ -26,7 +26,7 @@
 
     <!-- Pricing Page -->
     <url>
-        <loc>https://aeroparking.rs/pricing</loc>
+        <loc>https://aeroparking.rs/cenovnik</loc>
         <lastmod>2025-06-11</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
