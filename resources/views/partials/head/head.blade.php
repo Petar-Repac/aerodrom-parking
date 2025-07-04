@@ -21,7 +21,7 @@
     <meta property="og:description" content="Aero Parking – Siguran i povoljan parking nadomak Aerodroma Beograd. Najpovoljniji parking, 24/7 nadzor i besplatan transfer do terminala. Rezervišite online!">
     <meta property="og:locale" content="sr_RS">
 
-    <!-- Additional recommended meta tags -->
+    <!-- Additional meta tags -->
     <meta name="description" content="Aero Parking – Siguran i povoljan parking nadomak Aerodroma Beograd. Najpovoljniji parking, 24/7 nadzor i besplatan transfer do terminala. Rezervišite online!">
     <meta name="keywords" content="parking aerodrom, Nikola Tesla aerodrom, parking Beograd, transfer aerodrom, jeftin parking, rezervacija parking">
 
