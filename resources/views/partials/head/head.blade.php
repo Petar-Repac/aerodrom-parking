@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="{{asset("vendor/bootstrap-icons/bootstrap-icons.optimized.min.css") . "?" . env('APP_VERSION')}} ">
     <link rel="stylesheet" href="{{asset("vendor/boxicons/css/boxicons.optimized.min.css")}}">
     <link rel="stylesheet" href="{{asset("vendor/remixicon/remixicon.optimized.min.css")}}">
-    <link rel="stylesheet" href="{{asset("css/fontawesome-optimized.min.css")}}">
+    <link rel="stylesheet" href="{{asset("css/fontawesome-optimized.min.css") . "?" . env('APP_VERSION')}}">
     <link rel="stylesheet" href="{{asset("css/style.css") . "?" . env('APP_VERSION')}}">
 
     <!-- Deferred css -->

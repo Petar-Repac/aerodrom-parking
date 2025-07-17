@@ -7,12 +7,12 @@
     <ul>
         <li id="cta-reserve">
       <span>
-      <i class="bi bi-calendar-check"></i>
+      <i class="fa fa-calendar-check"></i>
       Online rezervacija</span>
         </li>
 
         <li><a href="https://wa.me/+381694454255">
-                <i class="bi bi-whatsapp"></i>
+                <i class="fab fa-whatsapp"></i>
                 Whatsapp</a>
         </li>
         <li>
@@ -22,12 +22,12 @@
         </li>
         <li>
             <a href="mailto:rezervacije@aeroparking.rs">
-                <i class="bi bi-envelope" aria-label="Rezervacija"></i>
+                <i class="fa fa-envelope" aria-label="Rezervacija"></i>
                 Email</a>
         </li>
         <li>
             <a href="tel:0694454255">
-                <i class="bi bi-telephone"></i>
+                <i class="fa fa-phone"></i>
                 Pozovite nas</a>
         </li>
     </ul>
@@ -43,7 +43,7 @@
         <div class="row mt-2 pb-2">
             <div class="d-flex align-items-center justify-content-lg-center gap-3 p-1 logo">
 {{--                <img src="/img/logo-transparent-background-120x120.webp" width="45" height="45" alt="aero parking logo" class="rounded-5">--}}
-                <h2 class="me-auto me-lg-0">AERO PARKING REZERVACIJA</h2>
+                <h2 class="me-auto me-lg-0 text-center">PARKING REZERVACIJA</h2>
             </div>
 
             <form id="email-form" class="reservation-form-content">
