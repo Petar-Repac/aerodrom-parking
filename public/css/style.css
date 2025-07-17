@@ -2149,7 +2149,7 @@ section {
   font-size: 1.2em;
   font-weight: bold;
   padding: 1em;
-  color: var(--clr-accent-form);
+  color: #fff;
   transition: 0.4s;
   border-radius: 4px;
 }
@@ -2590,105 +2590,105 @@ section {
 
 /* Input styling */
 
-input[type=text] {
-  appearance: none;
-  border: none;
-  outline: none;
-  border-bottom: .2em solid var(--clr-accent-form);
-  background: var(--clr-accent-form);
-  border-radius: .2em .2em 0 0;
-  padding: .4em;
-  color: white;
-  font-size: 1.1em;
+/*input[type=text] {*/
+/*  appearance: none;*/
+/*  border: none;*/
+/*  outline: none;*/
+/*  border-bottom: .2em solid var(--clr-accent-form);*/
+/*  background: var(--clr-accent-form);*/
+/*  border-radius: .2em .2em 0 0;*/
+/*  padding: .4em;*/
+/*  color: white;*/
+/*  font-size: 1.1em;*/
 
-}
+/*}*/
 
-input[type=email] {
-  appearance: none;
-  border: none;
-  outline: none;
-  border-bottom: .2em solid var(--clr-accent-form);
-  background: var(--clr-accent-form);
-  border-radius: .2em .2em 0 0;
-  padding: .4em;
-  color: white;
-  font-size: 1.1em;
-}
+/*input[type=email] {*/
+/*  appearance: none;*/
+/*  border: none;*/
+/*  outline: none;*/
+/*  border-bottom: .2em solid var(--clr-accent-form);*/
+/*  background: var(--clr-accent-form);*/
+/*  border-radius: .2em .2em 0 0;*/
+/*  padding: .4em;*/
+/*  color: white;*/
+/*  font-size: 1.1em;*/
+/*}*/
 
-/*  Button*/
-input[type=button] {
-  appearance: none;
-  border: .2em solid var(--clr-accent-form);
-  background: hsl(0 0 0/0);
-  padding: .85em 1.5em;
-  font-size: 1.1em;
-  color: #fff;
-  border-radius: 2em;
-  transition: 1s;
-  &:hover, &:focus, &:active {
-    background: var(--clr-accent-form);
-    color: #fff;
-  }
-}
+/*!*  Button*!*/
+/*input[type=button] {*/
+/*  appearance: none;*/
+/*  border: .2em solid var(--clr-accent-form);*/
+/*  background: hsl(0 0 0/0);*/
+/*  padding: .85em 1.5em;*/
+/*  font-size: 1.1em;*/
+/*  color: #fff;*/
+/*  border-radius: 2em;*/
+/*  transition: 1s;*/
+/*  &:hover, &:focus, &:active {*/
+/*    background: var(--clr-accent-form);*/
+/*    color: #fff;*/
+/*  }*/
+/*}*/
 
-input::placeholder {
-  color: #666;
-  opacity: 1; /* Firefox */
-}
-
-
-input:autofill {
-  -webkit-box-shadow: 0 0 0 30px var(--clr-accent-form) inset !important;
-  -webkit-text-fill-color: #fff;
-}
-
-input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 30px var(--clr-accent-form) inset !important;
-  -webkit-text-fill-color: #fff;
-}
-/* Date*/
-input[type=date] {
-  padding: .8em .9em;
-  border-radius: 2em;
-  text-align: left;
-  color: var(--clr-accent-form);
-  font-size: 1.1em;
-  cursor: pointer;
-  &::-webkit-datetime-edit-text  { color: var(--clr-accent-form);}
-  &::-webkit-datetime-edit-month-field { color: var(--clr-accent-form); }
-  &::-webkit-datetime-edit-day-field  { color: var(--clr-accent-form); }
-  &::-webkit-datetime-edit-year-field  { color: var(--clr-accent-form);  }
-  &::-webkit-inner-spin-button { color: var(--clr-accent-form); }
-  &::-webkit-calendar-picker-indicator {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23742CCC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
-    font-size: 2em;
-    position: relative;
-    bottom: 0.3em;
-    right: 0.4em;
-  }
-}
-
-/* Style the input so it appears like a placeholder */
-input[type="date"]::before {
-  content: attr(placeholder);
-  color: #999; /* Placeholder text color */
-  left: 0.5em;
-}
+/*input::placeholder {*/
+/*  color: #666;*/
+/*  opacity: 1; !* Firefox *!*/
+/*}*/
 
 
-/* Number*/
-input[type=number] {
-  width: 3em;
-  padding: 0.5em;
-  border: .2em solid var(--clr-accent-form);
-  background: var(--clr-accent-form);
-  border-radius: .2em .2em 0 0;
-  text-align: center;
-  color: #fff;
-  appearance: textfield;
-  margin: 0;
-  font-size: 1.1em;
-}
+/*input:autofill {*/
+/*  -webkit-box-shadow: 0 0 0 30px var(--clr-accent-form) inset !important;*/
+/*  -webkit-text-fill-color: #fff;*/
+/*}*/
+
+/*input:-webkit-autofill {*/
+/*  -webkit-box-shadow: 0 0 0 30px var(--clr-accent-form) inset !important;*/
+/*  -webkit-text-fill-color: #fff;*/
+/*}*/
+/*!* Date*!*/
+/*input[type=date] {*/
+/*  padding: .8em .9em;*/
+/*  border-radius: 2em;*/
+/*  text-align: left;*/
+/*  color: var(--clr-accent-form);*/
+/*  font-size: 1.1em;*/
+/*  cursor: pointer;*/
+/*  &::-webkit-datetime-edit-text  { color: var(--clr-accent-form);}*/
+/*  &::-webkit-datetime-edit-month-field { color: var(--clr-accent-form); }*/
+/*  &::-webkit-datetime-edit-day-field  { color: var(--clr-accent-form); }*/
+/*  &::-webkit-datetime-edit-year-field  { color: var(--clr-accent-form);  }*/
+/*  &::-webkit-inner-spin-button { color: var(--clr-accent-form); }*/
+/*  &::-webkit-calendar-picker-indicator {*/
+/*    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23742CCC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");*/
+/*    font-size: 2em;*/
+/*    position: relative;*/
+/*    bottom: 0.3em;*/
+/*    right: 0.4em;*/
+/*  }*/
+/*}*/
+
+/*!* Style the input so it appears like a placeholder *!*/
+/*input[type="date"]::before {*/
+/*  content: attr(placeholder);*/
+/*  color: #999; !* Placeholder text color *!*/
+/*  left: 0.5em;*/
+/*}*/
+
+
+/*!* Number*!*/
+/*input[type=number] {*/
+/*  width: 3em;*/
+/*  padding: 0.5em;*/
+/*  border: .2em solid var(--clr-accent-form);*/
+/*  background: var(--clr-accent-form);*/
+/*  border-radius: .2em .2em 0 0;*/
+/*  text-align: center;*/
+/*  color: #fff;*/
+/*  appearance: textfield;*/
+/*  margin: 0;*/
+/*  font-size: 1.1em;*/
+/*}*/
 
 /* Reservation landing */
 #reservation-landing {

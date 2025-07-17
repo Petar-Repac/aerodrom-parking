@@ -13,82 +13,74 @@
             <div class="section-title">
                 <h3>Kontakt</h3>
             </div>
+
+            <!-- Map Section -->
             <div class="map-div">
                 <iframe style="border:0; width: 100%; height: 470px;" title="google maps"
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11323.4418740816!2d20.300839014691345!3d44.804032171070865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475a6987e5962bc9%3A0x83125938d680c6f2!2sAerodromski%20parking!5e0!3m2!1ssr!2srs!4v1713703011247!5m2!1ssr!2srs"
                         width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
+
+            <!-- Contact Form -->
             <div class="row mt-5">
-                <div class="col-lg-4">
-                    <div class="info">
-                        <div class="address">
-                            <i class="bi bi-geo-alt"></i>
-                            <h4>Lokacija:</h4>
-                            <p>Put za aerodrom bb, Београд 11271</p>
-                        </div>
-
-                        <div class="email">
-                            <i class="bi bi-envelope"></i>
-                            <h4>Email:</h4>
-                            <p>rezervacije@aeroparking.rs</p>
-                        </div>
-
-                        <div class="phone">
-                            <i class="bi bi-phone"></i>
-                            <h4>Telefon:</h4>
-                            <p>+381 69 445 4255</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-8">
+                <div class="col-12">
                     <div class="contact-form-container">
                         <h3 class="mb-4">Pošaljite nam poruku</h3>
 
                         <form action="{{ route('contact.send') }}" method="post" role="form" class="php-email-form">
                             @csrf
+
+                            <!-- Loading/Success/Error Messages -->
+                            <div class="loading">Šalje se...</div>
+                            <div class="error-message"></div>
+                            <div class="sent-message">Vaša poruka je poslata. Hvala vam!</div>
+
                             <div class="row">
                                 <div class="col-md-6 form-group">
                                     <label for="name">Ime i prezime *</label>
-                                    <input type="text" name="name" class="form-control" id="name" placeholder="Vaše ime i prezime" required value="{{ old('name') }}">
+                                    <input type="text" name="name" class="form-control" id="name"
+                                           placeholder="Vaše ime i prezime" required value="{{ old('name') }}">
                                     @error('name')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 form-group mt-3 mt-md-0">
+                                <div class="col-md-6 form-group">
                                     <label for="email">Email adresa *</label>
-                                    <input type="email" class="form-control" name="email" id="email" placeholder="vaš@email.com" required value="{{ old('email') }}">
+                                    <input type="email" class="form-control" name="email" id="email"
+                                           placeholder="vaš@email.com" required value="{{ old('email') }}">
                                     @error('email')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
 
-                            <div class="row mt-3">
+                            <div class="row">
                                 <div class="col-md-6 form-group">
                                     <label for="phone">Telefon</label>
-                                    <input type="tel" class="form-control" name="phone" id="phone" placeholder="+381 69 445 4255" value="{{ old('phone') }}">
+                                    <input type="tel" class="form-control" name="phone" id="phone"
+                                           placeholder="+381 69 445 4255" value="{{ old('phone') }}">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="subject">Naslov poruke *</label>
+                                    <input type="text" class="form-control" name="subject" id="subject"
+                                           placeholder="Ukratko opišite razlog kontakta" required value="{{ old('subject') }}">
+                                    @error('subject')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
-                            <div class="form-group mt-3">
-                                <label for="subject">Naslov poruke *</label>
-                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Ukratko opišite razlog kontakta" required value="{{ old('subject') }}">
-                                @error('subject')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group mt-3">
+                            <div class="form-group">
                                 <label for="message">Poruka *</label>
-                                <textarea class="form-control" name="message" id="message" rows="6" placeholder="Detaljno opišite vaš upit ili potrebu..." required>{{ old('message') }}</textarea>
+                                <textarea class="form-control" name="message" id="message" rows="6"
+                                          placeholder="Detaljno opišite vaš upit ili potrebu..." required>{{ old('message') }}</textarea>
                                 @error('message')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <div class="text-center mt-4">
+                            <div class="text-center">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-paper-plane"></i> Pošaljite poruku
                                 </button>
@@ -97,6 +89,7 @@
                     </div>
                 </div><!-- End Contact Form -->
             </div>
+            </div>
         </div>
     </section><!-- End Contact Section -->
 
@@ -104,7 +97,6 @@
 </main><!-- End #main -->
 
 @include('partials.common.footer')
-
 @include('partials.common.reservation-drawer')
 
 <!-- Toast Notification -->
@@ -127,45 +119,242 @@
 @include('partials.common.scripts-homepage')
 
 <style>
-    /* Contact Form Styles */
+    /* Contact Page Specific Styles */
+    .contact {
+        padding: 60px 0;
+    }
+
+    .contact .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    /* Section Title */
+    .contact .section-title {
+        text-align: center;
+        padding-top: 40px;
+    }
+
+    .contact .section-title h3 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 20px;
+    }
+
+    .contact .section-title h3::after {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 50px;
+        height: 3px;
+        background: var(--clr-accent-light);
+        bottom: 0;
+        left: calc(50% - 25px);
+    }
+
+    /* Map Container */
+    .contact .map-div {
+        margin-bottom: 40px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact .map-div iframe {
+        border-radius: 10px;
+    }
+
+    /* Contact Info Section */
+    .contact .info {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+
+    .contact .info .address,
+    .contact .info .email,
+    .contact .info .phone {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .contact .info .address:hover,
+    .contact .info .email:hover,
+    .contact .info .phone:hover {
+        background: #e9ecef;
+        transform: translateY(-2px);
+    }
+
+    .contact .info i {
+        font-size: 20px;
+        color: var(--clr-accent-light);
+        width: 44px;
+        height: 44px;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        margin-right: 15px;
+        flex-shrink: 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact .info h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #333;
+        padding: 0;
+    }
+
+    .contact .info p {
+        font-size: 16px;
+        color: #666;
+        margin: 0;
+        padding: 0;
+        line-height: 1.5;
+    }
+
+    /* Contact Form Container */
     .contact-form-container {
         background: #fff;
         padding: 40px;
         border-radius: 10px;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
+        height: 100%;
     }
 
-    .php-email-form label {
-        font-weight: 500;
-        margin-bottom: 5px;
+    .contact-form-container h3 {
         color: #333;
+        font-size: 24px;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 30px;
     }
 
-    .php-email-form .form-control {
-        border: 2px solid #eee;
-        border-radius: 5px;
-        padding: 12px;
-        transition: border-color 0.3s ease;
+    /* Form Styles - Override any conflicting styles */
+    .contact .php-email-form .form-group {
+        margin-bottom: 20px;
     }
 
-    .php-email-form .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    .contact .php-email-form label {
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #333;
+        display: block;
+        font-size: 14px;
     }
 
-    .php-email-form .btn-primary {
+    .contact .php-email-form .form-control {
+        background: #fff !important;
+        border: 2px solid #eee !important;
+        color: #333 !important;
+        border-radius: 8px !important;
+        padding: 12px 15px !important;
+        transition: all 0.3s ease !important;
+        font-size: 14px !important;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .contact .php-email-form .form-control:focus {
+        border-color: #007bff !important;
+        background: #fff !important;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+        outline: none !important;
+    }
+
+    .contact .php-email-form .form-control::placeholder {
+        color: #999 !important;
+        opacity: 1 !important;
+    }
+
+    /* Textarea specific styling */
+    .contact .php-email-form textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    /* Button Styling */
+    .contact .php-email-form .btn-primary {
         background: #007bff;
         border: none;
         padding: 12px 30px;
-        border-radius: 5px;
+        border-radius: 8px;
         font-weight: 500;
         transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
     }
 
-    .php-email-form .btn-primary:hover {
+    .contact .php-email-form .btn-primary:hover {
         background: #0056b3;
         transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    }
+
+    .contact .php-email-form .btn-primary:disabled {
+        background: #6c757d;
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* Error Messages */
+    .contact .text-danger {
+        color: #dc3545 !important;
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+    }
+
+    /* Form States */
+    .contact .php-email-form .loading {
+        display: none;
+        background: #e3f2fd;
+        border: 1px solid #bbdefb;
+        color: #1976d2;
+        text-align: center;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .contact .php-email-form .sent-message {
+        display: none;
+        color: #155724;
+        background: #d4edda;
+        border: 1px solid #c3e6cb;
+        text-align: center;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .contact .php-email-form .error-message {
+        display: none;
+        color: #721c24;
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+        text-align: center;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
     }
 
     /* Toast Notification Styles */
@@ -193,15 +382,15 @@
     }
 
     .toast-notification.success {
-        border-left-color: #10b981;
+        border-left-color: #28a745;
     }
 
     .toast-notification.error {
-        border-left-color: #ef4444;
+        border-left-color: #dc3545;
     }
 
     .toast-notification.warning {
-        border-left-color: #f59e0b;
+        border-left-color: #ffc107;
     }
 
     .toast-notification.info {
@@ -230,15 +419,15 @@
     }
 
     .toast-notification.success .toast-icon i {
-        color: #10b981;
+        color: #28a745;
     }
 
     .toast-notification.error .toast-icon i {
-        color: #ef4444;
+        color: #dc3545;
     }
 
     .toast-notification.warning .toast-icon i {
-        color: #f59e0b;
+        color: #ffc107;
     }
 
     .toast-notification.info .toast-icon i {
@@ -306,15 +495,15 @@
     }
 
     .toast-notification.success .toast-progress::before {
-        background: #10b981;
+        background: #28a745;
     }
 
     .toast-notification.error .toast-progress::before {
-        background: #ef4444;
+        background: #dc3545;
     }
 
     .toast-notification.warning .toast-progress::before {
-        background: #f59e0b;
+        background: #ffc107;
     }
 
     @keyframes toast-progress {
@@ -323,38 +512,98 @@
         }
     }
 
-    /* Responsive adjustments */
+    /* Responsive Design */
+    @media (max-width: 991px) {
+        .contact .info {
+            margin-bottom: 30px;
+        }
+
+        .contact-form-container {
+            margin-bottom: 30px;
+        }
+    }
+
     @media (max-width: 768px) {
+        .contact .info .address,
+        .contact .info .email,
+        .contact .info .phone {
+            flex-direction: column;
+            text-align: center;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .contact .info i {
+            margin-right: 0;
+            margin-bottom: 10px;
+        }
+
+        .contact-form-container {
+            padding: 20px;
+        }
+
+        .contact .section-title h3 {
+            font-size: 28px;
+        }
+
         .toast-notification {
             right: 10px;
             left: 10px;
             min-width: auto;
             max-width: none;
         }
-
-        .contact-form-container {
-            padding: 20px;
-        }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 576px) {
+        .contact {
+            padding: 40px 0;
+        }
+
+        .contact .container {
+            padding: 0 10px;
+        }
+
+        .contact-form-container {
+            padding: 15px;
+        }
+
+        .contact .section-title h3 {
+            font-size: 24px;
+        }
+
         .toast-notification {
             top: 10px;
             right: 10px;
             left: 10px;
         }
 
-        .toast-content {
-            padding: 12px;
+        .contact .php-email-form .btn-primary {
+            width: 100%;
+            justify-content: center;
         }
+    }
 
-        .toast-title {
-            font-size: 13px;
-        }
+    /* Ensure proper spacing and layout */
+    .contact .row {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
 
-        .toast-message {
-            font-size: 12px;
-        }
+    .contact .row > [class*="col-"] {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    /* Fix any z-index issues */
+    .contact {
+        position: relative;
+        z-index: 1;
+    }
+
+    .contact .info,
+    .contact-form-container {
+        position: relative;
+        z-index: 2;
     }
 </style>
 
@@ -407,10 +656,7 @@
 
         // Show toast with animation
         toast.style.display = 'block';
-
-        // Force reflow to ensure display: block is applied
-        toast.offsetHeight;
-
+        toast.offsetHeight; // Force reflow
         toast.classList.add('show');
 
         // Auto hide after 5 seconds
@@ -423,8 +669,6 @@
         const toast = document.getElementById('toast-notification');
         if (toast) {
             toast.classList.remove('show');
-
-            // Hide completely after animation
             setTimeout(() => {
                 toast.style.display = 'none';
             }, 300);
@@ -513,8 +757,14 @@
                             // Handle validation errors
                             if (data.errors) {
                                 Object.keys(data.errors).forEach(field => {
-                                    const errorElement = contactForm.querySelector(`input[name="${field}"] + .text-danger, select[name="${field}"] + .text-danger, textarea[name="${field}"] + .text-danger`);
-                                    if (errorElement) {
+                                    const input = contactForm.querySelector(`[name="${field}"]`);
+                                    if (input) {
+                                        let errorElement = input.parentNode.querySelector('.text-danger');
+                                        if (!errorElement) {
+                                            errorElement = document.createElement('div');
+                                            errorElement.className = 'text-danger';
+                                            input.parentNode.appendChild(errorElement);
+                                        }
                                         errorElement.textContent = data.errors[field][0];
                                     }
                                 });
