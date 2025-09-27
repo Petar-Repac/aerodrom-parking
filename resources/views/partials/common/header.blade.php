@@ -14,19 +14,19 @@
 
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
-                <li><a class="nav-link scrollto {{ request()->is('/')  ? 'active' : '' }}" href="/?theme={{$theme}}">
+                <li><a class="nav-link scrollto {{ request()->is('/')  ? 'active' : '' }}" href="/">
                         <i class="bi bi-house-door"></i>
                         <span>Početna</span>
                     </a></li>
-                <li><a class="nav-link scrollto {{ request()->is('pricing')  ? 'active' : '' }}" href="/pricing?theme={{$theme}}">
+                <li><a class="nav-link scrollto {{ request()->is('cenovnik')  ? 'active' : '' }}" href="/cenovnik">
                         <i class="bi bi-currency-exchange"></i>
                         <span>Cenovnik</span>
                     </a></li>
-                <li><a class="nav-link scrollto {{ request()->is('about-us')  ? 'active' : '' }}" href="/about-us?theme={{$theme}}">
+                <li><a class="nav-link scrollto {{ request()->is('o-nama')  ? 'active' : '' }}" href="/o-nama">
                         <i class="bi bi-info-circle"></i>
                         <span>O nama</span>
                     </a></li>
-                <li><a class="nav-link scrollto {{ request()->is('contact')  ? 'active' : '' }}" href="/contact?theme={{$theme}}">
+                <li><a class="nav-link scrollto {{ request()->is('kontakt')  ? 'active' : '' }}" href="/kontakt">
                         <i class="bi bi-envelope"></i>
                         <span>Kontakt</span>
                     </a></li>

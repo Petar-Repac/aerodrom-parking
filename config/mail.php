@@ -108,12 +108,18 @@ return [
     |
     */
 
-    'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
-    ],
+
     'reservation' => [
         'to' => env('RESERVATION_EMAIL', 'rezervacije@aeroparking.rs'),
         'from_name' => env('RESERVATION_FROM_NAME', 'AeroParking Reservations'),
     ],
+    'from' => [
+        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'name' => env('MAIL_FROM_NAME', 'Example'),
+    ],
+    'contact' => [
+        'address' => env('MAIL_CONTACT_EMAIL', 'hello@example.com'),
+        'name' => env('MAIL_CONTACT_NAME', 'Example'),
+    ],
+
 ];

@@ -16,12 +16,11 @@
                 <div class="col-lg-4 col-md-6 footer-links">
                     <h4>Korisni linkovi</h4>
                     <ul>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#hero">Početna</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#about">O nama</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{{route('home')}}">Početna</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{{route('about')}}">O nama</a></li>
                         <li><i class="bx bx-chevron-right"></i> <a href="#pogodnosti">Pogodnosti</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#cenovnik">Cenovnik</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#contact">Kontakt</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#rezervacija">Rezervacija</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{{route('pricing')}}">Cenovnik</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{{route('contact')}}">Kontakt</a></li>
                     </ul>
                 </div>
 
@@ -47,7 +46,7 @@
 
     <div class="container footer-bottom clearfix">
         <div class="copyright">
-            Design by: <strong><span>Petar Repac & Zorica Urošević 2024</span></strong>.
+            Design by: <strong><span>Codegarden</span></strong>
         </div>
     </div>
 </footer><!-- End Footer -->
