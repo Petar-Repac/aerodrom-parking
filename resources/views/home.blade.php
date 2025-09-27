@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="sr">
 @include('partials.head.head')
-<meta name="google-site-verification" content="TlOiA-UltrkvBlDJa9cYqfdlcdnzJZs6WyFG3XTDyI0" />
 <body>
 
 @include('partials.page-sections.hero')

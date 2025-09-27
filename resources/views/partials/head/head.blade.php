@@ -57,5 +57,6 @@
 
     @include('partials.util.colour-switcher')
 
+    <meta name="google-site-verification" content="TlOiA-UltrkvBlDJa9cYqfdlcdnzJZs6WyFG3XTDyI0" />
 
 </head>
