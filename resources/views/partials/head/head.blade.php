@@ -1,40 +1,48 @@
-
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-
     <!-- Meta -->
-    <title>Aero Parking | Najpovoljniji parking na aerodromu Nikola Tesla</title>
+    <title>{{ __('messages.meta.title') }}</title>
 
     <!-- Favicons -->
     <link href="{{asset('img/android-chrome-512x512.png')}}" rel="icon">
 
-    <!-- Open Graph Meta Tags for Aero Parking -->
-    <meta property="og:title" content="Aero Parking | Najpovoljniji parking na aerodromu Nikola Tesla">
+    @php
+        $alternateUrls = App\Helpers\LocalizationHelper::getAlternateUrls();
+    @endphp
+
+        <!-- Hreflang Tags -->
+    <link rel="alternate" hreflang="sr" href="{{ $alternateUrls['sr'] }}" />
+    <link rel="alternate" hreflang="en" href="{{ $alternateUrls['en'] }}" />
+    <link rel="alternate" hreflang="ru" href="{{ $alternateUrls['ru'] }}" />
+    <link rel="alternate" hreflang="x-default" href="{{ $alternateUrls['sr'] }}" />
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="{{ __('messages.meta.title') }}">
     <meta property="og:image" content="{{asset('img/android-chrome-512x512.png')}}">
     <meta property="og:type" content="website">
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
-    <meta property="og:url" content="https://aeroparking.rs/">
+    <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:site_name" content="Aero Parking">
-    <meta property="og:description" content="Aero Parking – Siguran i povoljan parking nadomak Aerodroma Beograd. Najpovoljniji parking, 24/7 nadzor i besplatan transfer do terminala. Rezervišite online!">
-    <meta property="og:locale" content="sr_RS">
+    <meta property="og:description" content="{{ __('messages.meta.description') }}">
+    <meta property="og:locale" content="{{ App::getLocale() === 'sr' ? 'sr_RS' : (App::getLocale() === 'en' ? 'en_US' : 'ru_RU') }}">
 
     <!-- Additional meta tags -->
-    <meta name="description" content="Aero Parking – Siguran i povoljan parking nadomak Aerodroma Beograd. Najpovoljniji parking, 24/7 nadzor i besplatan transfer do terminala. Rezervišite online!">
-    <meta name="keywords" content="parking aerodrom, Nikola Tesla aerodrom, parking Beograd, transfer aerodrom, jeftin parking, rezervacija parking">
+    <meta name="description" content="{{ __('messages.meta.description') }}">
+    <meta name="keywords" content="{{ __('messages.meta.keywords') }}">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Aero Parking | Najpovoljniji parking na aerodromu Nikola Tesla">
-    <meta name="twitter:description" content="Aero Parking – Siguran i povoljan parking nadomak Aerodroma Beograd. Najpovoljniji parking, 24/7 nadzor i besplatan transfer do terminala. Rezervišite online!">
+    <meta name="twitter:title" content="{{ __('messages.meta.title') }}">
+    <meta name="twitter:description" content="{{ __('messages.meta.description') }}">
     <meta name="twitter:image" content="{{asset('img/android-chrome-512x512.png')}}">
 
     <!-- Additional SEO Meta Tags -->
     <meta name="robots" content="index, follow">
     <meta name="author" content="Aero Parking">
-    <link rel="canonical" href="https://aeroparking.rs/">
+    <link rel="canonical" href="{{ url()->current() }}">
 
     <!-- Eager loaded css -->
     <link rel="stylesheet" href="{{asset("google-fonts/google-fonts.css")}}">
@@ -50,6 +58,11 @@
     <noscript><link rel="stylesheet" href="{{asset('vendor/glightbox/css/glightbox.min.css')}}"></noscript>
     <link rel="preload" href="{{asset('vendor/swiper/swiper-bundle.css')}}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="{{asset('vendor/swiper/swiper-bundle.css')}}"></noscript>
+
+    <script>
+        window.appLocale = '{{ App::getLocale() }}';
+        window.translations = @json(__('js'));
+    </script>
 
     @include('partials.head.google-analytics')
 

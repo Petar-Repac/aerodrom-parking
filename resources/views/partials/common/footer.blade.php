@@ -6,31 +6,30 @@
                 <!-- Company Info Section -->
                 <div class="col-lg-4 col-md-6 footer-info">
                     <h3>Aero parking</h3>
-                    <p>Vaši utisci su naša najbolja preporuka<br>
-                        Zajedno gradimo most ka poverenju koje traje!</p>
+                    <p>{!! __('messages.footer.tagline') !!}</p>
                     <img id="footer-logo" src="/img/logo-transparent-180x180.webp" alt="Aero parking logo">
-                    <p class="working-hours">Radno vreme 00-24</p>
+                    <p class="working-hours">{{ __('messages.footer.working_hours') }}</p>
                 </div>
 
                 <!-- Useful Links Section -->
                 <div class="col-lg-4 col-md-6 footer-links">
-                    <h4>Korisni linkovi</h4>
+                    <h4>{{ __('messages.footer.useful_links') }}</h4>
                     <ul>
-                        <li><i class="bx bx-chevron-right"></i> <a href="{{route('home')}}">Početna</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="{{route('about')}}">O nama</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#pogodnosti">Pogodnosti</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="{{route('pricing')}}">Cenovnik</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="{{route('contact')}}">Kontakt</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{{route('home')}}">{{ __('messages.nav.home') }}</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{{route('about')}}">{{ __('messages.nav.about') }}</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#pogodnosti">{{ __('messages.footer.benefits') }}</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{{route('pricing')}}">{{ __('messages.nav.pricing') }}</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{{route('contact')}}">{{ __('messages.nav.contact') }}</a></li>
                     </ul>
                 </div>
 
                 <!-- Contact Info Section -->
                 <div class="col-lg-4 col-md-12 footer-contact">
-                    <h4>Kontakt informacije</h4>
+                    <h4>{{ __('messages.footer.contact_info') }}</h4>
                     <p>
-                        <strong>Telefon:</strong> +381 69 445 4255<br>
-                        <strong>Lokacija:</strong> Aerodrom Nikola Tesla<br>
-                        <strong>Radno vreme:</strong> 24/7<br>
+                        <strong>{{ __('messages.footer.phone') }}:</strong> +381 69 445 4255<br>
+                        <strong>{{ __('messages.footer.location') }}:</strong> {{ __('messages.footer.location_value') }}<br>
+                        <strong>{{ __('messages.footer.working_hours_label') }}:</strong> {{ __('messages.footer.working_hours_value') }}<br>
                     </p>
                     <div class="social-links">
                         <a href="https://www.facebook.com/parking.aero" class="facebook" aria-label="Facebook"><i class="bx bxl-facebook"></i></a>
@@ -42,11 +41,9 @@
         </div>
     </div>
 
-{{--    <img class="footer-background" src="{{asset('img/footer-1.webp')}}" alt="" loading="lazy">--}}
-
     <div class="container footer-bottom clearfix">
         <div class="copyright">
-            Design by: <strong><span>Codegarden</span></strong>
+            {!! __('messages.footer.design_by') !!}
         </div>
     </div>
 </footer><!-- End Footer -->

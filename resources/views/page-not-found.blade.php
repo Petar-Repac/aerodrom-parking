@@ -14,19 +14,18 @@
             <div class="section-title" style="margin-top: 200px;">
             </div>
             <div class="row content">
-                <!-- ======= Cta Section ======= -->
+                <!-- ======= Page not found Section ======= -->
                 <section id="cta" class="cta">
                     <div class="container">
-
                         <div class="text-center">
-                            <h3>Stranica nije pronađena!</h3>
-                            <p>
-                                Sadržaj koji tražite je možda uklonjen, ili se ne nalazi na ovoj lokaciji.
-                            </p>
-                            <a class="cta-btn"  href="/">Povratak na početnu</a>
+                            <h3>{{ __('messages.page_not_found.title') }}</h3>
+                            <p>{{ __('messages.page_not_found.description') }}</p>
+                            <a class="cta-btn" href="{{ App\Helpers\RouteHelper::localizedRoute('home') }}">
+                                {{ __('messages.page_not_found.back_home') }}
+                            </a>
                         </div>
                     </div>
-                </section><!-- End Cta Section -->
+                </section><!-- End Page not found Section -->
 
             </div>
         </div>

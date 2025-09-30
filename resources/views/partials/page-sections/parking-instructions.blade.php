@@ -3,9 +3,8 @@
     <div class="container">
 
         <div class="section-title">
-            <h2>Kako koristiti našu uslugu</h2>
-            <p>Pratite ove jednostavne korake da biste rezervisali i koristili usluge našeg aerodromskog parkinga.
-            </p>
+            <h2>{{ __('messages.procedure.title') }}</h2>
+            <p>{{ __('messages.procedure.description') }}</p>
         </div>
         <div class="row">
 
@@ -16,14 +15,10 @@
                         <div class="step-icon">
                             <i class="bi bi-envelope-paper"></i>
                         </div>
-                        Rezervišite parking
+                        {{ __('messages.procedure.step_01.title') }}
                     </h3>
                     <ul>
-                        <li>Prvi korak je <a href="#">rezervacija parking mesta</a>.</li>
-                        <li>
-                            Parking na aerodromu možete rezervisati na našem veb sajtu odabirom datuma na vrhu stranice, putem WhatsApp i Viber aplikacija,
-                            <br> kao i putem e-mail adrese <a href="mailto:rezervacije@aeroparking.rs"> rezervacije@aeroparking.rs</a>
-                        </li>
+                        <li>{!! __('messages.procedure.step_01.description') !!}</li>
                     </ul>
                 </div>
             </div>
@@ -35,12 +30,10 @@
                         <div class="step-icon">
                             <i class="bi bi-phone"></i>
                         </div>
-                        Potvrda rezervacije
+                        {{ __('messages.procedure.step_02.title') }}
                     </h3>
                     <ul>
-                        <li>Drugi korak je potvrda nakon obavljene rezervacije, kontaktiraćemo Vas sa potvrdom u kojoj
-                            <br> će se nalaziti smernice do parkinga koji je udaljen na samo 2 minuta od aerodroma Nikola Tesla.
-                        </li>
+                        <li>{!! __('messages.procedure.step_02.description') !!}</li>
                     </ul>
                 </div>
             </div>
@@ -52,11 +45,10 @@
                         <div class="step-icon">
                             <i class="bi bi-p-circle"></i>
                         </div>
-                        Parkiranje i transfer
+                        {{ __('messages.procedure.step_03.title') }}
                     </h3>
                     <ul>
-                        <li>Treći korak je dolazak na parking nakon čega vas naši zaposleni službenim vozilima voze do terminala za odlazne letove na aerodromu Nikola Tesla.
-                        </li>
+                        <li>{{ __('messages.procedure.step_03.description') }}</li>
                     </ul>
                 </div>
             </div>
@@ -68,15 +60,13 @@
                         <div class="step-icon">
                             <i class="bi bi-car-front"></i>
                         </div>
-                        Dolazak i preuzimanje vozila
+                        {{ __('messages.procedure.step_04.title') }}
                     </h3>
                     <ul>
-                        <li>Po povratku sa putovanja dočekaćemo vas kod terminala i vratiti do vašeg vozila.
-                        </li>
+                        <li>{{ __('messages.procedure.step_04.description') }}</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 </section>
-

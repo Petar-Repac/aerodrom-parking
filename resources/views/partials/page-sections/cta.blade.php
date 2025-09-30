@@ -1,17 +1,10 @@
-
-    <!-- ======= Cta Section ======= -->
-    <section id="cta" class="cta">
-        <div class="container">
-
-            <div class="text-center">
-                <h3>Rezervišite Vaše parking mesto</h3>
-                <p>
-                    Rezervaciju možete izvršiti<br>
-                    Pozivom na +381 69 445 4255<br>
-                    Putem Viber-a, Whatsapp-a i Instagram-a ili Facebook-a<br>
-                    Popunjavanjem kratkog formulara
-                </p>
-                <a class="cta-btn" id="cta-body">Rezerviši</a>
-            </div>
+<!-- ======= Cta Section ======= -->
+<section id="cta" class="cta">
+    <div class="container">
+        <div class="text-center">
+            <h3>{{ __('messages.cta.title') }}</h3>
+            <p>{!! __('messages.cta.description') !!}</p>
+            <a class="cta-btn" id="cta-body">{{ __('messages.cta.button') }}</a>
         </div>
-    </section><!-- End Cta Section -->
+    </div>
+</section><!-- End Cta Section -->

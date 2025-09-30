@@ -1,34 +1,39 @@
-<a  id="reserve-btn" class="pulse contact-links-toggle"><i class="bi bi-telephone"></i> KONTAKT</a>
+<a id="reserve-btn" class="pulse contact-links-toggle"><i class="bi bi-telephone"></i> {{ __('messages.contact_btn') }}</a>
 
 <!-- Contact links -->
-<nav id="contact-links"  >
-    <i  class="contact-links-close bi bi-x"></i>
+<nav id="contact-links">
+    <i class="contact-links-close bi bi-x"></i>
 
     <ul>
         <li id="cta-reserve">
-      <span>
-      <i class="fa fa-calendar-check"></i>
-      Online rezervacija</span>
+            <span>
+                <i class="fa fa-calendar-check"></i>
+                {{ __('messages.contact_links.online_reservation') }}
+            </span>
         </li>
 
         <li><a href="https://wa.me/+381694454255">
                 <i class="fab fa-whatsapp"></i>
-                Whatsapp</a>
+                {{ __('messages.contact_links.whatsapp') }}
+            </a>
         </li>
         <li>
-            <a  target="_blank" href="viber://chat?number=%2B381694454255">
+            <a target="_blank" href="viber://chat?number=%2B381694454255">
                 <i class="fab fa-viber"></i>
-                Viber</a>
+                {{ __('messages.contact_links.viber') }}
+            </a>
         </li>
         <li>
             <a href="mailto:rezervacije@aeroparking.rs">
                 <i class="fa fa-envelope" aria-label="Rezervacija"></i>
-                Email</a>
+                {{ __('messages.contact_links.email') }}
+            </a>
         </li>
         <li>
             <a href="tel:0694454255">
                 <i class="fa fa-phone"></i>
-                Pozovite nas</a>
+                {{ __('messages.contact_links.call_us') }}
+            </a>
         </li>
     </ul>
 
@@ -42,15 +47,14 @@
     <section id="contact" class="contact">
         <div class="row mt-2 pb-2">
             <div class="d-flex align-items-center justify-content-lg-center gap-3 p-1 logo">
-{{--                <img src="/img/logo-transparent-background-120x120.webp" width="45" height="45" alt="aero parking logo" class="rounded-5">--}}
-                <h2 class="me-auto me-lg-0 text-center">PARKING REZERVACIJA</h2>
+                <h2 class="me-auto me-lg-0 text-center">{{ __('messages.reservation_form.title') }}</h2>
             </div>
 
             <form id="email-form" class="reservation-form-content">
 
                 <div class="col-lg-12 mt-5 mt-lg-0">
                     <div class="form-section">
-                        <h4><i class="bi bi-person-circle"></i> Lični podaci</h4>
+                        <h4><i class="bi bi-person-circle"></i> {{ __('messages.reservation_form.personal_data') }}</h4>
                         <div class="contact-info">
                             <div class="input-group">
                                 <i class="bi bi-person input-icon"></i>
@@ -59,7 +63,7 @@
                                     name="name"
                                     class="form-control styled-input"
                                     id="name"
-                                    placeholder="Ime i prezime*"
+                                    placeholder="{{ __('messages.reservation_form.name') }}"
                                     required
                                 />
                             </div>
@@ -71,7 +75,7 @@
                                     class="form-control styled-input"
                                     name="email"
                                     id="email"
-                                    placeholder="Email adresa"
+                                    placeholder="{{ __('messages.reservation_form.email') }}"
                                 />
                             </div>
 
@@ -82,7 +86,7 @@
                                     name="phone"
                                     class="form-control styled-input"
                                     id="phone"
-                                    placeholder="Kontakt telefon*"
+                                    placeholder="{{ __('messages.reservation_form.phone') }}"
                                     required
                                 />
                             </div>
@@ -94,7 +98,7 @@
                                     class="form-control styled-input"
                                     name="passengers"
                                     id="passengers"
-                                    placeholder="Broj putnika"
+                                    placeholder="{{ __('messages.reservation_form.passengers') }}"
                                     min="1"
                                 />
                             </div>
@@ -104,7 +108,7 @@
                     <div class="form-divider"></div>
 
                     <div class="form-section">
-                        <h4><i class="bi bi-calendar-event"></i> Vreme</h4>
+                        <h4><i class="bi bi-calendar-event"></i> {{ __('messages.reservation_form.time') }}</h4>
                         <div class="date-inputs">
                             <div class="date-input-container">
                                 <div class="input-group">
@@ -114,7 +118,7 @@
                                         id="arrival-date"
                                         name="arrival-date"
                                         class="date-picker styled-input"
-                                        placeholder="Datum dolaska*"
+                                        placeholder="{{ __('messages.reservation_form.arrival') }}"
                                         required
                                         onkeydown="return false;"
                                         style="caret-color: transparent !important;"
@@ -130,7 +134,7 @@
                                         id="departure-date"
                                         name="departure-date"
                                         class="date-picker styled-input"
-                                        placeholder="Datum povratka*"
+                                        placeholder="{{ __('messages.reservation_form.departure') }}"
                                         required
                                     />
                                 </div>
@@ -143,7 +147,7 @@
                     <div class="price-section">
                         <div class="price-display">
                             <i class="bi bi-currency-exchange"></i>
-                            <h4 id="form-charge">Cena: ---</h4>
+                            <h4 id="form-charge">{{ __('messages.reservation_form.price_label') }}</h4>
                         </div>
                     </div>
 
@@ -152,7 +156,7 @@
                     <div class="text-center mt-4">
                         <button type="submit" class="submit-btn">
                             <i class="bi bi-send"></i>
-                            Pošalji rezervaciju
+                            {{ __('messages.reservation_form.submit') }}
                         </button>
                     </div>
                 </div>

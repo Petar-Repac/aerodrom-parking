@@ -1,4 +1,22 @@
 
+// Helper function to get translation
+function __(key) {
+    return window.translations[key] || key;
+}
+
+function __lang() {
+    switch (window.translations.lang) {
+        case 'en':
+            return 'en-US';
+        case 'ru':
+            return 'ru-RU';
+        case 'sr':
+            return 'sr-Latn-RS';
+        default:
+            return 'sr-Latn-RS';
+    }
+}
+
 ! function(t, e) {
     "object" == typeof exports && "undefined" != typeof module ? e(exports) : "function" == typeof define && define.amd ? define(["exports"], e) : e((t = "undefined" != typeof globalThis ? globalThis : t || self).easepick = t.easepick || {})
 }(this, (function(t) {
@@ -544,7 +562,7 @@
             firstDay: 1,
             grid: 1,
             calendars: 1,
-            lang: "sr-Latn-RS",
+            lang: __lang(),
             date: null,
             format: "YYYY-MM-DD",
             readonly: !0,
@@ -556,8 +574,8 @@
             locale: {
                 nextMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M2.748 16L0 13.333 5.333 8 0 2.667 2.748 0l7.919 8z" fill-rule="nonzero"/></svg>',
                 previousMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.919 0l2.748 2.667L5.333 8l5.334 5.333L7.919 16 0 8z" fill-rule="nonzero"/></svg>',
-                cancel: "Otkaži",
-                apply: "Potvrdi"
+                cancel: __('datepicker').cancel,
+                apply: __('datepicker').apply
             },
             documentClick: this.binds.hidePicker,
             plugins: []
@@ -862,7 +880,7 @@
             // If no override, use auto positioning
             return this.autoPosition(t, e, i, n, viewportWidth, viewportHeight);
         }
- 
+
 
         autoPosition(t, e, i, n, viewportWidth, viewportHeight) {
             // Calculate available space in all directions
