@@ -2,15 +2,11 @@
 <header id="header" class="d-flex align-items-center fixed-top">
     <div id="header-container" class="container-fluid d-flex align-items-center justify-content-lg-between">
         <div class="d-flex align-items-center justify-content-lg-between gap-3">
-            <img src="/img/logo-transparent-background-120x120.webp" width="45" height="45" alt="aero parking logo" class="rounded-5">
+            <img src="{{asset('/img/logo-transparent-background-120x120.webp')}}" width="45" height="45" alt="aero parking logo" class="rounded-5">
             <h2 class="logo me-auto me-lg-0">
-                <a href="/">AERO PARKING</a>
+                <a href="{{ App::getLocale() === 'sr' ? '/' : '/' . App::getLocale() }}">AERO PARKING</a>
             </h2>
         </div>
-
-        @php
-            $theme = request()->query('theme');
-        @endphp
 
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
@@ -34,9 +30,34 @@
                         <i class="bi bi-envelope"></i>
                         <span>{{ __('messages.nav.contact') }}</span>
                     </a></li>
+
+                <!-- Mobile Language Switcher (only visible on mobile) -->
+                @php
+                    $currentLocale = App::getLocale();
+                    $locales = [
+                        'sr' => ['name' => 'SR', 'flag' => 'sr'],
+                        'en' => ['name' => 'EN', 'flag' => 'en'],
+                        'ru' => ['name' => 'RU', 'flag' => 'ru']
+                    ];
+                @endphp
+
+                @foreach($locales as $code => $locale)
+                    @if($code !== $currentLocale)
+                        <li class="mobile-only-lang">
+                            <a href="{{ App\Helpers\LocalizationHelper::getLocalizedUrl($code) }}"
+                               class="lang-link-mobile"
+                               hreflang="{{ $code }}">
+                                <img src="{{ asset('img/flags/' . $locale['flag'] . '.svg') }}"
+                                     alt="{{ $locale['name'] }}"
+                                     class="flag-icon">
+                                <span class="lang-code">{{ $locale['name'] }}</span>
+                            </a>
+                        </li>
+                    @endif
+                @endforeach
             </ul>
 
-            <!-- Enhanced Mobile Toggle - REPLACE any old <i class="bi bi-list mobile-nav-toggle"></i> -->
+            <!-- Enhanced Mobile Toggle -->
             <div class="mobile-nav-toggle">
                 <span class="hamburger-line top"></span>
                 <span class="hamburger-line middle"></span>

@@ -1,5 +1,4 @@
 @php
-    use Illuminate\Support\Facades\App;
     $currentLocale = App::getLocale();
     $locales = [
         'sr' => ['name' => 'SR', 'flag' => 'sr'],
