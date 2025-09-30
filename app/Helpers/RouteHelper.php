@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Helpers;
+
+class RouteHelper
+{
+    public static function localizedRoute($name, $parameters = [], $absolute = true)
+    {
+        $locale = app()->getLocale();
+
+        // Handle cases where route might not exist (like 404 pages)
+        try {
+            if ($locale === 'sr') {
+                return route($name, $parameters, $absolute);
+            }
+
+            return route($locale . '.' . $name, $parameters, $absolute);
+        } catch (\Exception $e) {
+            // Fallback to home if route doesn't exist
+            if ($locale === 'sr') {
+                return route('home', [], $absolute);
+            }
+            return route($locale . '.home', [], $absolute);
+        }
+    }
+
+    public static function getLocalizedPath($routeKey, $locale = null)
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        $paths = [
+            'about' => [
+                'sr' => 'o-nama',
+                'en' => 'about',
+                'ru' => 'o-nas',
+            ],
+            'contact' => [
+                'sr' => 'kontakt',
+                'en' => 'contact',
+                'ru' => 'kontakt',
+            ],
+            'pricing' => [
+                'sr' => 'cenovnik',
+                'en' => 'pricing',
+                'ru' => 'ceny',
+            ],
+        ];
+
+        return $paths[$routeKey][$locale] ?? $paths[$routeKey]['sr'];
+    }
+}

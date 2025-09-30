@@ -217,13 +217,19 @@ function showFormFirstTime() {
     }
 }
 
+
+// Helper function to get translation
+function __(key) {
+    return window.translations[key] || key;
+}
+
 function updatePrice() {
     let arrivalDate = pickerFrom.getDate();
     let departureDate = pickerTo.getDate();
 
     if (!arrivalDate || !departureDate) {
-        if (formCharge) formCharge.textContent = `Cena: - - -`;
-        if (ctaCharge) ctaCharge.textContent = `Cena: - - -`;
+        if (formCharge) formCharge.textContent = __('price_label');
+        if (ctaCharge) ctaCharge.textContent = __('price_label');
         return;
     }
 
@@ -232,8 +238,8 @@ function updatePrice() {
 
     // invalid input
     if (secondDate < firstDate) {
-        if (formCharge) formCharge.textContent = "Datum dolaska mora biti pre datuma odlaska.";
-        if (ctaCharge) ctaCharge.textContent = `Cena: - - -`;
+        if (formCharge) formCharge.textContent = __('arrival_before_departure');
+        if (ctaCharge) ctaCharge.textContent = __('price_label');
         showFormFirstTime()
         return;
     }
@@ -251,16 +257,6 @@ function updatePrice() {
     //  arrival after 22h and departure before 2AM
     let arrivalHour = firstDate.getHours();
     let departureHour = secondDate.getHours();
-
-    // // do not count arrival day if customer arrived late
-    // if (arrivalHour >= 22) {
-    //     numOfDays = numOfDays - 1;
-    // }
-    //
-    // // do not count arrival day if customer left early
-    // if (departureHour < 2) {
-    //     numOfDays = numOfDays - 1;
-    // }
 
     if(numOfDays === 0) {
         if (formCharge) formCharge.textContent = `Cena: - - -`;
@@ -286,14 +282,14 @@ function updatePrice() {
 
     // correct string output
     if (numOfDays % 10 === 1 && numOfDays !== 11) {
-        if (formCharge) formCharge.textContent = `Cena za ${numOfDays} dan iznosi ${price} dinara.`;
-        if (ctaCharge) ctaCharge.textContent = `Cena: ${price} din.`;
+        if (formCharge) formCharge.textContent = `${__('price_for')} ${numOfDays} ${__('day')} ${__('costs')} ${price} ${__('dinars')}.`;
+        if (ctaCharge) ctaCharge.textContent = `${__('price')}: ${price} ${__('din')}.`;
         showFormFirstTime()
         return;
     }
 
-    if (formCharge) formCharge.textContent = `Cena za ${numOfDays} dana iznosi ${price} dinara.`;
-    if (ctaCharge) ctaCharge.textContent = `Cena: ${price} din.`;
+    if (formCharge) formCharge.textContent = `${__('price_for')} ${numOfDays} ${__('days')} ${__('costs')} ${price} ${__('dinars')}.`;
+    if (ctaCharge) ctaCharge.textContent = `${__('price')}: ${price} ${__('din')}.`;
     showFormFirstTime()
 }
 
@@ -344,46 +340,46 @@ const API_CONFIG = {
     }
 };
 
-// Helper function to show loading state
+// Helper function to show loading state with translations
 function setFormLoading(isLoading) {
     const submitButton = document.querySelector('#email-form button[type="submit"]');
     if (submitButton) {
         if (isLoading) {
             submitButton.disabled = true;
-            submitButton.textContent = 'Šalje se...';
+            submitButton.textContent = __('sending');
         } else {
             submitButton.disabled = false;
-            submitButton.textContent = 'Pošaljite zahtev';
+            submitButton.textContent = __('send_request');
         }
     }
 }
 
-// Helper function to validate form data
+// Helper function to validate form data with translations
 function validateFormData(formData) {
     const errors = [];
 
     if (!formData.name || formData.name.trim().length < 2) {
-        errors.push('Ime mora imati najmanje 2 karaktera');
+        errors.push(__('name_min_length'));
     }
 
     if (!formData.email || !formData.email.includes('@')) {
-        errors.push('Unesite valjan email');
+        errors.push(__('valid_email'));
     }
 
     if (!formData.phone || formData.phone.trim().length < 6) {
-        errors.push('Unesite valjan broj telefona');
+        errors.push(__('valid_phone'));
     }
 
     if (!formData.passengers || parseInt(formData.passengers) < 1) {
-        errors.push('Broj putnika mora biti najmanje 1');
+        errors.push(__('passengers_min'));
     }
 
     if (!formData.arrivalDate) {
-        errors.push('Unesite datum dolaska');
+        errors.push(__('enter_arrival_date'));
     }
 
     if (!formData.departureDate) {
-        errors.push('Unesite datum odlaska');
+        errors.push(__('enter_departure_date'));
     }
 
     return errors;
@@ -412,13 +408,13 @@ if (emailForm) {
             const errorMessage = validationErrors.join('\n');
             if (typeof Sweetalert2 !== 'undefined') {
                 Sweetalert2.fire({
-                    title: "Greška u podacima!",
+                    title: __('data_error'),
                     text: errorMessage,
                     icon: "warning",
-                    confirmButtonText: "OK",
+                    confirmButtonText: __('ok'),
                 });
             } else {
-                alert(`Greška u podacima:\n${errorMessage}`);
+                alert(`${__('data_error')}:\n${errorMessage}`);
             }
             return;
         }
@@ -441,18 +437,16 @@ if (emailForm) {
 
             const responseData = await response.json();
 
+            // Success message
             if (response.ok && responseData.status === "success") {
-                // Success
                 if (typeof Sweetalert2 !== 'undefined') {
                     Sweetalert2.fire({
-                        title: "Zahtev za rezervacijom poslat!",
-                        text: "Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.",
+                        title: __('reservation_sent_title'),
+                        text: __('reservation_sent_message'),
                         icon: "success",
-                        confirmButtonText: "OK",
+                        confirmButtonText: __('ok'),
                     }).then(() => {
-                        // Reset form
                         emailForm.reset();
-                        // Hide reservation form
                         const reservationForm = document.getElementById('reservation-form');
                         if (reservationForm) {
                             reservationForm.classList.remove('active');
@@ -460,12 +454,13 @@ if (emailForm) {
                         showReservationForm = true;
                     });
                 } else {
-                    alert("Zahtev za rezervacijom poslat! Osoblje parkinga će Vas kontaktirati putem telefona ili emaila.");
+                    alert(`${__('reservation_sent_title')} ${__('reservation_sent_message')}`);
                     emailForm.reset();
                 }
-            } else {
-                // Handle validation errors from Laravel
-                let errorMessage = "Došlo je do greške na serveru.";
+            }
+            else {
+                // Error handling
+                let errorMessage = __('server_error');
 
                 if (responseData.errors) {
                     // Laravel validation errors
@@ -477,36 +472,37 @@ if (emailForm) {
 
                 if (typeof Sweetalert2 !== 'undefined') {
                     Sweetalert2.fire({
-                        title: "Greška!",
+                        title:  __('error'),
                         text: errorMessage,
                         icon: "error",
                         confirmButtonText: "OK",
                     });
                 } else {
-                    alert(`Greška: ${errorMessage}`);
+                    alert(`${__('error')},: ${errorMessage}`);
                 }
             }
-        } catch (error) {
+        }
+        catch (error) {
             console.error('Form submission error:', error);
 
-            let errorMessage = "Došlo je do greške prilikom slanja zahteva.";
+            let errorMessage = __('submission_error');
 
             // Check if it's a network error
             if (!navigator.onLine) {
-                errorMessage = "Proverite internetsku konekciju i pokušajte ponovo.";
+                errorMessage = __('check_connection');
             } else if (error.name === 'TypeError') {
-                errorMessage = "Greška u komunikaciji sa serverom. Molimo pokušajte ponovo.";
+                errorMessage = __('server_communication_error');
             }
 
             if (typeof Sweetalert2 !== 'undefined') {
                 Sweetalert2.fire({
-                    title: "Greška!",
+                    title: __('error'),
                     text: errorMessage,
                     icon: "error",
-                    confirmButtonText: "OK",
+                    confirmButtonText: __('ok'),
                 });
             } else {
-                alert(`Greška: ${errorMessage}`);
+                alert(`${__('error')}: ${errorMessage}`);
             }
         } finally {
             // Remove loading state

@@ -11,7 +11,7 @@
     <section id="kontakt" class="contact">
         <div class="container">
             <div class="section-title">
-                <h3>Kontakt</h3>
+                <h3>{{ __('messages.contact.title') }}</h3>
             </div>
 
             <!-- Map Section -->
@@ -26,29 +26,42 @@
             <div class="row mt-5">
                 <div class="col-12">
                     <div class="contact-form-container">
-                        <h3 class="mb-4">Pošaljite nam poruku</h3>
+                        <h3 class="mb-4">{{ __('messages.contact.send_message') }}</h3>
 
-                        <form action="{{ route('contact.send') }}" method="post" role="form" class="php-email-form">
+                        <form action="{{ App\Helpers\RouteHelper::localizedRoute('contact.send') }}"
+                              method="post"
+                              role="form"
+                              class="php-email-form">
                             @csrf
 
                             <!-- Loading/Success/Error Messages -->
-                            <div class="loading">Šalje se...</div>
+                            <div class="loading">{{ __('messages.contact.loading') }}</div>
                             <div class="error-message"></div>
-                            <div class="sent-message">Vaša poruka je poslata. Hvala vam!</div>
+                            <div class="sent-message">{{ __('messages.contact.success_message') }}</div>
 
                             <div class="row">
                                 <div class="col-md-6 form-group">
-                                    <label for="name">Ime i prezime *</label>
-                                    <input type="text" name="name" class="form-control" id="name"
-                                           placeholder="Vaše ime i prezime" required value="{{ old('name') }}">
+                                    <label for="name">{{ __('messages.contact.name') }}</label>
+                                    <input type="text"
+                                           name="name"
+                                           class="form-control"
+                                           id="name"
+                                           placeholder="{{ __('messages.contact.name_placeholder') }}"
+                                           required
+                                           value="{{ old('name') }}">
                                     @error('name')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for="email">Email adresa *</label>
-                                    <input type="email" class="form-control" name="email" id="email"
-                                           placeholder="vaš@email.com" required value="{{ old('email') }}">
+                                    <label for="email">{{ __('messages.contact.email') }}</label>
+                                    <input type="email"
+                                           class="form-control"
+                                           name="email"
+                                           id="email"
+                                           placeholder="{{ __('messages.contact.email_placeholder') }}"
+                                           required
+                                           value="{{ old('email') }}">
                                     @error('email')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -57,14 +70,23 @@
 
                             <div class="row">
                                 <div class="col-md-6 form-group">
-                                    <label for="phone">Telefon</label>
-                                    <input type="tel" class="form-control" name="phone" id="phone"
-                                           placeholder="+381 69 445 4255" value="{{ old('phone') }}">
+                                    <label for="phone">{{ __('messages.contact.phone') }}</label>
+                                    <input type="tel"
+                                           class="form-control"
+                                           name="phone"
+                                           id="phone"
+                                           placeholder="{{ __('messages.contact.phone_placeholder') }}"
+                                           value="{{ old('phone') }}">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for="subject">Naslov poruke *</label>
-                                    <input type="text" class="form-control" name="subject" id="subject"
-                                           placeholder="Ukratko opišite razlog kontakta" required value="{{ old('subject') }}">
+                                    <label for="subject">{{ __('messages.contact.subject') }}</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="subject"
+                                           id="subject"
+                                           placeholder="{{ __('messages.contact.subject_placeholder') }}"
+                                           required
+                                           value="{{ old('subject') }}">
                                     @error('subject')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -72,9 +94,13 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="message">Poruka *</label>
-                                <textarea class="form-control" name="message" id="message" rows="6"
-                                          placeholder="Detaljno opišite vaš upit ili potrebu..." required>{{ old('message') }}</textarea>
+                                <label for="message">{{ __('messages.contact.message') }}</label>
+                                <textarea class="form-control"
+                                          name="message"
+                                          id="message"
+                                          rows="6"
+                                          placeholder="{{ __('messages.contact.message_placeholder') }}"
+                                          required>{{ old('message') }}</textarea>
                                 @error('message')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -82,13 +108,12 @@
 
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-paper-plane"></i> Pošaljite poruku
+                                    <i class="fas fa-paper-plane"></i> {{ __('messages.contact.submit') }}
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div><!-- End Contact Form -->
-            </div>
             </div>
         </div>
     </section><!-- End Contact Section -->
@@ -608,6 +633,11 @@
 </style>
 
 <script>
+    // Helper function to get translations
+    function __(key) {
+        return window.translations[key] || key;
+    }
+
     // Toast Notification Functions
     let toastTimeout;
 
@@ -708,7 +738,7 @@
                 // Disable submit button
                 if (submitButton) {
                     submitButton.disabled = true;
-                    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Šalje se...';
+                    submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${__('sending')}`;
                 }
 
                 // Get form data
@@ -739,15 +769,15 @@
                         // Re-enable submit button
                         if (submitButton) {
                             submitButton.disabled = false;
-                            submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Pošaljite poruku';
+                            submitButton.innerHTML = `<i class="fas fa-paper-plane"></i> ${__('send_message')}`;
                         }
 
                         if (status === 200 && data.success) {
                             // Show success message
-                            showToastNotification('Uspešno poslato!', 'Vaša poruka je uspešno poslata. Hvala vam!', 'success');
+                            showToastNotification(__('success'), __('message_sent'), 'success');
 
                             if (successDiv) {
-                                successDiv.textContent = 'Vaša poruka je poslata. Hvala vam!';
+                                successDiv.textContent = __('message_sent_thanks');
                                 successDiv.style.display = 'block';
                             }
 
@@ -768,13 +798,13 @@
                                         errorElement.textContent = data.errors[field][0];
                                     }
                                 });
-                                showToastNotification('Greška u formi', 'Molimo ispravite greške u formi i pokušajte ponovo.', 'error');
+                                showToastNotification(__('form_error'), __('fix_errors'), 'error');
                             } else {
-                                showToastNotification('Greška', data.message || 'Došlo je do greške. Molimo pokušajte ponovo.', 'error');
+                                showToastNotification(__('error'), data.message || __('general_error'), 'error');
                             }
 
                             if (errorDiv) {
-                                errorDiv.textContent = data.message || 'Došlo je do greške. Molimo pokušajte ponovo.';
+                                errorDiv.textContent = data.message || __('general_error');
                                 errorDiv.style.display = 'block';
                             }
                         }
@@ -788,14 +818,14 @@
                         // Re-enable submit button
                         if (submitButton) {
                             submitButton.disabled = false;
-                            submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Pošaljite poruku';
+                            submitButton.innerHTML = `<i class="fas fa-paper-plane"></i> ${__('send_message')}`;
                         }
 
                         // Show error notification
-                        showToastNotification('Greška', 'Došlo je do greške prilikom slanja poruke. Molimo pokušajte ponovo.', 'error');
+                        showToastNotification(__('error'), __('message_sending_error'), 'error');
 
                         if (errorDiv) {
-                            errorDiv.textContent = 'Došlo je do greške prilikom slanja poruke. Molimo pokušajte ponovo.';
+                            errorDiv.textContent = __('message_sending_error');
                             errorDiv.style.display = 'block';
                         }
                     });
@@ -803,6 +833,5 @@
         }
     });
 </script>
-
 </body>
 </html>
