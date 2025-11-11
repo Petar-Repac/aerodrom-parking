@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\WsPay\WsPayService;
 use App\Services\WsPay\Exceptions\WSPayException;
 use App\Services\EmailService;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -14,9 +15,7 @@ class PaymentController extends Controller
     public function __construct(
         protected readonly WsPayService $wsPayService,
         protected readonly EmailService $emailService
-    ) {
-        Log::info('PaymentController initialized');
-    }
+    ) {}
 
     /**
      * Handle reservation submission
@@ -26,26 +25,8 @@ class PaymentController extends Controller
      */
     public function createReservation(Request $request)
     {
-        Log::info('=== CREATE RESERVATION REQUEST STARTED ===');
-        Log::info('Request method: ' . $request->method());
-        Log::info('Request URL: ' . $request->fullUrl());
-        Log::info('Client IP: ' . $request->ip());
-        Log::info('User Agent: ' . $request->userAgent());
-        Log::info('Request data (sanitized):', [
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
-            'passengers' => $request->input('passengers'),
-            'arrivalDate' => $request->input('arrivalDate'),
-            'departureDate' => $request->input('departureDate'),
-            'paymentMethod' => $request->input('paymentMethod'),
-            'totalPrice' => $request->input('totalPrice'),
-            'additionalInfo_length' => strlen($request->input('additionalInfo', ''))
-        ]);
-
         try {
             // Validate the incoming request data
-            Log::info('Starting validation');
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|min:2|max:100',
                 'email' => 'required|email|max:255',
@@ -59,9 +40,6 @@ class PaymentController extends Controller
             ]);
 
             if ($validator->fails()) {
-                Log::warning('Validation failed', [
-                    'errors' => $validator->errors()->toArray()
-                ]);
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Validation error',
@@ -69,22 +47,15 @@ class PaymentController extends Controller
                 ], 422);
             }
 
-            Log::info('Validation passed successfully');
             $data = $validator->validated();
 
             // Generate a unique reservation ID
             $reservationId = $this->generateReservationId();
-            Log::info('Generated reservation ID: ' . $reservationId);
 
             // Calculate number of days
             $arrivalDate = new \DateTime($data['arrivalDate']);
             $departureDate = new \DateTime($data['departureDate']);
             $numOfDays = $arrivalDate->diff($departureDate)->days + 1;
-            Log::info('Date calculation completed', [
-                'arrival' => $arrivalDate->format('Y-m-d'),
-                'departure' => $departureDate->format('Y-m-d'),
-                'num_of_days' => $numOfDays
-            ]);
 
             // Prepare reservation data
             $reservationData = [
@@ -100,35 +71,19 @@ class PaymentController extends Controller
                 'additional_info' => $data['additionalInfo'] ?? '',
                 'payment_method' => $data['paymentMethod'],
                 'status' => 'pending',
-                'created_at' => now(),
             ];
 
-            Log::info('Reservation data prepared', [
+            // Save reservation to database
+            $reservation = Reservation::create($reservationData);
+
+            Log::info('Reservation saved to database', [
                 'reservation_id' => $reservationId,
-                'payment_method' => $data['paymentMethod'],
-                'total_price' => $data['totalPrice'],
-                'num_of_days' => $numOfDays
+                'id' => $reservation->id
             ]);
-
-            // Store reservation in session for later use
-            session(['pending_reservation' => $reservationData]);
-            Log::info('Reservation stored in session', [
-                'session_id' => session()->getId(),
-                'reservation_id' => $reservationId
-            ]);
-
             // Check payment method
             if ($data['paymentMethod'] === 'payment-onsite') {
-                Log::info('Processing ON-SITE payment flow', [
-                    'reservation_id' => $reservationId
-                ]);
-
                 // Email-only flow - send notification and return success
-                $this->sendReservationEmail($reservationData, 'onsite');
-
-                Log::info('=== ON-SITE RESERVATION COMPLETED SUCCESSFULLY ===', [
-                    'reservation_id' => $reservationId
-                ]);
+                $this->sendReservationEmail($reservation->toArray(), 'onsite');
 
                 return response()->json([
                     'status' => 'success',
@@ -137,19 +92,12 @@ class PaymentController extends Controller
                     'payment_method' => 'onsite'
                 ]);
             } else {
-                Log::info('Processing ONLINE payment flow', [
-                    'reservation_id' => $reservationId
-                ]);
-
                 // Card payment flow - initiate WSPay payment
-                return $this->initiateCardPayment($reservationData);
+                return $this->initiateCardPayment($reservation);
             }
 
         } catch (\Exception $e) {
-            Log::error('=== RESERVATION SUBMISSION ERROR ===', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
+            Log::error('Reservation submission error: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
 
@@ -164,58 +112,28 @@ class PaymentController extends Controller
     /**
      * Initiate card payment via WSPay
      */
-    private function initiateCardPayment(array $reservationData)
+    private function initiateCardPayment(Reservation $reservation)
     {
-        Log::info('=== INITIATING CARD PAYMENT ===', [
-            'reservation_id' => $reservationData['reservation_id'],
-            'amount' => $reservationData['total_price']
-        ]);
-
         try {
-            // Get current locale
-            $locale = app()->getLocale();
-            $routePrefix = $locale === 'sr' ? '' : $locale . '.';
-
-            Log::info('Locale and routes determined', [
-                'locale' => $locale,
-                'route_prefix' => $routePrefix,
-                'return_url' => route($routePrefix . 'payment.success'),
-                'return_error_url' => route($routePrefix . 'payment.error'),
-                'cancel_url' => route($routePrefix . 'payment.cancel')
-            ]);
-
             $paymentData = [
-                'shopping_cart_id' => $reservationData['reservation_id'],
-                'total_amount' => $reservationData['total_price'],
-                'return_url' => route($routePrefix . 'payment.success'),
-                'return_error_url' => route($routePrefix . 'payment.error'),
-                'cancel_url' => route($routePrefix . 'payment.cancel'),
-                'customer_email' => $reservationData['email'],
-                'customer_first_name' => $this->getFirstName($reservationData['name']),
-                'customer_last_name' => $this->getLastName($reservationData['name']),
-                'customer_phone' => $reservationData['phone'],
-                'lang' => $locale === 'sr' ? 'sr' : ($locale === 'ru' ? 'en' : 'en'), // WSPay supports sr and en
+                'shopping_cart_id' => $reservation->reservation_id,
+                'total_amount' => $reservation->total_price,
+                'return_url' => \App\Helpers\RouteHelper::localizedRoute('payment.success'),
+                'return_error_url' => \App\Helpers\RouteHelper::localizedRoute('payment.error'),
+                'cancel_url' => \App\Helpers\RouteHelper::localizedRoute('payment.cancel'),
+                'customer_email' => $reservation->email,
+                'customer_first_name' => $this->getFirstName($reservation->name),
+                'customer_last_name' => $this->getLastName($reservation->name),
+                'customer_phone' => $reservation->phone,
+                'lang' => app()->getLocale() === 'sr' ? 'sr' : (app()->getLocale() === 'ru' ? 'en' : 'en'), // WSPay supports sr and en
             ];
 
-            Log::info('Payment data prepared for WSPay', [
-                'shopping_cart_id' => $paymentData['shopping_cart_id'],
-                'total_amount' => $paymentData['total_amount'],
-                'customer_email' => $paymentData['customer_email'],
-                'customer_first_name' => $paymentData['customer_first_name'],
-                'customer_last_name' => $paymentData['customer_last_name'],
-                'lang' => $paymentData['lang']
-            ]);
-
-            Log::info('Calling WSPayService->createPayment()');
             $paymentUrl = $this->wsPayService->createPayment($paymentData);
-            Log::info('WSPay payment URL received', [
-                'payment_url' => $paymentUrl
-            ]);
 
-            Log::info('=== CARD PAYMENT INITIATED SUCCESSFULLY ===', [
-                'reservation_id' => $reservationData['reservation_id'],
-                'amount' => $reservationData['total_price'],
-                'locale' => $locale
+            Log::info('WSPay payment initiated', [
+                'reservation_id' => $reservation->reservation_id,
+                'amount' => $reservation->total_price,
+                'locale' => app()->getLocale()
             ]);
 
             return response()->json([
@@ -226,12 +144,12 @@ class PaymentController extends Controller
             ]);
 
         } catch (WSPayException $e) {
-            Log::error('=== WSPAY PAYMENT CREATION FAILED ===', [
-                'reservation_id' => $reservationData['reservation_id'],
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
+            Log::error('WSPay payment creation failed: ' . $e->getMessage());
+
+            // Update reservation status
+            $reservation->update([
+                'status' => 'payment_failed',
+                'error_message' => $e->getMessage()
             ]);
 
             return response()->json([
@@ -247,107 +165,65 @@ class PaymentController extends Controller
      */
     public function paymentSuccess(Request $request)
     {
-        Log::info('=== PAYMENT SUCCESS CALLBACK RECEIVED ===');
-        Log::info('Request method: ' . $request->method());
-        Log::info('Request URL: ' . $request->fullUrl());
-        Log::info('Client IP: ' . $request->ip());
-        Log::info('Raw callback data:', $request->all());
-
         try {
             $callbackData = $request->all();
 
-            Log::info('Processing callback with WSPayService');
+            Log::info('Payment success callback received', [
+                'shopping_cart_id' => $callbackData['ShoppingCartID'] ?? 'N/A'
+            ]);
+
             // Verify and process the callback
             $processedData = $this->wsPayService->processCallback($callbackData);
-            Log::info('Callback processed successfully', [
-                'success' => $processedData['success'] ?? 'unknown',
-                'shopping_cart_id' => $processedData['shopping_cart_id'] ?? 'unknown'
-            ]);
 
             if ($processedData['success'] == '1') {
                 $reservationId = $processedData['shopping_cart_id'];
-                Log::info('Payment marked as successful', [
-                    'reservation_id' => $reservationId
-                ]);
 
-                // Get reservation from session
-                Log::info('Retrieving reservation from session', [
-                    'session_id' => session()->getId()
-                ]);
-                $reservationData = session('pending_reservation');
+                // Get reservation from database
+                $reservation = Reservation::where('reservation_id', $reservationId)->first();
 
-                if (!$reservationData || $reservationData['reservation_id'] !== $reservationId) {
-                    Log::warning('=== RESERVATION DATA MISMATCH OR NOT FOUND ===', [
-                        'expected_reservation_id' => $reservationId,
-                        'found_reservation_id' => $reservationData['reservation_id'] ?? 'null',
-                        'session_has_data' => !is_null($reservationData)
+                if (!$reservation) {
+                    Log::error('Reservation not found in database', [
+                        'reservation_id' => $reservationId
                     ]);
-                    return view('payment.error')->with('error', 'Reservation data not found.');
+                    return view('payment.error')->with('error', 'Reservation not found.');
                 }
 
-                Log::info('Reservation data retrieved from session successfully');
-
-                // Add payment details
-                $reservationData['payment_details'] = [
+                // Update reservation with payment details
+                $reservation->update([
+                    'status' => 'paid',
                     'ws_pay_order_id' => $processedData['ws_pay_order_id'],
                     'approval_code' => $processedData['approval_code'],
                     'stan' => $processedData['stan'],
                     'payment_amount' => $processedData['amount'],
-                    'payment_date' => $processedData['datetime'],
+                    'payment_date' => $processedData['datetime'] ? now() : null,
                     'credit_card_number' => $processedData['credit_card_number'] ?? null,
                     'payment_status' => 'completed',
-                ];
-                $reservationData['status'] = 'paid';
-
-                Log::info('Payment details added to reservation', [
-                    'ws_pay_order_id' => $processedData['ws_pay_order_id'],
-                    'approval_code' => $processedData['approval_code'],
-                    'payment_amount' => $processedData['amount']
                 ]);
 
                 // Send emails
-                Log::info('Sending admin notification email');
-                $this->sendReservationEmail($reservationData, 'online_success');
+                $this->sendReservationEmail($reservation->toArray(), 'online_success');
+                $this->sendUserConfirmationEmail($reservation->toArray());
 
-                Log::info('Sending user confirmation email');
-                $this->sendUserConfirmationEmail($reservationData);
-
-                // Clear session
-                session()->forget('pending_reservation');
-                Log::info('Cleared pending reservation from session');
-
-                Log::info('=== PAYMENT COMPLETED SUCCESSFULLY ===', [
+                Log::info('Payment successful', [
                     'reservation_id' => $reservationId,
                     'ws_pay_order_id' => $processedData['ws_pay_order_id']
                 ]);
 
                 return view('payment.success', [
-                    'reservation' => $reservationData,
+                    'reservation' => $reservation->toArray(),
                     'payment' => $processedData
                 ]);
             } else {
                 // Payment was not successful
-                Log::warning('=== PAYMENT CALLBACK WITH SUCCESS=0 ===', [
-                    'processed_data' => $processedData
-                ]);
+                Log::warning('Payment callback success=0', $processedData);
                 return $this->paymentError($request);
             }
 
         } catch (WSPayException $e) {
-            Log::error('=== PAYMENT CALLBACK VERIFICATION FAILED ===', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]);
+            Log::error('Payment callback verification failed: ' . $e->getMessage());
             return view('payment.error')->with('error', 'Payment verification failed.');
         } catch (\Exception $e) {
-            Log::error('=== PAYMENT SUCCESS HANDLER ERROR ===', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]);
+            Log::error('Payment success handler error: ' . $e->getMessage());
             return view('payment.error')->with('error', 'An error occurred processing your payment.');
         }
     }
@@ -357,57 +233,47 @@ class PaymentController extends Controller
      */
     public function paymentError(Request $request)
     {
-        Log::info('=== PAYMENT ERROR CALLBACK RECEIVED ===');
-        Log::info('Request method: ' . $request->method());
-        Log::info('Request URL: ' . $request->fullUrl());
-        Log::info('Client IP: ' . $request->ip());
-        Log::info('Raw callback data:', $request->all());
-
         try {
             $callbackData = $request->all();
-
-            Log::info('Processing error callback with WSPayService');
             $processedData = $this->wsPayService->processCallback($callbackData);
-            Log::info('Error callback processed', $processedData);
 
-            // Get reservation from session
-            Log::info('Retrieving reservation from session for error handling');
-            $reservationData = session('pending_reservation');
+            $reservationId = $processedData['shopping_cart_id'] ?? null;
 
-            if ($reservationData) {
-                Log::info('Reservation found in session', [
-                    'reservation_id' => $reservationData['reservation_id']
-                ]);
+            if ($reservationId) {
+                // Get reservation from database
+                $reservation = Reservation::where('reservation_id', $reservationId)->first();
 
-                $reservationData['status'] = 'payment_failed';
-                $reservationData['error_message'] = $processedData['error_message'] ?? 'Payment failed';
+                if ($reservation) {
+                    // Update reservation status
+                    $reservation->update([
+                        'status' => 'payment_failed',
+                        'error_message' => $processedData['error_message'] ?? 'Payment failed'
+                    ]);
 
-                Log::info('Updated reservation status to payment_failed', [
-                    'reservation_id' => $reservationData['reservation_id'],
-                    'error_message' => $reservationData['error_message']
-                ]);
+                    // Notify admin about failed payment
+                    $this->sendReservationEmail($reservation->toArray(), 'online_failed');
 
-                // Notify admin about failed payment
-                Log::info('Sending admin notification about failed payment');
-                $this->sendReservationEmail($reservationData, 'online_failed');
-            } else {
-                Log::warning('No reservation data found in session for error callback');
+                    Log::warning('Payment error', [
+                        'reservation_id' => $reservationId,
+                        'error' => $processedData['error_message'] ?? 'Unknown'
+                    ]);
+
+                    return view('payment.error', [
+                        'reservation' => $reservation->toArray(),
+                        'error' => $processedData
+                    ]);
+                }
             }
 
-            Log::warning('=== PAYMENT ERROR PROCESSED ===', $processedData);
+            Log::warning('Payment error - reservation not found', $processedData);
 
             return view('payment.error', [
-                'reservation' => $reservationData,
+                'reservation' => null,
                 'error' => $processedData
             ]);
 
         } catch (WSPayException $e) {
-            Log::error('=== PAYMENT ERROR CALLBACK VERIFICATION FAILED ===', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]);
+            Log::error('Payment error callback verification failed: ' . $e->getMessage());
             return view('payment.error')->with('error', 'Payment verification failed.');
         }
     }
@@ -417,53 +283,42 @@ class PaymentController extends Controller
      */
     public function paymentCancel(Request $request)
     {
-        Log::info('=== PAYMENT CANCEL CALLBACK RECEIVED ===');
-        Log::info('Request method: ' . $request->method());
-        Log::info('Request URL: ' . $request->fullUrl());
-        Log::info('Client IP: ' . $request->ip());
-        Log::info('Raw callback data:', $request->all());
-
         try {
             $callbackData = $request->all();
-
-            Log::info('Processing cancel callback with WSPayService');
             $processedData = $this->wsPayService->processCallback($callbackData);
-            Log::info('Cancel callback processed', $processedData);
 
-            // Get reservation from session
-            Log::info('Retrieving reservation from session for cancellation');
-            $reservationData = session('pending_reservation');
+            $reservationId = $processedData['shopping_cart_id'] ?? null;
 
-            if ($reservationData) {
-                Log::info('Reservation found in session', [
-                    'reservation_id' => $reservationData['reservation_id']
-                ]);
+            if ($reservationId) {
+                // Get reservation from database
+                $reservation = Reservation::where('reservation_id', $reservationId)->first();
 
-                $reservationData['status'] = 'cancelled';
-                Log::info('Updated reservation status to cancelled', [
-                    'reservation_id' => $reservationData['reservation_id']
-                ]);
+                if ($reservation) {
+                    // Update reservation status
+                    $reservation->update([
+                        'status' => 'cancelled'
+                    ]);
 
-                // Optionally notify admin
-                // $this->sendReservationEmail($reservationData, 'cancelled');
-            } else {
-                Log::warning('No reservation data found in session for cancel callback');
+                    Log::info('Payment cancelled', [
+                        'reservation_id' => $reservationId
+                    ]);
+
+                    return view('payment.cancel', [
+                        'reservation' => $reservation->toArray(),
+                        'data' => $processedData
+                    ]);
+                }
             }
 
-            Log::info('=== PAYMENT CANCELLED ===', $processedData);
+            Log::info('Payment cancelled - reservation not found', $processedData);
 
             return view('payment.cancel', [
-                'reservation' => $reservationData,
+                'reservation' => null,
                 'data' => $processedData
             ]);
 
         } catch (WSPayException $e) {
-            Log::error('=== PAYMENT CANCEL CALLBACK VERIFICATION FAILED ===', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]);
+            Log::error('Payment cancel callback verification failed: ' . $e->getMessage());
             return view('payment.cancel')->with('error', 'Payment verification failed.');
         }
     }
@@ -473,14 +328,8 @@ class PaymentController extends Controller
      */
     private function sendReservationEmail(array $reservationData, string $type)
     {
-        Log::info('=== SENDING ADMIN RESERVATION EMAIL ===', [
-            'reservation_id' => $reservationData['reservation_id'],
-            'type' => $type
-        ]);
-
         try {
-            $to = config('mail.reservation.to', 'petarrepac15@gmail.com');
-            Log::info('Email recipient configured', ['to' => $to]);
+            $to = config('mail.reservation.to', 'rezervacije@aeroparking.rs');
 
             $subject = match($type) {
                 'onsite' => '[Aeroparking] Nova rezervacija - Plaćanje na licu mesta',
@@ -488,18 +337,14 @@ class PaymentController extends Controller
                 'online_failed' => '[Aeroparking] Neuspelo plaćanje - Zahteva pažnju',
                 default => '[Aeroparking] Nova rezervacija'
             };
-            Log::info('Email subject determined', ['subject' => $subject]);
 
             // Build email content
-            Log::info('Rendering email template');
-            $content = view('emails.reservation-admin', [
+            $content = view('email.reservation-admin', [
                 'reservation' => $reservationData,
                 'type' => $type
             ])->render();
-            Log::info('Email template rendered', ['content_length' => strlen($content)]);
 
             // Send using EmailService
-            Log::info('Calling EmailService->sendEmail()');
             $sent = $this->emailService->sendEmail(
                 $to,
                 $subject,
@@ -508,51 +353,34 @@ class PaymentController extends Controller
             );
 
             if ($sent) {
-                Log::info('=== ADMIN EMAIL SENT SUCCESSFULLY ===', [
+                Log::info('Admin notification email sent', [
                     'reservation_id' => $reservationData['reservation_id'],
-                    'type' => $type,
-                    'to' => $to
+                    'type' => $type
                 ]);
             } else {
-                Log::warning('=== ADMIN EMAIL FAILED TO SEND ===', [
+                Log::warning('Admin notification email failed to send', [
                     'reservation_id' => $reservationData['reservation_id'],
-                    'type' => $type,
-                    'to' => $to
+                    'type' => $type
                 ]);
             }
 
         } catch (\Exception $e) {
-            Log::error('=== ADMIN EMAIL EXCEPTION ===', [
-                'reservation_id' => $reservationData['reservation_id'],
-                'type' => $type,
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]);
+            Log::error('Failed to send admin notification email: ' . $e->getMessage());
         }
     }
 
     /**
      * Send confirmation email to user using EmailService
      */
-    private function sendUserConfirmationEmail(array $reservationData): void
+    private function sendUserConfirmationEmail(array $reservationData)
     {
-        Log::info('=== SENDING USER CONFIRMATION EMAIL ===', [
-            'reservation_id' => $reservationData['reservation_id'],
-            'email' => $reservationData['email']
-        ]);
-
         try {
             // Build email content
-            Log::info('Rendering user email template');
-            $content = view('emails.reservation-user', [
+            $content = view('email.reservation-user', [
                 'reservation' => $reservationData
             ])->render();
-            Log::info('User email template rendered', ['content_length' => strlen($content)]);
 
             // Send using EmailService
-            Log::info('Calling EmailService->sendEmail() for user');
             $sent = $this->emailService->sendEmail(
                 $reservationData['email'],
                 'Potvrda rezervacije - Aeroparking',
@@ -561,26 +389,19 @@ class PaymentController extends Controller
             );
 
             if ($sent) {
-                Log::info('=== USER CONFIRMATION EMAIL SENT SUCCESSFULLY ===', [
+                Log::info('User confirmation email sent', [
                     'reservation_id' => $reservationData['reservation_id'],
                     'email' => $reservationData['email']
                 ]);
             } else {
-                Log::warning('=== USER CONFIRMATION EMAIL FAILED TO SEND ===', [
+                Log::warning('User confirmation email failed to send', [
                     'reservation_id' => $reservationData['reservation_id'],
                     'email' => $reservationData['email']
                 ]);
             }
 
         } catch (\Exception $e) {
-            Log::error('=== USER EMAIL EXCEPTION ===', [
-                'reservation_id' => $reservationData['reservation_id'],
-                'email' => $reservationData['email'],
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]);
+            Log::error('Failed to send user confirmation email: ' . $e->getMessage());
             // Don't throw - we don't want to fail the whole process if email fails
         }
     }
@@ -590,9 +411,7 @@ class PaymentController extends Controller
      */
     private function generateReservationId(): string
     {
-        $id = 'AERO-' . strtoupper(uniqid());
-        Log::debug('Reservation ID generated', ['id' => $id]);
-        return $id;
+        return 'AERO-' . strtoupper(uniqid());
     }
 
     /**
@@ -601,9 +420,7 @@ class PaymentController extends Controller
     private function getFirstName(string $fullName): string
     {
         $parts = explode(' ', trim($fullName));
-        $firstName = $parts[0] ?? $fullName;
-        Log::debug('Extracted first name', ['full_name' => $fullName, 'first_name' => $firstName]);
-        return $firstName;
+        return $parts[0] ?? $fullName;
     }
 
     /**
@@ -612,8 +429,6 @@ class PaymentController extends Controller
     private function getLastName(string $fullName): string
     {
         $parts = explode(' ', trim($fullName));
-        $lastName = count($parts) > 1 ? implode(' ', array_slice($parts, 1)) : $fullName;
-        Log::debug('Extracted last name', ['full_name' => $fullName, 'last_name' => $lastName]);
-        return $lastName;
+        return count($parts) > 1 ? implode(' ', array_slice($parts, 1)) : $fullName;
     }
 }
