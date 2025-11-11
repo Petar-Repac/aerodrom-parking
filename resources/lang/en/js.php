@@ -23,6 +23,7 @@ return [
     'enter_arrival_date' => 'Enter arrival date',
     'enter_departure_date' => 'Enter departure date',
     'data_error' => 'Data Error!',
+    'invalid_price' => 'Please select dates to see the price',
 
     // Form submission
     'sending' => 'Sending...',
@@ -44,7 +45,6 @@ return [
     'server_communication_error' => 'Server communication error. Please try again.',
     'general_error' => 'An error occurred. Please try again.',
     'message_sending_error' => 'An error occurred while sending the message. Please try again.',
-
     // Buttons
     'ok' => 'OK',
     'datepicker' => [

@@ -23,6 +23,7 @@ return [
     'enter_arrival_date' => 'Unesite datum dolaska',
     'enter_departure_date' => 'Unesite datum odlaska',
     'data_error' => 'Greška u podacima!',
+    'invalid_price' => 'Izaberite datume da vidite cenu',
 
     // Form submission
     'sending' => 'Šalje se...',
@@ -44,7 +45,6 @@ return [
     'server_communication_error' => 'Greška u komunikaciji sa serverom. Molimo pokušajte ponovo.',
     'general_error' => 'Došlo je do greške. Molimo pokušajte ponovo.',
     'message_sending_error' => 'Došlo je do greške prilikom slanja poruke. Molimo pokušajte ponovo.',
-
     // Buttons
     'ok' => 'OK',
     'datepicker' => [

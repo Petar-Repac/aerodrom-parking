@@ -223,6 +223,9 @@ function __(key) {
     return window.translations[key] || key;
 }
 
+// Store current price globally
+let currentPrice = 0;
+
 function updatePrice() {
     let arrivalDate = pickerFrom.getDate();
     let departureDate = pickerTo.getDate();
@@ -230,6 +233,7 @@ function updatePrice() {
     if (!arrivalDate || !departureDate) {
         if (formCharge) formCharge.textContent = __('price_label');
         if (ctaCharge) ctaCharge.textContent = __('price_label');
+        currentPrice = 0;
         return;
     }
 
@@ -240,6 +244,7 @@ function updatePrice() {
     if (secondDate < firstDate) {
         if (formCharge) formCharge.textContent = __('arrival_before_departure');
         if (ctaCharge) ctaCharge.textContent = __('price_label');
+        currentPrice = 0;
         showFormFirstTime()
         return;
     }
@@ -261,6 +266,7 @@ function updatePrice() {
     if(numOfDays === 0) {
         if (formCharge) formCharge.textContent = `Cena: - - -`;
         if (ctaCharge) ctaCharge.textContent = `Cena: - - -`;
+        currentPrice = 0;
         return;
     }
 
@@ -279,6 +285,9 @@ function updatePrice() {
             }
         })
     }
+
+    // Store current price
+    currentPrice = price;
 
     // correct string output
     if (numOfDays % 10 === 1 && numOfDays !== 11) {
@@ -333,23 +342,23 @@ pricingCells.forEach(cell => {
 
 // Configuration for API endpoint
 const API_CONFIG = {
-    // Change this to your Laravel app URL
-    baseUrl: 'https://aeroparking.rs', // or your Laravel app domain
+    // Use current domain automatically (no hardcoding)
+    baseUrl: window.location.origin,
     endpoints: {
-        reservations: '/api/reservations'
+        reservations: '/api/reservations'  // Uses PaymentController for both payment methods
     }
 };
 
 // Helper function to show loading state with translations
-function setFormLoading(isLoading) {
-    const submitButton = document.querySelector('#email-form button[type="submit"]');
-    if (submitButton) {
+function setFormLoading(isLoading, buttonElement) {
+    if (buttonElement) {
         if (isLoading) {
-            submitButton.disabled = true;
-            submitButton.textContent = __('sending');
+            buttonElement.disabled = true;
+            buttonElement.dataset.originalText = buttonElement.textContent;
+            buttonElement.innerHTML = '<i class="bi bi-hourglass-split"></i> ' + __('sending');
         } else {
-            submitButton.disabled = false;
-            submitButton.textContent = __('send_request');
+            buttonElement.disabled = false;
+            buttonElement.innerHTML = buttonElement.dataset.originalText || __('send_request');
         }
     }
 }
@@ -382,63 +391,86 @@ function validateFormData(formData) {
         errors.push(__('enter_departure_date'));
     }
 
+    if (!formData.totalPrice || formData.totalPrice <= 0) {
+        errors.push(__('invalid_price'));
+    }
+
     return errors;
 }
 
-// Ajax call for form submission - Updated for Laravel API
-const emailForm = document.getElementById('email-form');
-if (emailForm) {
-    emailForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
+// Handle form submission with payment method
+async function handleReservationSubmit(paymentMethod) {
+    // Get actual date values from date pickers (not display text)
+    let arrivalDateValue = '';
+    let departureDateValue = '';
 
-        // Get form data
-        const formData = {
-            name: document.getElementById('name')?.value?.trim() || '',
-            email: document.getElementById('email')?.value?.trim() || '',
-            passengers: document.getElementById('passengers')?.value || '',
-            phone: document.getElementById('phone')?.value?.trim() || '',
-            arrivalDate: document.getElementById('arrival-date')?.value || '',
-            departureDate: document.getElementById('departure-date')?.value || '',
-            additionalInfo: document.getElementById('additional-info')?.value?.trim() || ''
-        };
+    // Get dates from pickers in YYYY-MM-DD format
+    if (pickerFrom.getDate()) {
+        const arrivalDate = new Date(pickerFrom.getDate());
+        arrivalDateValue = arrivalDate.toISOString().split('T')[0]; // YYYY-MM-DD
+    }
 
-        // Validate form data
-        const validationErrors = validateFormData(formData);
-        if (validationErrors.length > 0) {
-            const errorMessage = validationErrors.join('\n');
-            if (typeof Sweetalert2 !== 'undefined') {
-                Sweetalert2.fire({
-                    title: __('data_error'),
-                    text: errorMessage,
-                    icon: "warning",
-                    confirmButtonText: __('ok'),
-                });
-            } else {
-                alert(`${__('data_error')}:\n${errorMessage}`);
-            }
-            return;
-        }
+    if (pickerTo.getDate()) {
+        const departureDate = new Date(pickerTo.getDate());
+        departureDateValue = departureDate.toISOString().split('T')[0]; // YYYY-MM-DD
+    }
 
-        // Show loading state
-        setFormLoading(true);
+    // Get form data
+    const formData = {
+        name: document.getElementById('name')?.value?.trim() || '',
+        email: document.getElementById('email')?.value?.trim() || '',
+        passengers: document.getElementById('passengers')?.value || '',
+        phone: document.getElementById('phone')?.value?.trim() || '',
+        arrivalDate: arrivalDateValue, // Use picker date, not input display text
+        departureDate: departureDateValue, // Use picker date, not input display text
+        additionalInfo: document.getElementById('additional-info')?.value?.trim() || '',
+        paymentMethod: paymentMethod,
+        totalPrice: currentPrice
+    };
 
-        try {
-            // Send request to Laravel API
-            const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.reservations}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    // Add CSRF token if needed (for web routes)
-                    // 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
-                },
-                body: JSON.stringify(formData)
+    // Validate form data
+    const validationErrors = validateFormData(formData);
+    if (validationErrors.length > 0) {
+        const errorMessage = validationErrors.join('\n');
+        if (typeof Sweetalert2 !== 'undefined') {
+            Sweetalert2.fire({
+                title: __('data_error'),
+                text: errorMessage,
+                icon: "warning",
+                confirmButtonText: __('ok'),
             });
+        } else {
+            alert(`${__('data_error')}:\n${errorMessage}`);
+        }
+        return false;
+    }
 
-            const responseData = await response.json();
+    // Get the clicked button
+    const clickedButton = event.submitter;
 
-            // Success message
-            if (response.ok && responseData.status === "success") {
+    // Show loading state
+    setFormLoading(true, clickedButton);
+
+    try {
+        // Send request to Laravel API
+        const response = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.reservations}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const responseData = await response.json();
+
+        // Success handling
+        if (response.ok && responseData.status === "success") {
+            if (responseData.payment_method === 'online' && responseData.payment_url) {
+                // Redirect to payment page
+                window.location.href = responseData.payment_url;
+            } else {
+                // Show success message for on-site payment
                 if (typeof Sweetalert2 !== 'undefined') {
                     Sweetalert2.fire({
                         title: __('reservation_sent_title'),
@@ -446,67 +478,81 @@ if (emailForm) {
                         icon: "success",
                         confirmButtonText: __('ok'),
                     }).then(() => {
-                        emailForm.reset();
+                        document.getElementById('email-form').reset();
                         const reservationForm = document.getElementById('reservation-form');
                         if (reservationForm) {
                             reservationForm.classList.remove('active');
                         }
                         showReservationForm = true;
+                        currentPrice = 0;
                     });
                 } else {
                     alert(`${__('reservation_sent_title')} ${__('reservation_sent_message')}`);
-                    emailForm.reset();
-                }
-            }
-            else {
-                // Error handling
-                let errorMessage = __('server_error');
-
-                if (responseData.errors) {
-                    // Laravel validation errors
-                    const errors = Object.values(responseData.errors).flat();
-                    errorMessage = errors.join('\n');
-                } else if (responseData.message) {
-                    errorMessage = responseData.message;
-                }
-
-                if (typeof Sweetalert2 !== 'undefined') {
-                    Sweetalert2.fire({
-                        title:  __('error'),
-                        text: errorMessage,
-                        icon: "error",
-                        confirmButtonText: "OK",
-                    });
-                } else {
-                    alert(`${__('error')},: ${errorMessage}`);
+                    document.getElementById('email-form').reset();
                 }
             }
         }
-        catch (error) {
-            console.error('Form submission error:', error);
+        else {
+            // Error handling
+            let errorMessage = __('server_error');
 
-            let errorMessage = __('submission_error');
-
-            // Check if it's a network error
-            if (!navigator.onLine) {
-                errorMessage = __('check_connection');
-            } else if (error.name === 'TypeError') {
-                errorMessage = __('server_communication_error');
+            if (responseData.errors) {
+                // Laravel validation errors
+                const errors = Object.values(responseData.errors).flat();
+                errorMessage = errors.join('\n');
+            } else if (responseData.message) {
+                errorMessage = responseData.message;
             }
 
             if (typeof Sweetalert2 !== 'undefined') {
                 Sweetalert2.fire({
-                    title: __('error'),
+                    title:  __('error'),
                     text: errorMessage,
                     icon: "error",
-                    confirmButtonText: __('ok'),
+                    confirmButtonText: "OK",
                 });
             } else {
                 alert(`${__('error')}: ${errorMessage}`);
             }
-        } finally {
-            // Remove loading state
-            setFormLoading(false);
         }
+    }
+    catch (error) {
+        console.error('Form submission error:', error);
+
+        let errorMessage = __('submission_error');
+
+        // Check if it's a network error
+        if (!navigator.onLine) {
+            errorMessage = __('check_connection');
+        } else if (error.name === 'TypeError') {
+            errorMessage = __('server_communication_error');
+        }
+
+        if (typeof Sweetalert2 !== 'undefined') {
+            Sweetalert2.fire({
+                title: __('error'),
+                text: errorMessage,
+                icon: "error",
+                confirmButtonText: __('ok'),
+            });
+        } else {
+            alert(`${__('error')}: ${errorMessage}`);
+        }
+    } finally {
+        // Remove loading state
+        setFormLoading(false, clickedButton);
+    }
+}
+
+// Set up form submission handlers
+const emailForm = document.getElementById('email-form');
+if (emailForm) {
+    emailForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        // Determine which button was clicked
+        const paymentMethod = e.submitter?.dataset?.paymentMethod || 'payment-onsite';
+
+        await handleReservationSubmit(paymentMethod);
     });
 }

@@ -44,6 +44,71 @@ return [
         'departure' => 'Datum povratka*',
         'price_label' => 'Cena: ---',
         'submit' => 'Pošalji rezervaciju',
+
+        // NEW KEYS for payment integration
+        'additional_info_label' => 'Dodatne informacije',
+        'additional_info_placeholder' => 'Unesite dodatne informacije ili posebne zahteve...',
+        'payment_method' => 'Izaberite način plaćanja',
+        'pay_onsite' => 'Plaćanje na licu mesta',
+        'pay_online' => 'Plaćanje karticom',
+        'payment_info' => 'Možete platiti odmah karticom ili kasnije na licu mesta',
+    ],
+
+    'payment' => [
+        // Success page
+        'success_title' => 'Plaćanje uspešno!',
+        'success_message' => 'Vaše plaćanje je uspešno izvršeno. Hvala što ste izabrali Aeroparking!',
+
+        // Error page
+        'error_title' => 'Plaćanje nije uspelo',
+        'error_message' => 'Došlo je do greške prilikom obrade Vašeg plaćanja.',
+
+        // Cancel page
+        'cancel_title' => 'Plaćanje otkazano',
+        'cancel_message' => 'Odustali ste od plaćanja. Vaša rezervacija nije naplaćena.',
+
+        // Common fields
+        'reservation_details' => 'Detalji rezervacije',
+        'reservation_number' => 'Broj rezervacije',
+        'name' => 'Ime i prezime',
+        'email' => 'Email',
+        'phone' => 'Telefon',
+        'arrival' => 'Dolazak',
+        'departure' => 'Odlazak',
+        'duration' => 'Trajanje',
+        'days' => 'dana',
+        'total_amount' => 'Ukupan iznos',
+
+        // Payment information
+        'payment_information' => 'Informacije o plaćanju',
+        'transaction_id' => 'ID transakcije',
+        'approval_code' => 'Kod odobrenja',
+        'payment_date' => 'Datum plaćanja',
+        'card_number' => 'Broj kartice',
+
+        // Messages
+        'confirmation_email_sent' => 'Email sa potvrdom je poslat na Vašu adresu. Neko iz našeg tima će Vas uskoro kontaktirati.',
+        'back_to_home' => 'Nazad na početnu',
+
+        // Error page specific
+        'error_details' => 'Detalji greške',
+        'your_reservation' => 'Vaša rezervacija',
+        'error_help' => 'Šta možete da uradite:',
+        'try_again_later' => 'Pokušajte ponovo za nekoliko minuta',
+        'check_card_details' => 'Proverite da li su podaci o kartici tačni',
+        'contact_bank' => 'Kontaktirajte svoju banku',
+        'choose_onsite_payment' => 'Izaberite plaćanje na licu mesta',
+        'try_again' => 'Pokušaj ponovo',
+        'need_help' => 'Potrebna Vam je pomoć?',
+
+        // Cancel page specific
+        'cancelled_reservation' => 'Otkazana rezervacija',
+        'what_happens_now' => 'Šta se dešava sada?',
+        'no_charge_made' => 'Vaša kartica nije naplaćena',
+        'can_try_again' => 'Možete ponovo pokušati sa plaćanjem',
+        'or_choose_onsite' => 'Ili izaberite plaćanje na licu mesta',
+        'complete_reservation' => 'Završite rezervaciju',
+        'questions' => 'Imate pitanja?',
     ],
 
     // Pricing Section

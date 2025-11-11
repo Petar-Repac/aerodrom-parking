@@ -118,7 +118,7 @@ class EmailService
 
         // Send to the reservations email
         return $this->sendEmail(
-            config('mail.reservation.to', 'rezervacije@aeroparking.rs'),
+            config('mail.reservation.to', 'petarrepac15@gmail.com'),
             $subject,
             $content,
             'Rezervacije'

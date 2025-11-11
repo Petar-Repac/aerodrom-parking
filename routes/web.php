@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Helpers\RouteHelper;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 $locales = ['sr' => '', 'en' => 'en', 'ru' => 'ru'];
@@ -31,6 +32,19 @@ foreach ($locales as $locale => $prefix) {
         Route::get('/' . RouteHelper::getLocalizedPath('pricing', $locale), function () {
             return view('pricing');
         })->name($routePrefix . 'pricing');
+
+
+        Route::get('/' . RouteHelper::getLocalizedPath('payment-success', $locale),
+            [PaymentController::class, 'paymentSuccess'])
+            ->name($routePrefix . 'payment.success');
+
+        // Payment error callback
+        Route::get('/payment/error', [PaymentController::class, 'paymentError'])
+            ->name($routePrefix . 'payment.error');
+
+        // Payment cancel callback
+        Route::get('/payment/cancel', [PaymentController::class, 'paymentCancel'])
+            ->name($routePrefix . 'payment.cancel');
     });
 }
 

@@ -44,6 +44,22 @@ class RouteHelper
                 'en' => 'pricing',
                 'ru' => 'ceny',
             ],
+            // ADD THESE THREE ENTRIES:
+            'payment-success' => [
+                'sr' => 'placanje/uspesno',
+                'en' => 'payment/success',
+                'ru' => 'oplata/uspeshno',
+            ],
+            'payment-error' => [
+                'sr' => 'placanje/greska',
+                'en' => 'payment/error',
+                'ru' => 'oplata/oshibka',
+            ],
+            'payment-cancel' => [
+                'sr' => 'placanje/otkazano',
+                'en' => 'payment/cancel',
+                'ru' => 'oplata/otmeneno',
+            ],
         ];
 
         return $paths[$routeKey][$locale] ?? $paths[$routeKey]['sr'];

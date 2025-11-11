@@ -23,6 +23,7 @@ return [
     'enter_arrival_date' => 'Введите дату прибытия',
     'enter_departure_date' => 'Введите дату отъезда',
     'data_error' => 'Ошибка данных!',
+    'invalid_price' => 'Пожалуйста, выберите даты, чтобы увидеть цену',
 
     // Form submission
     'sending' => 'Отправка...',

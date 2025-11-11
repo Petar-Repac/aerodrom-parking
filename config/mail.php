@@ -110,7 +110,7 @@ return [
 
 
     'reservation' => [
-        'to' => env('RESERVATION_EMAIL', 'rezervacije@aeroparking.rs'),
+        'to' => env('RESERVATION_EMAIL', 'petarrepac15@gmail.com'),
         'from_name' => env('RESERVATION_FROM_NAME', 'AeroParking Reservations'),
     ],
     'from' => [
