@@ -7,6 +7,7 @@ return [
         'pricing' => 'Pricing',
         'about' => 'About',
         'contact' => 'Contact',
+        'terms' => 'Terms & Conditions',
     ],
 
     // Hero Section
@@ -143,7 +144,7 @@ return [
         'location_value' => 'Nikola Tesla Airport',
         'working_hours_label' => 'Working hours',
         'working_hours_value' => '24/7',
-        'design_by' => 'Design by: <strong><span>Codegarden</span></strong>',
+        'design_by' => 'Design by: <strong><span><a href="https://webwisteria.com" target="_blank">WebWisteria</a></span></strong>',
         'benefits' => 'Benefits',
     ],
 
@@ -177,5 +178,43 @@ return [
         'title' => 'Page Not Found!',
         'description' => 'The content you are looking for may have been removed or is not available at this location.',
         'back_home' => 'Back to Home',
+    ],
+
+    // Terms & Conditions
+    'terms' => [
+        'title' => 'Terms & Conditions',
+        'intro' => 'These General Terms of Use and Sale (hereinafter: "Terms") govern the relationship between Nexus Temporis Corporation d.o.o. (hereinafter: "We", "Us" or "Seller"), headquartered in Belgrade, and the service user (hereinafter: "You" or "User") on the website for airport parking reservation (hereinafter: "Website"). These Terms constitute a binding agreement between the parties. By using the Website or making a reservation, the User confirms that they have read, understood, and accepted these Terms in their entirety.<br><br>These Terms apply to the branch of Nexus Temporis Corporation d.o.o. engaged in airport parking services with transfer (hereinafter: "Aero Parking branch"). If you have any questions, please contact us using the details provided below.',
+
+        'section_1' => [
+            'title' => '1. Point of Sale Information',
+            'content' => '<strong>Full company name:</strong> Nexus Temporis Corporation d.o.o. (Aero Parking branch)<br><strong>Registered address:</strong> Trg Nikole Pašića 7, 11158, Belgrade (Stari Grad), Republic of Serbia<br><strong>Tax ID (PIB):</strong> 113083367<br><strong>Registration number:</strong> 21798487<br><br><strong>Contact:</strong><br>Phone: 069/445-4255<br>Email: rezervacije@aeroparking.rs<br>Website: aeroparking.rs<br><br>All services are provided in accordance with the Consumer Protection Law of the Republic of Serbia and other relevant regulations.',
+        ],
+
+        'section_2' => [
+            'title' => '2. Information About Products and/or Services',
+            'content' => 'We provide airport parking services at Nikola Tesla Belgrade Airport (BEG), with a free round-trip shuttle transfer to and from the terminal. The service includes:<br><br>— Secure vehicle parking in a fenced, well-lit, and video-monitored area (24/7 surveillance).<br>— Free transfer to and from the terminal (approximately 2–5 minutes ride).<br><br><strong>Limitations:</strong> The service is intended for personal vehicles (cars, SUVs); there is no support for trucks or vehicles longer than 5 meters. The parking facility is not responsible for personal belongings left in the vehicle.<br><br><strong>Parking location:</strong> Sremskih Partizana 133, Surčin<br><br>The service is available 24/7, including weekends and holidays. Reservations are made in advance via the Website, but on-site payment is also possible.',
+        ],
+
+        'section_3' => [
+            'title' => '3. Terms of Sale (including payment, delivery, complaints)',
+            'content' => '<strong>Payment:</strong><br>Supported methods: Online card payment (Visa, Mastercard, DinaCard, American Express) in advance via the Website.<br>Currency: RSD (Serbian dinars).<br>On-site payment: Cash or card payment available on location (same card types).<br>There are no hidden fees; the transfer is free of charge.<br><br><strong>Service Delivery:</strong><br>Upon successful reservation and payment, the User receives an email confirmation for parking access.<br>Delivery: The service is provided on the territory of the Republic of Serbia (Surčin).<br>Timeframe: Immediately upon arrival at the parking lot, with transfer within 5–10 minutes.<br><br><strong>Complaints and Cancellation:</strong><br>Cancellation policy for online payments: Free cancellation within 24 hours of making the reservation (full refund within 7 days). No-show: the full amount is retained.<br>Complaints: The User may file a complaint within 7 days of service completion (e.g., vehicle damage). Contact us via email or phone; response within 48 hours.<br>Refund: Via the same payment method, in accordance with the Consumer Protection Law.',
+        ],
+
+        'section_4' => [
+            'title' => '4. Confidential Data Protection',
+            'content' => 'We protect the User\'s confidential data in accordance with the Law on Personal Data Protection of the Republic of Serbia and GDPR standards (where applicable). Protection measures include:<br><br>— Use of SSL/TLS encryption for all transactions on the Website (HTTPS protocol).<br>— Payment data (card numbers) is not stored on our servers; it is processed directly via a secure payment gateway (tokenization).<br>— Physical and digital protection: Servers are hosted in secure data centers with firewalls, antivirus software, and regular security audits.',
+        ],
+
+        'section_5' => [
+            'title' => '5. Statement on Collection and Use of Personal Data',
+            'content' => 'We collect the following personal data during the reservation process: full name, email address, phone number, vehicle registration number, arrival/departure dates and times, flight number (optional).<br><br><strong>Purpose of collection:</strong> Reservation processing, sending confirmations, contacting in case of changes (e.g., flight delay), service improvement. Data is not used for marketing without explicit consent.<br><br><strong>Legal basis for processing:</strong> Contractual obligation (Art. 12 of the Law on Personal Data Protection). Consent is obtained during the reservation process (checkbox).<br><br><strong>Data sharing:</strong> Only with necessary partners (e.g., payment provider, transfer courier). We do not sell data to third parties.<br><br><strong>User rights:</strong> You may request access, correction, deletion, or restriction of data processing by sending a request to rezervacije@aeroparking.rs. Response deadline: 30 days. Data is retained for 2 years after the service (due to tax obligations) and then deleted.<br><br>A detailed Privacy Policy is available on the Website.',
+        ],
+
+        'section_6' => [
+            'title' => '6. Currency Conversion Statement (for foreign card transactions)',
+            'content' => 'When paying with a foreign card (e.g., from the EU or USA), the amount is charged in the dinar equivalent at the middle exchange rate of the National Bank of Serbia (NBS) on the transaction date, or at the rate of the authorizing bank. Additional conversion fees may be charged by the card issuer (e.g., 1–3% fee), for which We are not responsible. We recommend checking with your bank before making a payment. All payments are in RSD; no other currencies are supported directly.',
+        ],
+
+        'closing' => 'These Terms may be amended; Users will be notified via email or on the Website.',
     ],
 ];

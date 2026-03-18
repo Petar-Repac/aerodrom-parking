@@ -30,6 +30,11 @@
                         <i class="bi bi-envelope"></i>
                         <span>{{ __('messages.nav.contact') }}</span>
                     </a></li>
+                <li><a class="nav-link scrollto {{ Str::contains(Route::currentRouteName(), 'terms') ? 'active' : '' }}"
+                       href="{{ App\Helpers\RouteHelper::localizedRoute('terms') }}">
+                        <i class="bi bi-envelope"></i>
+                        <span>{{ __('messages.nav.terms') }}</span>
+                    </a></li>
 
                 <!-- Mobile Language Switcher (only visible on mobile) -->
                 @php

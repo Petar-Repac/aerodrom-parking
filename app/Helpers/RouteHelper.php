@@ -44,6 +44,11 @@ class RouteHelper
                 'en' => 'pricing',
                 'ru' => 'ceny',
             ],
+            'terms' => [
+                'sr' => 'uslovi-koriscenja',
+                'en' => 'terms-and-conditions',
+                'ru' => 'usloviya-ispolzovaniya',
+            ],
         ];
 
         return $paths[$routeKey][$locale] ?? $paths[$routeKey]['sr'];

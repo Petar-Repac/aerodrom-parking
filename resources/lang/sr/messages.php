@@ -7,6 +7,7 @@ return [
         'pricing' => 'Cenovnik',
         'about' => 'O nama',
         'contact' => 'Kontakt',
+        'terms' => 'Uslovi korišćenja',
     ],
 
     // Hero Section
@@ -143,7 +144,7 @@ return [
         'location_value' => 'Aerodrom Nikola Tesla',
         'working_hours_label' => 'Radno vreme',
         'working_hours_value' => '24/7',
-        'design_by' => 'Design by: <strong><span>Codegarden</span></strong>',
+        'design_by' => 'Design by: <strong><span><a href="https://webwisteria.com" target="_blank">WebWisteria</a></span></strong>',
         'benefits' => 'Pogodnosti',
     ],
 
@@ -177,5 +178,42 @@ return [
         'title' => 'Stranica nije pronađena!',
         'description' => 'Sadržaj koji tražite je možda uklonjen, ili se ne nalazi na ovoj lokaciji.',
         'back_home' => 'Povratak na početnu',
+    ],
+    // Opšti uslovi korišćenja i prodaje
+    'terms' => [
+        'title' => 'Opšti uslovi korišćenja i prodaje',
+        'intro' => 'Ovi Opšti uslovi korišćenja i prodaje (u daljem tekstu: „Uslovi") regulišu odnose između Nexus Temporis Corporation d.o.o. (u daljem tekstu: „Mi", „Nas" ili „Prodavac"), sa sedištem u Beogradu, i korisnika usluga (u daljem tekstu: „Vi" ili „Korisnik") na veb-sajtu za rezervaciju aerodromskog parkinga (u daljem tekstu: „Sajt"). Ovi Uslovi predstavljaju obavezujući ugovor između strana. Korišćenjem Sajta ili rezervacijom usluge, Korisnik potvrđuje da je pročitao, razumeo i prihvatio ove Uslove u celini.<br><br>Ovi Uslovi važe za ogranak firme Nexus Temporis Corporation d.o.o. koji se bavi uslugama aerodromskog parkinga sa transferom (u daljem tekstu: „Aero Parking ogranak"). Ako imate pitanja, kontaktirajte nas na dole navedene podatke.',
+
+        'section_1' => [
+            'title' => '1. Podaci o prodajnom mestu',
+            'content' => '<strong>Pun naziv kompanije:</strong> Nexus Temporis Corporation d.o.o. (Aero Parking ogranak)<br><strong>Adresa sedišta:</strong> Trg Nikole Pašića 7, 11158, Beograd (Stari Grad), Republika Srbija<br><strong>PIB:</strong> 113083367<br><strong>Matični broj:</strong> 21798487<br><br><strong>Kontakt:</strong><br>Telefon: 069/445-4255<br>Email: rezervacije@aeroparking.rs<br>Veb-sajt: aeroparking.rs<br><br>Sve usluge se pružaju u skladu sa Zakonom o zaštiti potrošača Republike Srbije i drugim relevantnim propisima.',
+        ],
+
+        'section_2' => [
+            'title' => '2. Informacije o proizvodima i/ili uslugama',
+            'content' => 'Mi pružamo uslugu aerodromskog parkinga na Aerodromu Nikola Tesla Beograd (BEG), sa besplatnim transferom u oba smera do i sa terminala (shuttle usluga). Usluga uključuje:<br><br>— Sigurno parkiranje vozila na ograđenom, osvetljenom i video-nadziranom prostoru (24/7 nadzor).<br>— Besplatan transfer do i sa terminala (oko 2–5 minuta vožnje).<br><br><strong>Ograničenja:</strong> Usluga je namenjena ličnim vozilima (automobili, SUV-i); nema podrške za kamione ili vozila veća od 5m dužine. Parking nije odgovoran za lične stvari ostavljene u vozilu.<br><br><strong>Lokacija parkinga:</strong> Sremskih Partizana 133, Surčin<br><br>Usluga je dostupna 24/7, uključujući vikende i praznike. Rezervacija se vrši unapred preko Sajta, ali je moguće plaćanje i na licu mesta (uživo).',
+        ],
+
+        'section_3' => [
+            'title' => '3. Uslovi prodaje (uključujući plaćanje, dostavu, reklamacije)',
+            'content' => '<strong>Plaćanje:</strong><br>Podržane metode: Online plaćanje karticama (Visa, Mastercard, DinaCard, American Express) unapred preko Sajta.<br>Valuta: RSD (srpski dinari).<br>Plaćanje uživo: Moguće na licu mesta kešom ili karticom (iste vrste kartica).<br>Nema skrivenih troškova; transfer je besplatan.<br><br><strong>Dostava usluge:</strong><br>Nakon uspešne rezervacije i plaćanja, Korisnik dobija potvrdu na email za pristup parkingu.<br>Dostava: Usluga se pruža na teritoriji Republike Srbije (Surčin).<br>Rok: Odmah po dolasku na parking, sa transferom u roku od 5–10 minuta.<br><br><strong>Reklamacije i otkazivanje:</strong><br>Rok za otkaz prilikom online plaćanja: Besplatan otkaz do 24 sata nakon izvršene rezervacije (povraćaj punog iznosa u roku od 7 dana). No-show (nedolazak): pun iznos se zadržava.<br>Reklamacije: Korisnik može podneti reklamaciju u roku od 7 dana od završetka usluge (npr. oštećenje vozila). Kontaktirajte nas email-om ili telefonom; odgovor u roku od 48 sati.<br>Povraćaj novca: Preko iste metode plaćanja, u skladu sa Zakonom o zaštiti potrošača.',
+        ],
+
+        'section_4' => [
+            'title' => '4. Način zaštite poverljivih podataka',
+            'content' => 'Štitimo poverljive podatke Korisnika u skladu sa Zakonom o zaštiti podataka o ličnosti Republike Srbije i GDPR standardima (gde primenljivo). Merenja zaštite uključuju:<br><br>— Upotrebu SSL/TLS enkripcije za sve transakcije na Sajtu (HTTPS protokol).<br>— Podaci o plaćanju (brojevi kartica) se ne čuvaju na našim serverima; oni se obrađuju direktno preko sigurnog payment gateway-a (tokenizacija).<br>— Fizička i digitalna zaštita: Serveri su hostovani u sigurnim data centrima sa firewall-ovima, antivirusima i redovnim bezbednosnim auditima.',
+        ],
+
+        'section_5' => [
+            'title' => '5. Izjava o prikupljanju i korišćenju ličnih podataka',
+            'content' => 'Prikupljamo sledeće lične podatke prilikom rezervacije: ime i prezime, email adresa, broj telefona, registarska oznaka vozila, datumi i vreme dolaska/odlaska, broj leta (opciono).<br><br><strong>Svrha prikupljanja:</strong> Obrada rezervacije, slanje potvrde, kontakt u slučaju izmena (npr. kašnjenje leta), unapređenje usluga. Ne koristimo za marketing bez izričite saglasnosti.<br><br><strong>Osnov za obradu:</strong> Ugovorna obaveza (čl. 12 Zakona o zaštiti podataka o ličnosti). Saglasnost se dobija prilikom rezervacije (checkbox).<br><br><strong>Deljenje podataka:</strong> Samo sa neophodnim partnerima (npr. payment provajder, kurir za transfer). Ne prodajemo podatke trećim licima.<br><br><strong>Prava Korisnika:</strong> Možete zatražiti pristup, ispravku, brisanje ili ograničenje obrade podataka slanjem zahteva na rezervacije@aeroparking.rs. Rok za odgovor: 30 dana. Podaci se čuvaju 2 godine posle usluge (zbog poreskih obaveza), zatim se brišu.<br><br>Detaljna Politika privatnosti dostupna na Sajtu.',
+        ],
+
+        'section_6' => [
+            'title' => '6. Izjava o konverziji (za stranice sa inostranim karticama)',
+            'content' => 'Kod plaćanja inostranim karticama (npr. iz EU ili SAD), iznos se obračunava u dinarskoj protivvrednosti po srednjem kursu Narodne banke Srbije (NBS) na dan transakcije, ili po kursu banke koja vrši autorizaciju. Mogući su dodatni troškovi konverzije od strane izdavaoca kartice (npr. 1–3% fee), za koje Mi nismo odgovorni. Preporučujemo proveru sa vašom bankom pre plaćanja. Sva plaćanja su u RSD; nema podrške za druge valute direktno.',
+        ],
+
+        'closing' => 'Ovi Uslovi mogu se menjati; obaveštavamo Korisnike email-om ili na Sajtu.',
     ],
 ];

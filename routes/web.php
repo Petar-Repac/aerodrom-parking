@@ -31,6 +31,12 @@ foreach ($locales as $locale => $prefix) {
         Route::get('/' . RouteHelper::getLocalizedPath('pricing', $locale), function () {
             return view('pricing');
         })->name($routePrefix . 'pricing');
+
+        // Terms & Conditions
+        Route::get('/' . RouteHelper::getLocalizedPath('terms', $locale), function () {
+            return view('terms');
+        })->name($routePrefix . 'terms');
+
     });
 }
 
