@@ -44,7 +44,6 @@ class RouteHelper
                 'en' => 'pricing',
                 'ru' => 'ceny',
             ],
-            // ADD THESE THREE ENTRIES:
             'payment-success' => [
                 'sr' => 'placanje/uspesno',
                 'en' => 'payment/success',
@@ -59,6 +58,11 @@ class RouteHelper
                 'sr' => 'placanje/otkazano',
                 'en' => 'payment/cancel',
                 'ru' => 'oplata/otmeneno',
+            ],
+            'terms' => [
+                'sr' => 'uslovi-koriscenja',
+                'en' => 'terms-and-conditions',
+                'ru' => 'usloviya-ispolzovaniya',
             ],
         ];
 

@@ -45,6 +45,12 @@ foreach ($locales as $locale => $prefix) {
         // Payment cancel callback
         Route::get('/payment/cancel', [PaymentController::class, 'paymentCancel'])
             ->name($routePrefix . 'payment.cancel');
+
+        // Terms & Conditions
+        Route::get('/' . RouteHelper::getLocalizedPath('terms', $locale), function () {
+            return view('terms');
+        })->name($routePrefix . 'terms');
+
     });
 }
 
