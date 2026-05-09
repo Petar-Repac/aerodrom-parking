@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="sr">
+<html lang="{{ app()->getLocale() }}">
 @include('partials.head.head')
 <body>
-
 
 <!-- ======= Header ======= -->
 @include('partials.common.header')
@@ -11,103 +10,76 @@
     <div class="container payment-result-page">
         <div class="row justify-content-center min-vh-100 align-items-center">
             <div class="col-lg-8">
-                <div class="payment-success-card">
-                    <div class="success-icon">
-                        <i class="bi bi-check-circle-fill"></i>
+                <div class="payment-error-card">
+                    <div class="error-icon">
+                        <i class="bi bi-x-circle-fill"></i>
                     </div>
 
-                    <h1 class="text-center mb-4">{{ __('messages.payment.success_title') }}</h1>
+                    <h1 class="text-center mb-4">{{ __('messages.payment.error_title') }}</h1>
 
-                    <div class="alert alert-success text-center">
-                        <p class="mb-0">{{ __('messages.payment.success_message') }}</p>
+                    <div class="alert alert-danger text-center">
+                        <p class="mb-1"><strong>{{ __('messages.payment.transaction_failed_notice') }}</strong></p>
+                        <p class="mb-0">{{ __('messages.payment.error_message') }}</p>
                     </div>
 
                     @if(isset($reservation))
-                    <div class="reservation-details mt-4">
-                        <h3 class="mb-3">{{ __('messages.payment.reservation_details') }}</h3>
-
-                        <div class="detail-row">
-                            <span class="detail-label">{{ __('messages.payment.reservation_number') }}:</span>
-                            <span class="detail-value">{{ $reservation['reservation_id'] }}</span>
-                        </div>
-
-                        <div class="detail-row">
-                            <span class="detail-label">{{ __('messages.payment.name') }}:</span>
-                            <span class="detail-value">{{ $reservation['name'] }}</span>
-                        </div>
-
-                        <div class="detail-row">
-                            <span class="detail-label">{{ __('messages.payment.email') }}:</span>
-                            <span class="detail-value">{{ $reservation['email'] }}</span>
-                        </div>
-
-                        <div class="detail-row">
-                            <span class="detail-label">{{ __('messages.payment.phone') }}:</span>
-                            <span class="detail-value">{{ $reservation['phone'] }}</span>
-                        </div>
-
-                        <div class="detail-row">
-                            <span class="detail-label">{{ __('messages.payment.arrival') }}:</span>
-                            <span class="detail-value">{{ \Carbon\Carbon::parse($reservation['arrival_date'])->format('d.m.Y') }}</span>
-                        </div>
-
-                        <div class="detail-row">
-                            <span class="detail-label">{{ __('messages.payment.departure') }}:</span>
-                            <span class="detail-value">{{ \Carbon\Carbon::parse($reservation['departure_date'])->format('d.m.Y') }}</span>
-                        </div>
-
-                        <div class="detail-row">
-                            <span class="detail-label">{{ __('messages.payment.duration') }}:</span>
-                            <span class="detail-value">{{ $reservation['num_of_days'] }} {{ __('messages.payment.days') }}</span>
-                        </div>
-
-                        <div class="detail-row total-price">
-                            <span class="detail-label">{{ __('messages.payment.total_amount') }}:</span>
-                            <span class="detail-value">{{ number_format($reservation['total_price'], 2) }} RSD</span>
-                        </div>
-
-                        @if(isset($reservation['payment_details']))
-                        <div class="payment-info mt-3">
-                            <h4>{{ __('messages.payment.payment_information') }}</h4>
+                        <div class="reservation-details mt-4">
+                            <h3 class="mb-3">{{ __('messages.payment.your_reservation') }}</h3>
 
                             <div class="detail-row">
-                                <span class="detail-label">{{ __('messages.payment.transaction_id') }}:</span>
-                                <span class="detail-value">{{ $reservation['payment_details']['ws_pay_order_id'] }}</span>
+                                <span class="detail-label">{{ __('messages.payment.reservation_number') }}:</span>
+                                <span class="detail-value">{{ $reservation['reservation_id'] }}</span>
                             </div>
 
                             <div class="detail-row">
-                                <span class="detail-label">{{ __('messages.payment.approval_code') }}:</span>
-                                <span class="detail-value">{{ $reservation['payment_details']['approval_code'] }}</span>
+                                <span class="detail-label">{{ __('messages.payment.name') }}:</span>
+                                <span class="detail-value">{{ $reservation['name'] }}</span>
                             </div>
 
                             <div class="detail-row">
-                                <span class="detail-label">{{ __('messages.payment.payment_date') }}:</span>
-                                <span class="detail-value">{{ $reservation['payment_details']['payment_date'] }}</span>
+                                <span class="detail-label">{{ __('messages.payment.arrival') }}:</span>
+                                <span class="detail-value">{{ \Carbon\Carbon::parse($reservation['arrival_date'])->format('d.m.Y') }}</span>
                             </div>
 
-                            @if(isset($reservation['payment_details']['credit_card_number']))
                             <div class="detail-row">
-                                <span class="detail-label">{{ __('messages.payment.card_number') }}:</span>
-                                <span class="detail-value">**** **** **** {{ substr($reservation['payment_details']['credit_card_number'], -4) }}</span>
+                                <span class="detail-label">{{ __('messages.payment.departure') }}:</span>
+                                <span class="detail-value">{{ \Carbon\Carbon::parse($reservation['departure_date'])->format('d.m.Y') }}</span>
                             </div>
-                            @endif
-                        </div>
-                        @endif
-                    </div>
 
-                    <div class="confirmation-message mt-4">
-                        <div class="alert alert-info">
-                            <i class="bi bi-info-circle"></i>
-                            {{ __('messages.payment.confirmation_email_sent') }}
+                            <div class="detail-row total-price">
+                                <span class="detail-label">{{ __('messages.payment.total_amount') }}:</span>
+                                <span class="detail-value">{{ number_format($reservation['total_price'], 2, ',', '.') }} RSD</span>
+                            </div>
                         </div>
-                    </div>
                     @endif
 
-                    <div class="text-center mt-4">
-                        <a href="{{ route('home') }}" class="btn btn-primary btn-lg">
+                    <div class="error-help mt-4">
+                        <h4>{{ __('messages.payment.error_help') }}</h4>
+                        <ul>
+                            <li>{{ __('messages.payment.check_card_details') }}</li>
+                            <li>{{ __('messages.payment.try_again_later') }}</li>
+                            <li>{{ __('messages.payment.contact_bank') }}</li>
+                            <li>{{ __('messages.payment.choose_onsite_payment') }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="text-center mt-4 d-flex flex-wrap justify-content-center gap-3">
+                        <a href="{{ \App\Helpers\RouteHelper::localizedRoute('home') }}" class="btn btn-primary btn-lg">
+                            <i class="bi bi-arrow-clockwise"></i>
+                            {{ __('messages.payment.try_again') }}
+                        </a>
+                        <a href="{{ \App\Helpers\RouteHelper::localizedRoute('home') }}" class="btn btn-outline-secondary btn-lg">
                             <i class="bi bi-house"></i>
                             {{ __('messages.payment.back_to_home') }}
                         </a>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <p class="text-muted">
+                            <i class="bi bi-headset"></i>
+                            {{ __('messages.payment.need_help') }}
+                            <a href="tel:+381694454255">+381 69 445 4255</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -119,31 +91,21 @@
             padding: 2rem 0;
         }
 
-        .payment-success-card {
+        .payment-error-card {
             background: white;
             border-radius: 15px;
             padding: 3rem;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .success-icon {
+        .error-icon {
             text-align: center;
             margin-bottom: 2rem;
         }
 
-        .success-icon i {
+        .error-icon i {
             font-size: 5rem;
-            color: #28a745;
-            animation: successPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes successPulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
+            color: #dc3545;
         }
 
         .reservation-details {
@@ -152,11 +114,10 @@
             border-radius: 10px;
         }
 
-        .reservation-details h3,
-        .payment-info h4 {
+        .reservation-details h3 {
             color: #333;
             margin-bottom: 1rem;
-            border-bottom: 2px solid #007bff;
+            border-bottom: 2px solid #dc3545;
             padding-bottom: 0.5rem;
         }
 
@@ -182,7 +143,7 @@
         }
 
         .total-price {
-            background: #e7f3ff;
+            background: #fff3cd;
             padding: 1rem;
             margin-top: 1rem;
             border-radius: 8px;
@@ -190,25 +151,30 @@
             font-weight: bold;
         }
 
-        .payment-info {
-            background: white;
+        .error-help {
+            background: #fff3cd;
             padding: 1.5rem;
             border-radius: 10px;
-            margin-top: 1rem;
+            border-left: 4px solid #ffc107;
         }
 
-        .confirmation-message .alert {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        .error-help h4 {
+            color: #856404;
+            margin-bottom: 1rem;
         }
 
-        .confirmation-message i {
-            font-size: 1.5rem;
+        .error-help ul {
+            margin: 0;
+            padding-left: 1.5rem;
+            color: #333;
+        }
+
+        .error-help ul li {
+            margin-bottom: 0.5rem;
         }
 
         @media (max-width: 768px) {
-            .payment-success-card {
+            .payment-error-card {
                 padding: 1.5rem;
             }
 
@@ -230,7 +196,6 @@
 
 @include('partials.common.scripts-homepage')
 
-{{--@include('partials.util.theme-customizer')--}}
 </body>
 
 </html>

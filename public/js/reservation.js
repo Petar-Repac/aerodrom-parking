@@ -289,16 +289,19 @@ function updatePrice() {
     // Store current price
     currentPrice = price;
 
+    // Format price as decimal with RSD currency
+    var priceFormatted = price.toFixed(2).replace('.', ',') + ' RSD';
+
     // correct string output
     if (numOfDays % 10 === 1 && numOfDays !== 11) {
-        if (formCharge) formCharge.textContent = `${__('price_for')} ${numOfDays} ${__('day')} ${__('costs')} ${price} ${__('dinars')}.`;
-        if (ctaCharge) ctaCharge.textContent = `${__('price')}: ${price} ${__('din')}.`;
+        if (formCharge) formCharge.textContent = `${__('price_for')} ${numOfDays} ${__('day')} ${__('costs')} ${priceFormatted}.`;
+        if (ctaCharge) ctaCharge.textContent = `${__('price')}: ${priceFormatted}.`;
         showFormFirstTime()
         return;
     }
 
-    if (formCharge) formCharge.textContent = `${__('price_for')} ${numOfDays} ${__('days')} ${__('costs')} ${price} ${__('dinars')}.`;
-    if (ctaCharge) ctaCharge.textContent = `${__('price')}: ${price} ${__('din')}.`;
+    if (formCharge) formCharge.textContent = `${__('price_for')} ${numOfDays} ${__('days')} ${__('costs')} ${priceFormatted}.`;
+    if (ctaCharge) ctaCharge.textContent = `${__('price')}: ${priceFormatted}.`;
     showFormFirstTime()
 }
 

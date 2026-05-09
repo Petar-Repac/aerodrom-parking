@@ -253,6 +253,9 @@ class PaymentController extends Controller
                     // Notify admin about failed payment
                     $this->sendReservationEmail($reservation->toArray(), 'online_failed');
 
+                    // Notify user about failed payment
+                    $this->sendUserFailedPaymentEmail($reservation->toArray());
+
                     Log::warning('Payment error', [
                         'reservation_id' => $reservationId,
                         'error' => $processedData['error_message'] ?? 'Unknown'
@@ -403,6 +406,39 @@ class PaymentController extends Controller
         } catch (\Exception $e) {
             Log::error('Failed to send user confirmation email: ' . $e->getMessage());
             // Don't throw - we don't want to fail the whole process if email fails
+        }
+    }
+
+    /**
+     * Send failed payment notification email to user
+     */
+    private function sendUserFailedPaymentEmail(array $reservationData)
+    {
+        try {
+            $content = view('email.reservation-failed-user', [
+                'reservation' => $reservationData
+            ])->render();
+
+            $sent = $this->emailService->sendEmail(
+                $reservationData['email'],
+                'Neuspešno plaćanje - Aeroparking',
+                $content,
+                $reservationData['name']
+            );
+
+            if ($sent) {
+                Log::info('User failed payment email sent', [
+                    'reservation_id' => $reservationData['reservation_id'],
+                    'email' => $reservationData['email']
+                ]);
+            } else {
+                Log::warning('User failed payment email failed to send', [
+                    'reservation_id' => $reservationData['reservation_id'],
+                    'email' => $reservationData['email']
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Failed to send user failed payment email: ' . $e->getMessage());
         }
     }
 

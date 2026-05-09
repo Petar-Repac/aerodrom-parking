@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Potvrda Rezervacije - Aeroparking</title>
+    <title>Neuspešno Plaćanje - Aeroparking</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@
             padding: 20px;
         }
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             color: white;
             padding: 30px 20px;
             text-align: center;
@@ -29,9 +29,9 @@
             padding: 30px;
             border-radius: 0 0 10px 10px;
         }
-        .success-message {
-            background: #d4edda;
-            border-left: 4px solid #28a745;
+        .error-message {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -60,7 +60,7 @@
             text-align: right;
         }
         .total-price {
-            background: #e7f3ff;
+            background: #fff3cd;
             padding: 15px;
             border-radius: 8px;
             margin-top: 15px;
@@ -68,18 +68,12 @@
             font-weight: bold;
             text-align: center;
         }
-        .payment-info {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
         .info-box {
             background: white;
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
-            border-left: 4px solid #007bff;
+            border-left: 4px solid #ffc107;
         }
         .contact-info {
             background: white;
@@ -101,26 +95,23 @@
             color: #666;
             font-size: 14px;
         }
-        .icon {
-            font-size: 24px;
-            margin-right: 10px;
-        }
     </style>
 </head>
 <body>
 <div class="header">
-    <h1>✅ Potvrda Rezervacije</h1>
+    <h1>❌ Neuspešno Plaćanje</h1>
     <p style="margin: 5px 0 0 0; font-size: 16px;">Aeroparking - Parking servis</p>
 </div>
 
 <div class="content">
-    <div class="success-message">
-        <h2 style="margin: 0 0 10px 0; color: #155724;">Hvala što ste rezervisali sa nama!</h2>
-        <p style="margin: 0;">Vaša rezervacija je uspešno primljena i obrađena. Uskoro ćemo Vas kontaktirati da potvrdimo sve detalje.</p>
+    <div class="error-message">
+        <h2 style="margin: 0 0 10px 0; color: #721c24;">Transakcija je neuspešna</h2>
+        <p style="margin: 0;"><strong>Račun platne kartice nije zadužen.</strong></p>
+        <p style="margin: 8px 0 0 0;">Nažalost, Vaše plaćanje nije moglo biti obrađeno. Molimo pokušajte ponovo ili nas kontaktirajte.</p>
     </div>
 
     <div class="reservation-details">
-        <h3 style="margin-top: 0; color: #667eea;">📋 Vaši Podaci o Rezervaciji</h3>
+        <h3 style="margin-top: 0; color: #dc3545;">📋 Podaci o Rezervaciji</h3>
 
         <div class="detail-row">
             <span class="detail-label">Broj rezervacije:</span>
@@ -131,25 +122,6 @@
             <span class="detail-label">Ime i prezime:</span>
             <span class="detail-value">{{ $reservation['name'] }}</span>
         </div>
-
-        <div class="detail-row">
-            <span class="detail-label">Email:</span>
-            <span class="detail-value">{{ $reservation['email'] }}</span>
-        </div>
-
-        <div class="detail-row">
-            <span class="detail-label">Telefon:</span>
-            <span class="detail-value">{{ $reservation['phone'] }}</span>
-        </div>
-
-        <div class="detail-row">
-            <span class="detail-label">Broj putnika:</span>
-            <span class="detail-value">{{ $reservation['passengers'] }}</span>
-        </div>
-    </div>
-
-    <div class="reservation-details">
-        <h3 style="margin-top: 0; color: #667eea;">📅 Detalji Parkinga</h3>
 
         <div class="detail-row">
             <span class="detail-label">Datum dolaska:</span>
@@ -167,57 +139,17 @@
         </div>
 
         <div class="total-price">
-            💰 Ukupno sa PDV-om: {{ number_format($reservation['total_price'], 2, ',', '.') }} RSD
+            Ukupno sa PDV-om: {{ number_format($reservation['total_price'], 2, ',', '.') }} RSD
         </div>
     </div>
 
-    @if(isset($reservation['ws_pay_order_id']) && $reservation['ws_pay_order_id'])
-        <div class="payment-info">
-            <h3 style="margin-top: 0;">💳 Potvrda Plaćanja</h3>
-            <p><strong>Status:</strong> Plaćanje uspešno izvršeno</p>
-
-            <div class="detail-row">
-                <span class="detail-label">ID transakcije:</span>
-                <span class="detail-value">{{ $reservation['ws_pay_order_id'] }}</span>
-            </div>
-
-            @if(isset($reservation['approval_code']) && $reservation['approval_code'])
-            <div class="detail-row">
-                <span class="detail-label">Kod odobrenja (Approval Code):</span>
-                <span class="detail-value">{{ $reservation['approval_code'] }}</span>
-            </div>
-            @endif
-
-            @if(isset($reservation['payment_date']) && $reservation['payment_date'])
-            <div class="detail-row">
-                <span class="detail-label">Datum transakcije:</span>
-                <span class="detail-value">{{ \Carbon\Carbon::parse($reservation['payment_date'])->format('d.m.Y H:i') }}</span>
-            </div>
-            @endif
-
-            @if(isset($reservation['payment_amount']) && $reservation['payment_amount'])
-            <div class="detail-row">
-                <span class="detail-label">Plaćeni iznos (sa PDV-om):</span>
-                <span class="detail-value">{{ number_format($reservation['payment_amount'], 2, ',', '.') }} RSD</span>
-            </div>
-            @endif
-        </div>
-    @endif
-
-    @if(!empty($reservation['additional_info']))
-        <div class="info-box">
-            <h4 style="margin-top: 0;">📝 Vaše napomene:</h4>
-            <p style="margin: 0;">{{ $reservation['additional_info'] }}</p>
-        </div>
-    @endif
-
     <div class="info-box">
-        <h3 style="margin-top: 0; color: #667eea;">ℹ️ Šta je sledeće?</h3>
+        <h3 style="margin-top: 0; color: #856404;">⚠️ Šta možete da uradite:</h3>
         <ol style="margin: 10px 0; padding-left: 20px;">
-            <li>Naš tim će Vas kontaktirati u najkraćem roku na navedeni broj telefona</li>
-            <li>Potvrdićemo sve detalje Vaše rezervacije</li>
-            <li>Dobićete dodatne instrukcije o dolasku na parking</li>
-            <li>Priprema Vašeg parking mesta biće završena do datuma dolaska</li>
+            <li>Proverite da li su podaci o kartici tačni i pokušajte ponovo</li>
+            <li>Pokušajte ponovo za nekoliko minuta</li>
+            <li>Kontaktirajte svoju banku radi provere</li>
+            <li>Izaberite plaćanje na licu mesta pri dolasku na parking</li>
         </ol>
     </div>
 
@@ -231,12 +163,6 @@
         <p style="margin-top: 20px;">
             <strong>Radno vreme:</strong><br>
             Dostupni smo 24/7 za sve Vaše potrebe
-        </p>
-    </div>
-
-    <div style="background: #e7f3ff; padding: 15px; border-radius: 8px; text-align: center;">
-        <p style="margin: 0; font-weight: bold; color: #0056b3;">
-            🚗 Bezbedno i sigurno parkiranje uz najbolju uslugu! 🚗
         </p>
     </div>
 </div>

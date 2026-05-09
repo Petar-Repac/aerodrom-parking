@@ -208,3 +208,16 @@
         </div>
     </div>
 </section>
+
+<script>
+    // Format all pricing cells to decimal notation with RSD currency
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.pricing-cell .price').forEach(function (el) {
+            var price = el.closest('.pricing-cell').dataset.price;
+            if (price && !isNaN(price)) {
+                var formatted = parseFloat(price).toFixed(2).replace('.', ',');
+                el.textContent = formatted + ' RSD';
+            }
+        });
+    });
+</script>

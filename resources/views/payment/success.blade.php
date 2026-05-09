@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sr">
+<html lang="{{ app()->getLocale() }}">
 @include('partials.head.head')
 <body>
 
@@ -62,8 +62,8 @@
                             </div>
 
                             <div class="detail-row total-price">
-                                <span class="detail-label">{{ __('messages.payment.total_amount') }}:</span>
-                                <span class="detail-value">{{ number_format($reservation['total_price'], 2) }} RSD</span>
+                                <span class="detail-label">{{ __('messages.payment.total_amount_with_vat') }}:</span>
+                                <span class="detail-value">{{ number_format($reservation['total_price'], 2, ',', '.') }} RSD</span>
                             </div>
 
                             @if(isset($reservation['ws_pay_order_id']) && $reservation['ws_pay_order_id'])
@@ -82,7 +82,13 @@
 
                                     <div class="detail-row">
                                         <span class="detail-label">{{ __('messages.payment.payment_date') }}:</span>
-                                        <span class="detail-value">{{ $reservation['payment_date'] }}</span>
+                                        <span class="detail-value">
+                                            @if($reservation['payment_date'])
+                                                {{ \Carbon\Carbon::parse($reservation['payment_date'])->format('d.m.Y H:i') }}
+                                            @else
+                                                —
+                                            @endif
+                                        </span>
                                     </div>
 
                                     @if(isset($reservation['credit_card_number']) && $reservation['credit_card_number'])

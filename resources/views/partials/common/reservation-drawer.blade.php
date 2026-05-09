@@ -171,6 +171,22 @@
 
                     <div class="form-divider"></div>
 
+                    <div class="terms-checkbox-section">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="terms-agree"
+                                required
+                            />
+                            <label class="form-check-label" for="terms-agree">
+                                {!! __('messages.reservation_form.terms_agree', ['url' => route('terms')]) !!}
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-divider"></div>
+
                     <div class="payment-buttons-section">
                         <h4 class="text-center mb-3">
                             <i class="bi bi-credit-card"></i>
@@ -181,6 +197,8 @@
                                 type="submit"
                                 class="payment-btn payment-onsite"
                                 data-payment-method="payment-onsite"
+                                id="btn-pay-onsite"
+                                disabled
                             >
                                 <i class="bi bi-building"></i>
                                 {{ __('messages.reservation_form.pay_onsite') }}
@@ -190,6 +208,8 @@
                                 type="submit"
                                 class="payment-btn payment-online"
                                 data-payment-method="payment-online"
+                                id="btn-pay-online"
+                                disabled
                             >
                                 <i class="bi bi-credit-card-2-front"></i>
                                 {{ __('messages.reservation_form.pay_online') }}
@@ -283,4 +303,26 @@
             min-width: unset;
         }
     }
+
+    .terms-checkbox-section {
+        margin: 0.5rem 0;
+    }
+
+    .terms-checkbox-section .form-check-label a {
+        text-decoration: underline;
+    }
 </style>
+
+<script>
+    (function () {
+        var checkbox = document.getElementById('terms-agree');
+        var btnOnsite = document.getElementById('btn-pay-onsite');
+        var btnOnline = document.getElementById('btn-pay-online');
+        if (checkbox && btnOnsite && btnOnline) {
+            checkbox.addEventListener('change', function () {
+                btnOnsite.disabled = !this.checked;
+                btnOnline.disabled = !this.checked;
+            });
+        }
+    })();
+</script>

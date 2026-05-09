@@ -53,6 +53,7 @@ return [
         'pay_onsite' => 'Plaćanje na licu mesta',
         'pay_online' => 'Plaćanje karticom',
         'payment_info' => 'Možete platiti odmah karticom ili kasnije na licu mesta',
+        'terms_agree' => 'Pročitao/la sam i prihvatam <a href=":url" target="_blank">Uslove korišćenja</a> *',
     ],
 
     'payment' => [
@@ -90,6 +91,8 @@ return [
         // Messages
         'confirmation_email_sent' => 'Email sa potvrdom je poslat na Vašu adresu. Neko iz našeg tima će Vas uskoro kontaktirati.',
         'back_to_home' => 'Nazad na početnu',
+        'transaction_failed_notice' => 'Transakcija je neuspešna, račun platne kartice nije zadužen.',
+        'total_amount_with_vat' => 'Ukupno sa PDV-om',
 
         // Error page specific
         'error_details' => 'Detalji greške',
@@ -211,6 +214,7 @@ return [
         'working_hours_value' => '24/7',
         'design_by' => 'Design by: <strong><span><a href="https://webwisteria.com" target="_blank">WebWisteria</a></span></strong>',
         'benefits' => 'Pogodnosti',
+        'accepted_payments' => 'Prihvaćene kartice',
     ],
 
     // Meta
@@ -277,6 +281,11 @@ return [
         'section_6' => [
             'title' => '6. Izjava o konverziji (za stranice sa inostranim karticama)',
             'content' => 'Kod plaćanja inostranim karticama (npr. iz EU ili SAD), iznos se obračunava u dinarskoj protivvrednosti po srednjem kursu Narodne banke Srbije (NBS) na dan transakcije, ili po kursu banke koja vrši autorizaciju. Mogući su dodatni troškovi konverzije od strane izdavaoca kartice (npr. 1–3% fee), za koje Mi nismo odgovorni. Preporučujemo proveru sa vašom bankom pre plaćanja. Sva plaćanja su u RSD; nema podrške za druge valute direktno.',
+        ],
+
+        'section_7' => [
+            'title' => '7. Izjave o plaćanju i bezbednosti (WSpay/Monri)',
+            'content' => '<strong>Autorizacija plaćanja:</strong><br>Plaćanje se vrši putem WSpay sistema za naplatu, ovlašćenog od strane Monri Payments. Plaćanje karticom je u potpunosti bezbedno: podaci o kartici se unose direktno na stranici banke/procesora i nijednog trenutka nisu dostupni prodavcu. Prodavac ne čuva podatke o kartici kupca.<br><br><strong>Zaštita podataka o kartici:</strong><br>Za realizaciju plaćanja koristi se WSpay sistem koji primenjuje PCI DSS standard za zaštitu podataka o platnim karticama. Svi podaci o kartici prenose se SSL enkripcijom (256-bit). Prodavac ne dolazi u posed podataka o kartici niti ih čuva.<br><br><strong>Reklamacije za naplatu:</strong><br>Ukoliko smatrate da je Vaša kartica pogrešno naplaćena, molimo Vas da nas kontaktirate na rezervacije@aeroparking.rs ili +381 69 445 4255. Sve reklamacije rešavamo u roku od 24 sata. Ako se radi o neautorizovanoj transakciji, molimo Vas da kontaktirate banku koja je izdala Vašu karticu.<br><br><strong>Prihvaćene kartice:</strong> Visa, Mastercard, Maestro, DinaCard, American Express.<br><br><strong>Valuta:</strong> Sve transakcije su u RSD (srpski dinari). Nema skrivenih troškova.<br><br><strong>PDV izjava:</strong><br>Nexus Temporis Corporation d.o.o. nije u sistemu PDV-a. Iskazane cene su konačne i ne podležu dodatnom obračunu PDV-a.<br><br>{{-- TODO: Ako je kompanija u sistemu PDV-a, zameniti gornju rečenicu sa: "PDV je uračunat u iskazane cene. Na svakom koraku kupovine, ukupna (total) cena proizvoda/usluge prikazana je sa PDV-om (ukupno sa PDV-om)." --}}',
         ],
 
         'closing' => 'Ovi Uslovi mogu se menjati; obaveštavamo Korisnike email-om ili na Sajtu.',

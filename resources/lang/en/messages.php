@@ -51,6 +51,7 @@ return [
         'pay_onsite' => 'Pay On-Site',
         'pay_online' => 'Pay by Card',
         'payment_info' => 'You can pay now by card or later on-site',
+        'terms_agree' => 'I have read and accept the <a href=":url" target="_blank">Terms & Conditions</a> *',
     ],
 
     'payment' => [
@@ -77,6 +78,8 @@ return [
         'card_number' => 'Card Number',
         'confirmation_email_sent' => 'A confirmation email has been sent to your address. Someone from our team will contact you soon.',
         'back_to_home' => 'Back to Home',
+        'transaction_failed_notice' => 'The transaction was unsuccessful. Your payment card has not been charged.',
+        'total_amount_with_vat' => 'Total (incl. VAT)',
         'error_details' => 'Error Details',
         'your_reservation' => 'Your Reservation',
         'error_help' => 'What you can do:',
@@ -194,6 +197,7 @@ return [
         'working_hours_value' => '24/7',
         'design_by' => 'Design by: <strong><span><a href="https://webwisteria.com" target="_blank">WebWisteria</a></span></strong>',
         'benefits' => 'Benefits',
+        'accepted_payments' => 'Accepted cards',
     ],
 
     // Meta
@@ -261,6 +265,11 @@ return [
         'section_6' => [
             'title' => '6. Currency Conversion Statement (for foreign card transactions)',
             'content' => 'When paying with a foreign card (e.g., from the EU or USA), the amount is charged in the dinar equivalent at the middle exchange rate of the National Bank of Serbia (NBS) on the transaction date, or at the rate of the authorizing bank. Additional conversion fees may be charged by the card issuer (e.g., 1–3% fee), for which We are not responsible. We recommend checking with your bank before making a payment. All payments are in RSD; no other currencies are supported directly.',
+        ],
+
+        'section_7' => [
+            'title' => '7. Payment & Security Declarations (WSpay/Monri)',
+            'content' => '<strong>Payment Authorization:</strong><br>Payments are processed via the WSpay payment system, authorized by Monri Payments. Card payments are fully secure: card details are entered directly on the bank/processor page and are never accessible to the seller. The seller does not store card data.<br><br><strong>Card Data Protection:</strong><br>The WSpay system applies the PCI DSS standard for payment card data protection. All card data is transmitted via SSL encryption (256-bit). The seller does not obtain or store card details.<br><br><strong>Payment Complaints:</strong><br>If you believe your card was incorrectly charged, please contact us at rezervacije@aeroparking.rs or +381 69 445 4255. All complaints are resolved within 24 hours. For unauthorized transactions, please also contact your card-issuing bank.<br><br><strong>Accepted cards:</strong> Visa, Mastercard, Maestro, DinaCard, American Express.<br><br><strong>Currency:</strong> All transactions are in RSD (Serbian dinars). There are no hidden fees.<br><br><strong>VAT Statement:</strong><br>Nexus Temporis Corporation d.o.o. is not registered for VAT. Displayed prices are final and are not subject to additional VAT calculation.',
         ],
 
         'closing' => 'These Terms may be amended; Users will be notified via email or on the Website.',
