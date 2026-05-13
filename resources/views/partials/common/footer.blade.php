@@ -45,16 +45,10 @@
             <div class="row mt-3">
                 <div class="col-12">
                     <div class="footer-payment-logos">
-                        <span class="payment-logos-label">{{ __('messages.footer.accepted_payments') }}:</span>
                         <div class="payment-logos-list">
-                            {{-- TODO: Replace these badge placeholders with official card/WsPay logo images
-                                 Suggested: /img/visa.svg, /img/mastercard.svg, /img/dinacard.svg, /img/maestro.svg, /img/wspay.png --}}
-                            <span class="payment-logo-badge">VISA</span>
-                            <span class="payment-logo-badge">Mastercard</span>
-                            <span class="payment-logo-badge">Maestro</span>
-                            <span class="payment-logo-badge">DinaCard</span>
-                            <span class="payment-logo-badge">American Express</span>
-                            <span class="payment-logo-badge wspay-badge">WSpay</span>
+                            <a href="https://www.visa.com" target="_blank" rel="noopener"><img src="/img/payment/Visa50.gif" alt="Visa" class="footer-card-logo"></a>
+                            <a href="https://www.mastercard.com" target="_blank" rel="noopener"><img src="/img/payment/MasterCard50.gif" alt="Mastercard" class="footer-card-logo"></a>
+                            <a href="http://www.wspay.rs" title="Monri WSpay - Web Secure Payment Gateway" target="_blank"><img alt="Monri WSpay - Web Secure Payment Gateway" src="https://www.wspay.info/payment-info/wsPayWebSecureLogo-118x50-transparent.png" border="0"></a>
                         </div>
                     </div>
                 </div>
@@ -73,34 +67,32 @@
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            gap: 0.5rem;
             padding: 0.75rem 0;
             border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        .payment-logos-label {
-            font-size: 0.85rem;
-            color: #ccc;
-            white-space: nowrap;
         }
         .payment-logos-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.4rem;
+            align-items: center;
+            gap: 0.75rem;
         }
-        .payment-logo-badge {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #fff;
-            background: rgba(255,255,255,0.08);
-            letter-spacing: 0.02em;
+        .footer-card-logo {
+            height: 50px;
+            width: auto;
         }
-        .wspay-badge {
-            background: rgba(0, 90, 170, 0.4);
-            border-color: rgba(0, 90, 170, 0.6);
+        #footer .footer-bottom .copyright a[href*="webwisteria"] {
+            color: rgba(255,255,255,0.45);
+            font-weight: 400;
+            font-size: 0.8rem;
+            letter-spacing: 0.03em;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        #footer .footer-bottom .copyright a[href*="webwisteria"]:hover {
+            color: rgba(255,255,255,0.75);
+        }
+        #footer .footer-bottom .copyright strong {
+            font-weight: 400;
         }
     </style>
 </footer><!-- End Footer -->
