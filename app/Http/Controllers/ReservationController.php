@@ -39,8 +39,8 @@ class ReservationController extends Controller
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:50',
             'passengers' => 'required|integer|min:1|max:20',
-            'arrivalDate' => 'required|string|max:100',
-            'departureDate' => 'required|string|max:100',
+            'arrivalDate' => 'required|date|after_or_equal:today',
+            'departureDate' => 'required|date|after_or_equal:arrivalDate',
             'additionalInfo' => 'nullable|string|max:1000',
         ]);
 

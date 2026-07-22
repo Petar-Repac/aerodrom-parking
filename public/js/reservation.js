@@ -187,6 +187,25 @@ if (arrival) {
     arrival.removeAttribute('readonly');
 }
 
+// Prevent departure date from being picked before the selected arrival date
+function lockDepartureMinDate(picker, arrivalDate) {
+    if (!picker) return;
+
+    const lockInstance = picker.PluginManager && picker.PluginManager.getInstance('LockPlugin');
+    if (!lockInstance) return;
+
+    const minDate = arrivalDate ? new Date(arrivalDate) : new Date();
+    lockInstance.options.minDate = new easepick.DateTime(minDate);
+    picker.renderAll();
+
+    // If a departure date is already selected and is now before the new
+    // arrival date, clear it so the user has to re-pick a valid date
+    const selectedDeparture = picker.getDate();
+    if (selectedDeparture && arrivalDate && new Date(selectedDeparture) < new Date(arrivalDate)) {
+        picker.clear();
+    }
+}
+
 function syncInputs(date, fromOrTo) {
     if(fromOrTo === 'from'){
         pickerFrom.setDate(date);
@@ -194,6 +213,9 @@ function syncInputs(date, fromOrTo) {
         if (cta_pickerFrom) {
             cta_pickerFrom.setDate(date);
         }
+
+        lockDepartureMinDate(pickerTo, date);
+        lockDepartureMinDate(cta_pickerTo, date);
     }
     else {
         pickerTo.setDate(date);
@@ -392,6 +414,10 @@ function validateFormData(formData) {
 
     if (!formData.departureDate) {
         errors.push(__('enter_departure_date'));
+    }
+
+    if (formData.arrivalDate && formData.departureDate && new Date(formData.departureDate) < new Date(formData.arrivalDate)) {
+        errors.push(__('arrival_before_departure'));
     }
 
     if (!formData.totalPrice || formData.totalPrice <= 0) {
