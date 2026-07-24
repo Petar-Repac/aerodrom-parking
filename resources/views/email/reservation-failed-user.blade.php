@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neuspešno Plaćanje - Aeroparking</title>
+    <title>{{ __('messages.payment.subject_failed') }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -99,83 +99,82 @@
 </head>
 <body>
 <div class="header">
-    <h1>❌ Neuspešno Plaćanje</h1>
+    <h1>❌ {{ __('messages.payment.error_title') }}</h1>
     <p style="margin: 5px 0 0 0; font-size: 16px;">Aeroparking - Parking servis</p>
 </div>
 
 <div class="content">
     <div class="error-message">
-        <h2 style="margin: 0 0 10px 0; color: #721c24;">Transakcija je neuspešna</h2>
-        <p style="margin: 0;"><strong>Račun platne kartice nije zadužen.</strong></p>
-        <p style="margin: 8px 0 0 0;">Nažalost, Vaše plaćanje nije moglo biti obrađeno. Molimo pokušajte ponovo ili nas kontaktirajte.</p>
+        <h2 style="margin: 0 0 10px 0; color: #721c24;">{{ __('messages.payment.failed_transaction_title') }}</h2>
+        <p style="margin: 0;"><strong>{{ __('messages.payment.card_not_charged') }}</strong></p>
+        <p style="margin: 8px 0 0 0;">{{ __('messages.payment.failed_intro_message') }}</p>
     </div>
 
     <div class="reservation-details">
-        <h3 style="margin-top: 0; color: #dc3545;">📋 Podaci o Rezervaciji</h3>
+        <h3 style="margin-top: 0; color: #dc3545;">📋 {{ __('messages.payment.reservation_details') }}</h3>
 
         <div class="detail-row">
-            <span class="detail-label">Broj rezervacije:</span>
+            <span class="detail-label">{{ __('messages.payment.reservation_number') }}:</span>
             <span class="detail-value">{{ $reservation['reservation_id'] }}</span>
         </div>
 
         <div class="detail-row">
-            <span class="detail-label">Ime i prezime:</span>
+            <span class="detail-label">{{ __('messages.payment.name') }}:</span>
             <span class="detail-value">{{ $reservation['name'] }}</span>
         </div>
 
         <div class="detail-row">
-            <span class="detail-label">Datum dolaska:</span>
+            <span class="detail-label">{{ __('messages.payment.arrival') }}:</span>
             <span class="detail-value">{{ \Carbon\Carbon::parse($reservation['arrival_date'])->format('d.m.Y') }}</span>
         </div>
 
         <div class="detail-row">
-            <span class="detail-label">Datum odlaska:</span>
+            <span class="detail-label">{{ __('messages.payment.departure') }}:</span>
             <span class="detail-value">{{ \Carbon\Carbon::parse($reservation['departure_date'])->format('d.m.Y') }}</span>
         </div>
 
         <div class="detail-row">
-            <span class="detail-label">Broj dana:</span>
-            <span class="detail-value">{{ $reservation['num_of_days'] }} dana</span>
+            <span class="detail-label">{{ __('messages.payment.duration') }}:</span>
+            <span class="detail-value">{{ $reservation['num_of_days'] }} {{ __('messages.payment.days') }}</span>
         </div>
 
         <div class="total-price">
-            Ukupno sa PDV-om: {{ number_format($reservation['total_price'], 2, ',', '.') }} RSD
+            {{ __('messages.payment.total_amount_with_vat') }}: {{ number_format($reservation['total_price'], 2, ',', '.') }} RSD
         </div>
     </div>
 
     <div class="info-box">
-        <h3 style="margin-top: 0; color: #856404;">⚠️ Šta možete da uradite:</h3>
+        <h3 style="margin-top: 0; color: #856404;">⚠️ {{ __('messages.payment.error_help') }}</h3>
         <ol style="margin: 10px 0; padding-left: 20px;">
-            <li>Proverite da li su podaci o kartici tačni i pokušajte ponovo</li>
-            <li>Pokušajte ponovo za nekoliko minuta</li>
-            <li>Kontaktirajte svoju banku radi provere</li>
-            <li>Izaberite plaćanje na licu mesta pri dolasku na parking</li>
+            <li>{{ __('messages.payment.check_card_details') }}</li>
+            <li>{{ __('messages.payment.try_again_later') }}</li>
+            <li>{{ __('messages.payment.contact_bank') }}</li>
+            <li>{{ __('messages.payment.choose_onsite_payment') }}</li>
         </ol>
     </div>
 
     <div class="contact-info">
-        <h3 style="margin-top: 0; color: #667eea;">📞 Kontakt Informacije</h3>
-        <p>Ukoliko imate bilo kakvih pitanja, slobodno nas kontaktirajte:</p>
+        <h3 style="margin-top: 0; color: #667eea;">📞 {{ __('messages.payment.contact_info_title') }}</h3>
+        <p>{{ __('messages.payment.contact_intro') }}</p>
         <p>
-            <strong>Telefon:</strong> <a href="tel:+381694454255">+381 69 445 4255</a><br>
+            <strong>{{ __('messages.payment.phone') }}:</strong> <a href="tel:+381694454255">+381 69 445 4255</a><br>
             <strong>Email:</strong> <a href="mailto:rezervacije@aeroparking.rs">rezervacije@aeroparking.rs</a>
         </p>
         <p style="margin-top: 20px;">
-            <strong>Radno vreme:</strong><br>
-            Dostupni smo 24/7 za sve Vaše potrebe
+            <strong>{{ __('messages.payment.working_hours_label') }}</strong><br>
+            {{ __('messages.payment.available_247') }}
         </p>
     </div>
 </div>
 
 <div class="footer">
     <p><strong>Aeroparking</strong></p>
-    <p>Profesionalni parking servis u blizini aerodroma</p>
+    <p>{{ __('messages.payment.footer_tagline') }}</p>
     <p style="margin-top: 15px; font-size: 12px; color: #999;">
-        Ovo je automatska poruka. Molimo Vas da ne odgovarate direktno na ovaj email.<br>
-        Za sva pitanja, koristite kontakt informacije navedene iznad.
+        {{ __('messages.payment.footer_auto_notice') }}
     </p>
     <p style="font-size: 12px; color: #999;">
-        © {{ date('Y') }} Aeroparking. Sva prava zadržana.
+        © {{ date('Y') }} Aeroparking. {{ __('messages.payment.footer_rights') }}
     </p>
 </div>
 </body>

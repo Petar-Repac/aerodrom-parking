@@ -78,7 +78,7 @@ class WsPaySignatureService
     public function verifyErrorReturnSignature(array $data): bool
     {
         $expectedSignature = $this->generateReturnSignature(
-            $data['ShopID'],
+            config('wspay.shop_id'),
             $data['ShoppingCartID'],
             $data['Success'],
             $data['ApprovalCode'] ?? ''
@@ -93,7 +93,7 @@ class WsPaySignatureService
     public function verifyCancelSignature(array $data): bool
     {
         $expectedSignature = $this->generateReturnSignature(
-            $data['ShopID'],
+            config('wspay.shop_id'),
             $data['ShoppingCartID'],
             $data['Success'],
             $data['ApprovalCode'] ?? ''

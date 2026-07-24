@@ -454,7 +454,8 @@ async function handleReservationSubmit(paymentMethod) {
         departureDate: departureDateValue, // Use picker date, not input display text
         additionalInfo: document.getElementById('additional-info')?.value?.trim() || '',
         paymentMethod: paymentMethod,
-        totalPrice: currentPrice
+        totalPrice: currentPrice,
+        locale: (window.translations && window.translations.lang) || 'sr'
     };
 
     // Validate form data

@@ -37,6 +37,7 @@ class PaymentController extends Controller
                 'additionalInfo' => 'nullable|string|max:1000',
                 'paymentMethod' => 'required|string|in:payment-onsite,payment-online',
                 'totalPrice' => 'required|numeric|min:0',
+                'locale' => 'nullable|string|in:sr,en,ru',
             ]);
 
             if ($validator->fails()) {
@@ -48,6 +49,14 @@ class PaymentController extends Controller
             }
 
             $data = $validator->validated();
+
+            // /api/reservations runs under the 'api' middleware group, which
+            // doesn't go through SetLocale, so app()->getLocale() would
+            // otherwise fall back to APP_LOCALE regardless of the page the
+            // customer actually submitted the reservation from.
+            if (!empty($data['locale'])) {
+                app()->setLocale($data['locale']);
+            }
 
             // Generate a unique reservation ID
             $reservationId = $this->generateReservationId();
@@ -386,7 +395,7 @@ class PaymentController extends Controller
             // Send using EmailService
             $sent = $this->emailService->sendEmail(
                 $reservationData['email'],
-                'Potvrda rezervacije - Aeroparking',
+                __('messages.payment.subject_confirmation'),
                 $content,
                 $reservationData['name']
             );
@@ -421,7 +430,7 @@ class PaymentController extends Controller
 
             $sent = $this->emailService->sendEmail(
                 $reservationData['email'],
-                'Neuspešno plaćanje - Aeroparking',
+                __('messages.payment.subject_failed'),
                 $content,
                 $reservationData['name']
             );

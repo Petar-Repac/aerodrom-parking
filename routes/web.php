@@ -39,11 +39,11 @@ foreach ($locales as $locale => $prefix) {
             ->name($routePrefix . 'payment.success');
 
         // Payment error callback
-        Route::get('/payment/error', [PaymentController::class, 'paymentError'])
+        Route::get('/' . RouteHelper::getLocalizedPath('payment-error', $locale), [PaymentController::class, 'paymentError'])
             ->name($routePrefix . 'payment.error');
 
         // Payment cancel callback
-        Route::get('/payment/cancel', [PaymentController::class, 'paymentCancel'])
+        Route::get('/' . RouteHelper::getLocalizedPath('payment-cancel', $locale), [PaymentController::class, 'paymentCancel'])
             ->name($routePrefix . 'payment.cancel');
 
         // Terms & Conditions
