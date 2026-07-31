@@ -191,7 +191,7 @@
             @if(isset($reservation['payment_date']) && $reservation['payment_date'])
             <div class="detail-row">
                 <span class="detail-label">{{ __('messages.payment.payment_date') }}:</span>
-                <span class="detail-value">{{ \Carbon\Carbon::parse($reservation['payment_date'])->format('d.m.Y H:i') }}</span>
+                <span class="detail-value">{{ \Carbon\Carbon::parse($reservation['payment_date'])->setTimezone('Europe/Belgrade')->format('d.m.Y H:i') }}</span>
             </div>
             @endif
 

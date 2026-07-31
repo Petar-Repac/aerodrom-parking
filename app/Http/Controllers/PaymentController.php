@@ -26,18 +26,40 @@ class PaymentController extends Controller
     public function createReservation(Request $request)
     {
         try {
+            // /api/reservations runs under the 'api' middleware group, which
+            // doesn't go through SetLocale, so app()->getLocale() would
+            // otherwise fall back to APP_LOCALE regardless of the page the
+            // customer actually submitted the reservation from. This has to
+            // happen before validation runs so that validation error
+            // messages below are translated too, not just the success path.
+            $locale = $request->input('locale');
+            if (in_array($locale, ['sr', 'en', 'ru'], true)) {
+                app()->setLocale($locale);
+            }
+
+            // The parking is a physical service in Serbia, so "today" for
+            // booking purposes always means today in Serbia - not the app's
+            // UTC storage timezone (config('app.timezone')) and not the
+            // customer's own timezone (which the server has no way to know).
+            $belgradeToday = now('Europe/Belgrade')->toDateString();
+
             // Validate the incoming request data
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|min:2|max:100',
                 'email' => 'required|email|max:255',
                 'phone' => 'required|string|min:6|max:20',
                 'passengers' => 'required|integer|min:1',
-                'arrivalDate' => 'required|date|after_or_equal:today',
+                'arrivalDate' => 'required|date|after_or_equal:' . $belgradeToday,
                 'departureDate' => 'required|date|after_or_equal:arrivalDate',
                 'additionalInfo' => 'nullable|string|max:1000',
                 'paymentMethod' => 'required|string|in:payment-onsite,payment-online',
                 'totalPrice' => 'required|numeric|min:0',
                 'locale' => 'nullable|string|in:sr,en,ru',
+            ], [
+                'arrivalDate.after_or_equal' => __('js.arrival_date_past'),
+                'departureDate.after_or_equal' => __('js.arrival_before_departure'),
+                'arrivalDate.required' => __('js.enter_arrival_date'),
+                'departureDate.required' => __('js.enter_departure_date'),
             ]);
 
             if ($validator->fails()) {
@@ -49,14 +71,6 @@ class PaymentController extends Controller
             }
 
             $data = $validator->validated();
-
-            // /api/reservations runs under the 'api' middleware group, which
-            // doesn't go through SetLocale, so app()->getLocale() would
-            // otherwise fall back to APP_LOCALE regardless of the page the
-            // customer actually submitted the reservation from.
-            if (!empty($data['locale'])) {
-                app()->setLocale($data['locale']);
-            }
 
             // Generate a unique reservation ID
             $reservationId = $this->generateReservationId();

@@ -14,6 +14,7 @@ return [
 
     // Date validation
     'arrival_before_departure' => 'Arrival date must be before departure date.',
+    'arrival_date_past' => 'Arrival date cannot be in the past. Please select today or a later date.',
 
     // Form validation
     'name_min_length' => 'Name must be at least 2 characters',

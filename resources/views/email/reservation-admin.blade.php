@@ -189,7 +189,7 @@
 
                 <div class="detail-row">
                     <span class="detail-label">Datum plaćanja:</span>
-                    <span class="detail-value">{{ $reservation['payment_date'] }}</span>
+                    <span class="detail-value">{{ $reservation['payment_date'] ? \Carbon\Carbon::parse($reservation['payment_date'])->setTimezone('Europe/Belgrade')->format('d.m.Y H:i') : '-' }}</span>
                 </div>
 
                 <div class="detail-row">
@@ -228,7 +228,7 @@
 
 <div class="footer">
     <p>Ovo je automatska poruka iz rezervacionog sistema Aeroparking</p>
-    <p>Datum: {{ now()->format('d.m.Y H:i:s') }}</p>
+    <p>Datum: {{ now('Europe/Belgrade')->format('d.m.Y H:i:s') }}</p>
 </div>
 </body>
 </html>

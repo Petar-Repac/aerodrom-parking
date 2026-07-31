@@ -50,7 +50,33 @@ const prices = [
 
 const formCharge = document.getElementById('form-charge');
 const ctaCharge = document.getElementById('cta-charge');
-const today = new Date().toISOString().split('T')[0];
+
+// Format a Date as YYYY-MM-DD using its local calendar date, not UTC.
+// toISOString() converts to UTC first, which shifts the date backward
+// a day for any timezone ahead of UTC (e.g. Serbia) - that shift was
+// causing "today" to be rejected as an arrival date.
+function toLocalDateString(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+// The parking is a physical service in Serbia, so "today" always means
+// today in Serbia - not the visitor's own device timezone. Without this,
+// a customer browsing from another timezone near their local midnight
+// could see the wrong minimum bookable date relative to Belgrade's actual
+// calendar day.
+function belgradeTodayString() {
+    return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Belgrade' }).format(new Date());
+}
+
+function belgradeTodayDate() {
+    const [year, month, day] = belgradeTodayString().split('-').map(Number);
+    return new Date(year, month - 1, day);
+}
+
+const today = belgradeTodayString();
 
 const arrival = document.getElementById('arrival-date');
 const departure = document.getElementById('departure-date');
@@ -73,7 +99,7 @@ const pickerFrom = new easepick.create({
     grid: calendarNum,
     positionOverride:"center",
     LockPlugin: {
-        minDate: new Date().toISOString().split("T")[0]
+        minDate: belgradeTodayString()
     },
     plugins: [
         "AmpPlugin",
@@ -103,7 +129,7 @@ const pickerTo = new easepick.create({
     positionOverride:"center",
 
     LockPlugin: {
-        minDate: new Date().toISOString().split("T")[0]
+        minDate: belgradeTodayString()
     },
     plugins: [
         "AmpPlugin",
@@ -135,7 +161,7 @@ if (ctaArrivalElement) {
         autoApply: false,
         grid: calendarNum,
         LockPlugin: {
-            minDate: new Date().toISOString().split("T")[0]
+            minDate: belgradeTodayString()
         },
         required: true,
         plugins: [
@@ -165,7 +191,7 @@ if (ctaDepartureElement) {
         autoApply: false,
         grid: calendarNum,
         LockPlugin: {
-            minDate: new Date().toISOString().split("T")[0]
+            minDate: belgradeTodayString()
         },
         required: true,
         plugins: [
@@ -194,7 +220,7 @@ function lockDepartureMinDate(picker, arrivalDate) {
     const lockInstance = picker.PluginManager && picker.PluginManager.getInstance('LockPlugin');
     if (!lockInstance) return;
 
-    const minDate = arrivalDate ? new Date(arrivalDate) : new Date();
+    const minDate = arrivalDate ? new Date(arrivalDate) : belgradeTodayDate();
     lockInstance.options.minDate = new easepick.DateTime(minDate);
     picker.renderAll();
 
@@ -433,15 +459,17 @@ async function handleReservationSubmit(paymentMethod) {
     let arrivalDateValue = '';
     let departureDateValue = '';
 
-    // Get dates from pickers in YYYY-MM-DD format
+    // Get dates from pickers in YYYY-MM-DD format (local calendar date -
+    // toISOString() would convert to UTC first and shift the date back
+    // a day, e.g. turning a "today" arrival into "yesterday" server-side)
     if (pickerFrom.getDate()) {
         const arrivalDate = new Date(pickerFrom.getDate());
-        arrivalDateValue = arrivalDate.toISOString().split('T')[0]; // YYYY-MM-DD
+        arrivalDateValue = toLocalDateString(arrivalDate);
     }
 
     if (pickerTo.getDate()) {
         const departureDate = new Date(pickerTo.getDate());
-        departureDateValue = departureDate.toISOString().split('T')[0]; // YYYY-MM-DD
+        departureDateValue = toLocalDateString(departureDate);
     }
 
     // Get form data

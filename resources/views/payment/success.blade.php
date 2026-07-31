@@ -84,7 +84,7 @@
                                         <span class="detail-label">{{ __('messages.payment.payment_date') }}:</span>
                                         <span class="detail-value">
                                             @if($reservation['payment_date'])
-                                                {{ \Carbon\Carbon::parse($reservation['payment_date'])->format('d.m.Y H:i') }}
+                                                {{ \Carbon\Carbon::parse($reservation['payment_date'])->setTimezone('Europe/Belgrade')->format('d.m.Y H:i') }}
                                             @else
                                                 —
                                             @endif
