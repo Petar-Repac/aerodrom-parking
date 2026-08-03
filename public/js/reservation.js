@@ -50,7 +50,19 @@ const prices = [
 
 const formCharge = document.getElementById('form-charge');
 const ctaCharge = document.getElementById('cta-charge');
-const today = new Date().toISOString().split('T')[0];
+
+// Format a Date as YYYY-MM-DD using its local calendar date, not UTC.
+// toISOString() converts to UTC first, which shifts the date backward
+// a day for any timezone ahead of UTC - that shift was causing "today"
+// to be rejected as an arrival date no matter what was picked.
+function toLocalDateString(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+const today = toLocalDateString(new Date());
 
 const arrival = document.getElementById('arrival-date');
 const departure = document.getElementById('departure-date');
@@ -73,7 +85,7 @@ const pickerFrom = new easepick.create({
     grid: calendarNum,
     positionOverride:"center",
     LockPlugin: {
-        minDate: new Date().toISOString().split("T")[0]
+        minDate: today
     },
     plugins: [
         "AmpPlugin",
@@ -103,7 +115,7 @@ const pickerTo = new easepick.create({
     positionOverride:"center",
 
     LockPlugin: {
-        minDate: new Date().toISOString().split("T")[0]
+        minDate: today
     },
     plugins: [
         "AmpPlugin",
@@ -135,7 +147,7 @@ if (ctaArrivalElement) {
         autoApply: false,
         grid: calendarNum,
         LockPlugin: {
-            minDate: new Date().toISOString().split("T")[0]
+            minDate: today
         },
         required: true,
         plugins: [
@@ -165,7 +177,7 @@ if (ctaDepartureElement) {
         autoApply: false,
         grid: calendarNum,
         LockPlugin: {
-            minDate: new Date().toISOString().split("T")[0]
+            minDate: today
         },
         required: true,
         plugins: [
@@ -391,14 +403,21 @@ if (emailForm) {
     emailForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
+        // Get dates from the pickers in YYYY-MM-DD format (local calendar
+        // date, not the localized "DD MMMM YYYY" display text and not
+        // toISOString(), which would shift the date back a day in
+        // timezones ahead of UTC)
+        const arrivalDate = pickerFrom.getDate();
+        const departureDate = pickerTo.getDate();
+
         // Get form data
         const formData = {
             name: document.getElementById('name')?.value?.trim() || '',
             email: document.getElementById('email')?.value?.trim() || '',
             passengers: document.getElementById('passengers')?.value || '',
             phone: document.getElementById('phone')?.value?.trim() || '',
-            arrivalDate: document.getElementById('arrival-date')?.value || '',
-            departureDate: document.getElementById('departure-date')?.value || '',
+            arrivalDate: arrivalDate ? toLocalDateString(new Date(arrivalDate)) : '',
+            departureDate: departureDate ? toLocalDateString(new Date(departureDate)) : '',
             additionalInfo: document.getElementById('additional-info')?.value?.trim() || ''
         };
 
