@@ -439,6 +439,11 @@ if (emailForm) {
 
             // Success message
             if (response.ok && responseData.status === "success") {
+                // Google Ads conversion tracking
+                if (typeof gtag === 'function') {
+                    gtag('event', 'conversion', {'send_to': 'AW-16537161463/5x0ICLGct6kZEPedxM09'});
+                }
+
                 if (typeof Sweetalert2 !== 'undefined') {
                     Sweetalert2.fire({
                         title: __('reservation_sent_title'),
