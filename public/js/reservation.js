@@ -1,6 +1,10 @@
 import easepick from '../vendor/easepick/js/main.js'
 
-const prices = [
+// Prices are normally injected server-side (see
+// resources/views/partials/data/prices.blade.php, backed by the admin-
+// editable price table). This hardcoded list is only a last-resort
+// fallback if that script tag is ever missing.
+const prices = window.PARKING_PRICES || [
     { days: 1, price: 500 },
     { days: 2, price: 900 },
     { days: 3, price: 1300 },
@@ -48,13 +52,15 @@ const prices = [
     { days: 40, price: 8100 }
 ];
 
+const extraDayRate = window.PARKING_EXTRA_DAY_RATE || 200;
+
 const formCharge = document.getElementById('form-charge');
 const ctaCharge = document.getElementById('cta-charge');
 
 // Format a Date as YYYY-MM-DD using its local calendar date, not UTC.
 // toISOString() converts to UTC first, which shifts the date backward
-// a day for any timezone ahead of UTC (e.g. Serbia) - that shift was
-// causing "today" to be rejected as an arrival date.
+// a day for any timezone ahead of UTC - that shift was causing "today"
+// to be rejected as an arrival date no matter what was picked.
 function toLocalDateString(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -62,21 +68,7 @@ function toLocalDateString(date) {
     return `${year}-${month}-${day}`;
 }
 
-// The parking is a physical service in Serbia, so "today" always means
-// today in Serbia - not the visitor's own device timezone. Without this,
-// a customer browsing from another timezone near their local midnight
-// could see the wrong minimum bookable date relative to Belgrade's actual
-// calendar day.
-function belgradeTodayString() {
-    return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Belgrade' }).format(new Date());
-}
-
-function belgradeTodayDate() {
-    const [year, month, day] = belgradeTodayString().split('-').map(Number);
-    return new Date(year, month - 1, day);
-}
-
-const today = belgradeTodayString();
+const today = toLocalDateString(new Date());
 
 const arrival = document.getElementById('arrival-date');
 const departure = document.getElementById('departure-date');
@@ -99,7 +91,7 @@ const pickerFrom = new easepick.create({
     grid: calendarNum,
     positionOverride:"center",
     LockPlugin: {
-        minDate: belgradeTodayString()
+        minDate: today
     },
     plugins: [
         "AmpPlugin",
@@ -129,7 +121,7 @@ const pickerTo = new easepick.create({
     positionOverride:"center",
 
     LockPlugin: {
-        minDate: belgradeTodayString()
+        minDate: today
     },
     plugins: [
         "AmpPlugin",
@@ -161,7 +153,7 @@ if (ctaArrivalElement) {
         autoApply: false,
         grid: calendarNum,
         LockPlugin: {
-            minDate: belgradeTodayString()
+            minDate: today
         },
         required: true,
         plugins: [
@@ -191,7 +183,7 @@ if (ctaDepartureElement) {
         autoApply: false,
         grid: calendarNum,
         LockPlugin: {
-            minDate: belgradeTodayString()
+            minDate: today
         },
         required: true,
         plugins: [
@@ -322,7 +314,7 @@ function updatePrice() {
 
     // more than 40 days
     if (numOfDays > 40 ) {
-        price = numOfDays * 200;
+        price = numOfDays * extraDayRate;
     }
     else {
         // check for price in prices array
@@ -472,19 +464,26 @@ async function handleReservationSubmit(paymentMethod) {
         departureDateValue = toLocalDateString(departureDate);
     }
 
-    // Get form data
-    const formData = {
-        name: document.getElementById('name')?.value?.trim() || '',
-        email: document.getElementById('email')?.value?.trim() || '',
-        passengers: document.getElementById('passengers')?.value || '',
-        phone: document.getElementById('phone')?.value?.trim() || '',
-        arrivalDate: arrivalDateValue, // Use picker date, not input display text
-        departureDate: departureDateValue, // Use picker date, not input display text
-        additionalInfo: document.getElementById('additional-info')?.value?.trim() || '',
-        paymentMethod: paymentMethod,
-        totalPrice: currentPrice,
-        locale: (window.translations && window.translations.lang) || 'sr'
-    };
+        // Get dates from the pickers in YYYY-MM-DD format (local calendar
+        // date, not the localized "DD MMMM YYYY" display text and not
+        // toISOString(), which would shift the date back a day in
+        // timezones ahead of UTC)
+        const arrivalDate = pickerFrom.getDate();
+        const departureDate = pickerTo.getDate();
+
+        // Get form data
+        const formData = {
+            name: document.getElementById('name')?.value?.trim() || '',
+            email: document.getElementById('email')?.value?.trim() || '',
+            passengers: document.getElementById('passengers')?.value || '',
+            phone: document.getElementById('phone')?.value?.trim() || '',
+            arrivalDate: arrivalDate ? toLocalDateString(new Date(arrivalDate)) : '',
+            departureDate: departureDate ? toLocalDateString(new Date(departureDate)) : '',
+            additionalInfo: document.getElementById('additional-info')?.value?.trim() || '',
+            paymentMethod: paymentMethod,
+            totalPrice: currentPrice,
+            locale: (window.translations && window.translations.lang) || 'sr'
+        };
 
     // Validate form data
     const validationErrors = validateFormData(formData);
@@ -524,6 +523,10 @@ async function handleReservationSubmit(paymentMethod) {
 
         // Success handling
         if (response.ok && responseData.status === "success") {
+            // Google Ads conversion tracking
+            if (typeof gtag === 'function') {
+                gtag('event', 'conversion', {'send_to': 'AW-16537161463/5x0ICLGct6kZEPedxM09'});
+            }
             if (responseData.payment_method === 'online' && responseData.payment_url) {
                 // Redirect to payment page
                 window.location.href = responseData.payment_url;

@@ -1,0 +1,33 @@
+body {
+    background-color: #f5f6f8;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.admin-navbar {
+    background-color: #1f2733;
+    padding: 0.75rem 1rem;
+}
+
+.admin-navbar .navbar-brand,
+.admin-navbar .navbar-text {
+    color: #fff;
+}
+
+#price-inputs .form-label {
+    color: #6c757d;
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: 600;
+}
+
+details > summary {
+    cursor: pointer;
+}
+
+pre {
+    background-color: #f1f1f1;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}

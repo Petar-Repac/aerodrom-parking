@@ -6,5 +6,6 @@
         gtag('js', new Date());
 
         gtag('config', 'G-MXC2HV1ZY2');
+        gtag('config', 'AW-16537161463');
     </script>
     <script defer src="https://www.googletagmanager.com/gtag/js?id=G-MXC2HV1ZY2"></script>

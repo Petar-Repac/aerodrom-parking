@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Helpers\RouteHelper;
@@ -53,6 +55,21 @@ foreach ($locales as $locale => $prefix) {
 
     });
 }
+
+// Admin dashboard (not locale-prefixed - internal tool, single language)
+Route::prefix('admin')->name('admin.')->middleware('web')->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
+        Route::post('/login', [AdminAuthController::class, 'login'])
+            ->middleware('throttle:6,1')
+            ->name('login.attempt');
+    });
+
+    Route::middleware('auth')->group(function () {
+        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    });
+});
 
 // Fallback for 404
 Route::fallback(function () {
