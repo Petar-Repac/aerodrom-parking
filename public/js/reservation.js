@@ -68,7 +68,21 @@ function toLocalDateString(date) {
     return `${year}-${month}-${day}`;
 }
 
-const today = toLocalDateString(new Date());
+// The parking is a physical service in Serbia, so "today" always means
+// today in Serbia - not the visitor's own device timezone. Without this,
+// a customer browsing from another timezone near their local midnight
+// could see the wrong minimum bookable date relative to Belgrade's actual
+// calendar day.
+function belgradeTodayString() {
+    return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Belgrade' }).format(new Date());
+}
+
+function belgradeTodayDate() {
+    const [year, month, day] = belgradeTodayString().split('-').map(Number);
+    return new Date(year, month - 1, day);
+}
+
+const today = belgradeTodayString();
 
 const arrival = document.getElementById('arrival-date');
 const departure = document.getElementById('departure-date');
@@ -447,43 +461,26 @@ function validateFormData(formData) {
 
 // Handle form submission with payment method
 async function handleReservationSubmit(paymentMethod) {
-    // Get actual date values from date pickers (not display text)
-    let arrivalDateValue = '';
-    let departureDateValue = '';
+    // Get dates from the pickers in YYYY-MM-DD format (local calendar
+    // date, not the localized "DD MMMM YYYY" display text and not
+    // toISOString(), which would shift the date back a day in
+    // timezones ahead of UTC)
+    const arrivalDate = pickerFrom.getDate();
+    const departureDate = pickerTo.getDate();
 
-    // Get dates from pickers in YYYY-MM-DD format (local calendar date -
-    // toISOString() would convert to UTC first and shift the date back
-    // a day, e.g. turning a "today" arrival into "yesterday" server-side)
-    if (pickerFrom.getDate()) {
-        const arrivalDate = new Date(pickerFrom.getDate());
-        arrivalDateValue = toLocalDateString(arrivalDate);
-    }
-
-    if (pickerTo.getDate()) {
-        const departureDate = new Date(pickerTo.getDate());
-        departureDateValue = toLocalDateString(departureDate);
-    }
-
-        // Get dates from the pickers in YYYY-MM-DD format (local calendar
-        // date, not the localized "DD MMMM YYYY" display text and not
-        // toISOString(), which would shift the date back a day in
-        // timezones ahead of UTC)
-        const arrivalDate = pickerFrom.getDate();
-        const departureDate = pickerTo.getDate();
-
-        // Get form data
-        const formData = {
-            name: document.getElementById('name')?.value?.trim() || '',
-            email: document.getElementById('email')?.value?.trim() || '',
-            passengers: document.getElementById('passengers')?.value || '',
-            phone: document.getElementById('phone')?.value?.trim() || '',
-            arrivalDate: arrivalDate ? toLocalDateString(new Date(arrivalDate)) : '',
-            departureDate: departureDate ? toLocalDateString(new Date(departureDate)) : '',
-            additionalInfo: document.getElementById('additional-info')?.value?.trim() || '',
-            paymentMethod: paymentMethod,
-            totalPrice: currentPrice,
-            locale: (window.translations && window.translations.lang) || 'sr'
-        };
+    // Get form data
+    const formData = {
+        name: document.getElementById('name')?.value?.trim() || '',
+        email: document.getElementById('email')?.value?.trim() || '',
+        passengers: document.getElementById('passengers')?.value || '',
+        phone: document.getElementById('phone')?.value?.trim() || '',
+        arrivalDate: arrivalDate ? toLocalDateString(new Date(arrivalDate)) : '',
+        departureDate: departureDate ? toLocalDateString(new Date(departureDate)) : '',
+        additionalInfo: document.getElementById('additional-info')?.value?.trim() || '',
+        paymentMethod: paymentMethod,
+        totalPrice: currentPrice,
+        locale: (window.translations && window.translations.lang) || 'sr'
+    };
 
     // Validate form data
     const validationErrors = validateFormData(formData);
