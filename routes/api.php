@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\PasswordController;
+use App\Http\Controllers\Admin\PriceController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,4 +28,14 @@ Route::middleware(['throttle:5,1'])->group(function () {
 Route::prefix('aero-parking')->group(function () {
     Route::post('/reservations', [ReservationController::class, 'store']);
     // Add more routes as needed
+});
+
+// Admin dashboard mutations - authenticated via Sanctum's stateful (session
+// cookie) mode, since the admin UI is served same-origin, not a token-based
+// third-party API consumer.
+Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
+    Route::post('/prices', [PriceController::class, 'update']);
+    Route::post('/prices/reset', [PriceController::class, 'reset']);
+    Route::post('/password', [PasswordController::class, 'update']);
+    Route::post('/admins', [AdminUserController::class, 'store']);
 });

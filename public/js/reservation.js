@@ -1,6 +1,10 @@
 import easepick from '../vendor/easepick/js/main.js'
 
-const prices = [
+// Prices are normally injected server-side (see
+// resources/views/partials/data/prices.blade.php, backed by the admin-
+// editable price table). This hardcoded list is only a last-resort
+// fallback if that script tag is ever missing.
+const prices = window.PARKING_PRICES || [
     { days: 1, price: 500 },
     { days: 2, price: 900 },
     { days: 3, price: 1300 },
@@ -47,6 +51,8 @@ const prices = [
     { days: 39, price: 8000 },
     { days: 40, price: 8100 }
 ];
+
+const extraDayRate = window.PARKING_EXTRA_DAY_RATE || 200;
 
 const formCharge = document.getElementById('form-charge');
 const ctaCharge = document.getElementById('cta-charge');
@@ -280,7 +286,7 @@ function updatePrice() {
 
     // more than 40 days
     if (numOfDays > 40 ) {
-        price = numOfDays * 200;
+        price = numOfDays * extraDayRate;
     }
     else {
         // check for price in prices array
