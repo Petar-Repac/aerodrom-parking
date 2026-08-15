@@ -68,6 +68,15 @@ function toLocalDateString(date) {
     return `${year}-${month}-${day}`;
 }
 
+// Format a Date's time-of-day as 24-hour HH:mm, matching the backend's
+// date_format:H:i validation. The arrival/departure pickers' TimePlugin
+// (format12: false) already picks in 24h, so this just serializes it.
+function toTimeString(date) {
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+}
+
 const today = toLocalDateString(new Date());
 
 const arrival = document.getElementById('arrival-date');
@@ -82,10 +91,11 @@ let calendarNum = 1;
 const pickerFrom = new easepick.create({
     element: "#arrival-date",
     css: [
-        "vendor/easepick/css/index.css"
+        "vendor/easepick/css/index.css",
+        "vendor/easepick/css/time-plugin-fix.css"
     ],
     zIndex: 10,
-    format: "DD MMMM YYYY",
+    format: "DD MMMM YYYY HH:mm",
     calendars: calendarNum,
     autoApply: false,
     grid: calendarNum,
@@ -95,10 +105,16 @@ const pickerFrom = new easepick.create({
     },
     plugins: [
         "AmpPlugin",
-        "LockPlugin"
+        "LockPlugin",
+        "TimePlugin"
     ],
     AmpPlugin: {
         resetButton: true
+    },
+    TimePlugin: {
+        format12: false,
+        native: false,
+        stepMinutes: 5
     },
 
     setup(picker) {
@@ -111,10 +127,11 @@ const pickerFrom = new easepick.create({
 const pickerTo = new easepick.create({
     element: "#departure-date",
     css: [
-        "vendor/easepick/css/index.css"
+        "vendor/easepick/css/index.css",
+        "vendor/easepick/css/time-plugin-fix.css"
     ],
     zIndex: 10,
-    format: "DD MMMM YYYY",
+    format: "DD MMMM YYYY HH:mm",
     calendars: calendarNum,
     autoApply: false,
     grid: calendarNum,
@@ -125,10 +142,16 @@ const pickerTo = new easepick.create({
     },
     plugins: [
         "AmpPlugin",
-        "LockPlugin"
+        "LockPlugin",
+        "TimePlugin"
     ],
     AmpPlugin: {
         resetButton: true
+    },
+    TimePlugin: {
+        format12: false,
+        native: false,
+        stepMinutes: 5
     },
     setup(picker) {
         picker.on('select', (e) => {
@@ -145,10 +168,11 @@ if (ctaArrivalElement) {
     cta_pickerFrom = new easepick.create({
         element: "#cta-arrival-date",
         css: [
-            "vendor/easepick/css/index.css"
+            "vendor/easepick/css/index.css",
+            "vendor/easepick/css/time-plugin-fix.css"
         ],
         zIndex: 10,
-        format: "DD MMMM YYYY",
+        format: "DD MMMM YYYY HH:mm",
         calendars: calendarNum,
         autoApply: false,
         grid: calendarNum,
@@ -158,10 +182,16 @@ if (ctaArrivalElement) {
         required: true,
         plugins: [
             "AmpPlugin",
-            "LockPlugin"
+            "LockPlugin",
+            "TimePlugin"
         ],
         AmpPlugin: {
             resetButton: true
+        },
+        TimePlugin: {
+            format12: false,
+            native: false,
+            stepMinutes: 5
         },
         setup(picker) {
             picker.on('select', (e) => {
@@ -175,10 +205,11 @@ if (ctaDepartureElement) {
     cta_pickerTo = new easepick.create({
         element: "#cta-departure-date",
         css: [
-            "vendor/easepick/css/index.css"
+            "vendor/easepick/css/index.css",
+            "vendor/easepick/css/time-plugin-fix.css"
         ],
         zIndex: 10,
-        format: "DD MMMM YYYY",
+        format: "DD MMMM YYYY HH:mm",
         calendars: calendarNum,
         autoApply: false,
         grid: calendarNum,
@@ -188,10 +219,16 @@ if (ctaDepartureElement) {
         required: true,
         plugins: [
             "AmpPlugin",
-            "LockPlugin"
+            "LockPlugin",
+            "TimePlugin"
         ],
         AmpPlugin: {
             resetButton: true
+        },
+        TimePlugin: {
+            format12: false,
+            native: false,
+            stepMinutes: 5
         },
         setup(picker) {
             picker.on('select', (e) => {
@@ -205,19 +242,30 @@ if (arrival) {
     arrival.removeAttribute('readonly');
 }
 
+// setDate() alone only carries the date part reliably between pickers -
+// each picker's TimePlugin tracks its own picked time separately
+// (timePicked.input), so the hours/minutes chosen on one picker don't
+// automatically show up on the other. Calling setTime() explicitly on
+// both sides keeps them in sync.
 function syncInputs(date, fromOrTo) {
+    const time = toTimeString(new Date(date));
+
     if(fromOrTo === 'from'){
         pickerFrom.setDate(date);
+        pickerFrom.setTime(time);
         // Only sync CTA picker if it exists
         if (cta_pickerFrom) {
             cta_pickerFrom.setDate(date);
+            cta_pickerFrom.setTime(time);
         }
     }
     else {
         pickerTo.setDate(date);
+        pickerTo.setTime(time);
         // Only sync CTA picker if it exists
         if (cta_pickerTo) {
             cta_pickerTo.setDate(date);
+            cta_pickerTo.setTime(time);
         }
     }
     if(pickerFrom.getDate() && pickerTo.getDate()){
@@ -255,7 +303,7 @@ function updatePrice() {
     let secondDate = new Date(departureDate);
 
     // invalid input
-    if (secondDate < firstDate) {
+    if (secondDate <= firstDate) {
         if (formCharge) formCharge.textContent = __('arrival_before_departure');
         if (ctaCharge) ctaCharge.textContent = __('price_label');
         showFormFirstTime()
@@ -400,6 +448,15 @@ function validateFormData(formData) {
         errors.push(__('enter_departure_date'));
     }
 
+    if (formData.arrivalDate && formData.departureDate && formData.arrivalTime && formData.departureTime) {
+        const arrivalDateTime = new Date(`${formData.arrivalDate}T${formData.arrivalTime}`);
+        const departureDateTime = new Date(`${formData.departureDate}T${formData.departureTime}`);
+
+        if (departureDateTime <= arrivalDateTime) {
+            errors.push(__('arrival_before_departure'));
+        }
+    }
+
     return errors;
 }
 
@@ -424,6 +481,8 @@ if (emailForm) {
             phone: document.getElementById('phone')?.value?.trim() || '',
             arrivalDate: arrivalDate ? toLocalDateString(new Date(arrivalDate)) : '',
             departureDate: departureDate ? toLocalDateString(new Date(departureDate)) : '',
+            arrivalTime: arrivalDate ? toTimeString(new Date(arrivalDate)) : '',
+            departureTime: departureDate ? toTimeString(new Date(departureDate)) : '',
             additionalInfo: document.getElementById('additional-info')?.value?.trim() || ''
         };
 

@@ -139,6 +139,8 @@ class EmailService
         $passengers = htmlspecialchars($data['passengers'] ?? '', ENT_QUOTES, 'UTF-8');
         $arrivalDate = htmlspecialchars($data['arrivalDate'] ?? '', ENT_QUOTES, 'UTF-8');
         $departureDate = htmlspecialchars($data['departureDate'] ?? '', ENT_QUOTES, 'UTF-8');
+        $arrivalTime = htmlspecialchars($data['arrivalTime'] ?? '', ENT_QUOTES, 'UTF-8');
+        $departureTime = htmlspecialchars($data['departureTime'] ?? '', ENT_QUOTES, 'UTF-8');
         $additionalInfo = htmlspecialchars($data['additionalInfo'] ?? '', ENT_QUOTES, 'UTF-8');
 
         return <<<EMAILBODY
@@ -177,11 +179,11 @@ class EmailService
             </div>
             <div class="field">
                 <span class="label">Datum i vreme dolaska:</span>
-                <span class="value">{$arrivalDate}</span>
+                <span class="value">{$arrivalDate} {$arrivalTime}</span>
             </div>
             <div class="field">
                 <span class="label">Datum i vreme odlaska:</span>
-                <span class="value">{$departureDate}</span>
+                <span class="value">{$departureDate} {$departureTime}</span>
             </div>
             <div class="field">
                 <span class="label">Broj putnika:</span>

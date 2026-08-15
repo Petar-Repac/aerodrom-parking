@@ -39,10 +39,34 @@ class ReservationController extends Controller
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:50',
             'passengers' => 'required|integer|min:1|max:20',
-            'arrivalDate' => 'required|string|max:100',
-            'departureDate' => 'required|string|max:100',
+            'arrivalDate' => 'required|date_format:Y-m-d',
+            'departureDate' => 'required|date_format:Y-m-d',
+            'arrivalTime' => 'required|date_format:H:i',
+            'departureTime' => 'required|date_format:H:i',
             'additionalInfo' => 'nullable|string|max:1000',
         ]);
+
+        // Guard against same-day (or any) reservations where the departure
+        // date+time isn't actually after the arrival date+time - e.g.
+        // arriving at 16:00 and "departing" at 01:00 the same day.
+        $validator->after(function ($validator) use ($request) {
+            if ($validator->errors()->hasAny(['arrivalDate', 'departureDate', 'arrivalTime', 'departureTime'])) {
+                return;
+            }
+
+            $arrival = \Carbon\Carbon::createFromFormat(
+                'Y-m-d H:i',
+                $request->input('arrivalDate') . ' ' . $request->input('arrivalTime')
+            );
+            $departure = \Carbon\Carbon::createFromFormat(
+                'Y-m-d H:i',
+                $request->input('departureDate') . ' ' . $request->input('departureTime')
+            );
+
+            if ($departure->lessThanOrEqualTo($arrival)) {
+                $validator->errors()->add('departureDate', 'Departure date and time must be after arrival date and time.');
+            }
+        });
 
         if ($validator->fails()) {
             Log::warning('Reservation validation failed', [
@@ -69,6 +93,8 @@ class ReservationController extends Controller
                 'passengers' => $this->sanitize($request->input('passengers')),
                 'arrivalDate' => $this->sanitize($request->input('arrivalDate')),
                 'departureDate' => $this->sanitize($request->input('departureDate')),
+                'arrivalTime' => $this->sanitize($request->input('arrivalTime')),
+                'departureTime' => $this->sanitize($request->input('departureTime')),
                 'additionalInfo' => $this->sanitize($request->input('additionalInfo', '')),
             ];
 
