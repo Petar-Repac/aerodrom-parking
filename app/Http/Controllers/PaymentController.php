@@ -6,6 +6,7 @@ use App\Services\WsPay\WsPayService;
 use App\Services\WsPay\Exceptions\WSPayException;
 use App\Services\EmailService;
 use App\Models\Reservation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -51,6 +52,8 @@ class PaymentController extends Controller
                 'passengers' => 'required|integer|min:1',
                 'arrivalDate' => 'required|date|after_or_equal:' . $belgradeToday,
                 'departureDate' => 'required|date|after_or_equal:arrivalDate',
+                'arrivalTime' => 'required|date_format:H:i',
+                'departureTime' => 'required|date_format:H:i',
                 'additionalInfo' => 'nullable|string|max:1000',
                 'paymentMethod' => 'required|string|in:payment-onsite,payment-online',
                 'totalPrice' => 'required|numeric|min:0',
@@ -61,6 +64,32 @@ class PaymentController extends Controller
                 'arrivalDate.required' => __('js.enter_arrival_date'),
                 'departureDate.required' => __('js.enter_departure_date'),
             ]);
+
+            // arrivalDate/departureDate.after_or_equal above only compares
+            // calendar days, so a same-day round trip (e.g. arrive 16:00,
+            // "depart" 01:00) still passes. Guard against that once time is
+            // in the mix too.
+            $validator->after(function ($validator) use ($request) {
+                if ($validator->errors()->hasAny(['arrivalDate', 'departureDate', 'arrivalTime', 'departureTime'])) {
+                    return;
+                }
+
+                // arrivalDate/departureDate are only validated with the
+                // lenient 'date' rule above (not date_format), so parse
+                // leniently here too rather than risking an uncaught
+                // exception from createFromFormat on an unusual-but-valid
+                // date string.
+                try {
+                    $arrival = Carbon::parse($request->input('arrivalDate') . ' ' . $request->input('arrivalTime'));
+                    $departure = Carbon::parse($request->input('departureDate') . ' ' . $request->input('departureTime'));
+                } catch (\Exception $e) {
+                    return;
+                }
+
+                if ($departure->lessThanOrEqualTo($arrival)) {
+                    $validator->errors()->add('departureDate', __('js.arrival_before_departure'));
+                }
+            });
 
             if ($validator->fails()) {
                 return response()->json([
@@ -88,7 +117,9 @@ class PaymentController extends Controller
                 'phone' => $data['phone'],
                 'passengers' => $data['passengers'],
                 'arrival_date' => $data['arrivalDate'],
+                'arrival_time' => $data['arrivalTime'],
                 'departure_date' => $data['departureDate'],
+                'departure_time' => $data['departureTime'],
                 'num_of_days' => $numOfDays,
                 'total_price' => $data['totalPrice'],
                 'additional_info' => $data['additionalInfo'] ?? '',
@@ -105,8 +136,12 @@ class PaymentController extends Controller
             ]);
             // Check payment method
             if ($data['paymentMethod'] === 'payment-onsite') {
-                // Email-only flow - send notification and return success
+                // Email-only flow - send notification and return success.
+                // Unlike payment-online (confirmed only once WSPay reports
+                // success), on-site reservations aren't gated on payment at
+                // all, so the customer confirmation goes out immediately.
                 $this->sendReservationEmail($reservation->toArray(), 'onsite');
+                $this->sendUserConfirmationEmail($reservation->toArray());
 
                 return response()->json([
                     'status' => 'success',
@@ -409,7 +444,7 @@ class PaymentController extends Controller
             // Send using EmailService
             $sent = $this->emailService->sendEmail(
                 $reservationData['email'],
-                __('messages.payment.subject_confirmation'),
+                __('messages.payment.subject_confirmation', ['id' => $reservationData['reservation_id']]),
                 $content,
                 $reservationData['name']
             );

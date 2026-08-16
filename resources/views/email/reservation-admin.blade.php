@@ -143,12 +143,22 @@
 
         <div class="detail-row">
             <span class="detail-label">Datum dolaska:</span>
-            <span class="detail-value">{{ \Carbon\Carbon::parse($reservation['arrival_date'])->format('d.m.Y') }}</span>
+            <span class="detail-value">
+                {{ \Carbon\Carbon::parse($reservation['arrival_date'])->format('d.m.Y') }}
+                @if(!empty($reservation['arrival_time']))
+                    u {{ $reservation['arrival_time'] }}
+                @endif
+            </span>
         </div>
 
         <div class="detail-row">
             <span class="detail-label">Datum odlaska:</span>
-            <span class="detail-value">{{ \Carbon\Carbon::parse($reservation['departure_date'])->format('d.m.Y') }}</span>
+            <span class="detail-value">
+                {{ \Carbon\Carbon::parse($reservation['departure_date'])->format('d.m.Y') }}
+                @if(!empty($reservation['departure_time']))
+                    oko {{ $reservation['departure_time'] }}
+                @endif
+            </span>
         </div>
 
         <div class="detail-row">
