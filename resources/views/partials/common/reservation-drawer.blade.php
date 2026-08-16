@@ -120,8 +120,6 @@
                                         class="date-picker styled-input"
                                         placeholder="{{ __('messages.reservation_form.arrival') }}"
                                         required
-                                        onkeydown="return false;"
-                                        style="caret-color: transparent !important;"
                                     />
                                 </div>
                             </div>
