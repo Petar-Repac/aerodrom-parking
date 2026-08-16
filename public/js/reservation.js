@@ -155,7 +155,8 @@ const pickerTo = flatpickr("#departure-date", {
         if (selectedDates[0]) {
             syncInputs(selectedDates[0], 'to');
         }
-    }
+    },
+    onClose: expandSidebarIfReady
 });
 
 // Only create CTA pickers if the elements exist
@@ -182,7 +183,8 @@ if (ctaDepartureElement) {
             if (selectedDates[0]) {
                 syncInputs(selectedDates[0], 'to');
             }
-        }
+        },
+        onClose: expandSidebarIfReady
     });
 }
 
@@ -228,6 +230,18 @@ function showFormFirstTime() {
     }
 }
 
+// updatePrice() runs live on every onChange (each calendar click, each
+// hour/minute spinner tick), so calling showFormFirstTime() from there
+// expanded the sidebar the instant departure got *any* value - before
+// the user had actually confirmed it. Only expand once the departure
+// picker is actually closed (confirm button, outside click, or Escape)
+// with both dates present.
+function expandSidebarIfReady(selectedDates) {
+    if (pickerFrom.selectedDates[0] && selectedDates[0]) {
+        showFormFirstTime();
+    }
+}
+
 
 // Helper function to get translation
 function __(key) {
@@ -251,7 +265,6 @@ function updatePrice() {
     if (secondDate <= firstDate) {
         if (formCharge) formCharge.textContent = __('arrival_before_departure');
         if (ctaCharge) ctaCharge.textContent = __('price_label');
-        showFormFirstTime()
         return;
     }
 
@@ -295,13 +308,11 @@ function updatePrice() {
     if (numOfDays % 10 === 1 && numOfDays !== 11) {
         if (formCharge) formCharge.textContent = `${__('price_for')} ${numOfDays} ${__('day')} ${__('costs')} ${price} ${__('dinars')}.`;
         if (ctaCharge) ctaCharge.textContent = `${__('price')}: ${price} ${__('din')}.`;
-        showFormFirstTime()
         return;
     }
 
     if (formCharge) formCharge.textContent = `${__('price_for')} ${numOfDays} ${__('days')} ${__('costs')} ${price} ${__('dinars')}.`;
     if (ctaCharge) ctaCharge.textContent = `${__('price')}: ${price} ${__('din')}.`;
-    showFormFirstTime()
 }
 
 // Pricing table click functionality - SIMPLIFIED
