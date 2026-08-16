@@ -43,3 +43,12 @@
 .flatpickr-time input:focus {
     background: rgba(116, 44, 204, 0.15);
 }
+
+.flatpickr-confirm {
+    background: #742CCC;
+    font-weight: 600;
+}
+
+.flatpickr-confirm:hover {
+    background: #8a3fe6;
+}

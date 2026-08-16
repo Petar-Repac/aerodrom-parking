@@ -53,6 +53,7 @@
     <link rel="stylesheet" href="{{asset("css/fontawesome-optimized.min.css") . "?" . env('APP_VERSION')}}">
     <link rel="stylesheet" href="{{asset("css/style.css") . "?" . env('APP_VERSION')}}">
     <link rel="stylesheet" href="{{asset("vendor/flatpickr/css/dark.css")}}">
+    <link rel="stylesheet" href="{{asset("vendor/flatpickr/css/plugins/confirmDate.css")}}">
     <link rel="stylesheet" href="{{asset("vendor/flatpickr/css/theme-override.css")}}">
 
     <!-- Deferred css -->

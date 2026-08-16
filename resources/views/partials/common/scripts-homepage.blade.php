@@ -6,6 +6,7 @@
 <script type="module" src="{{asset('vendor/swiper/swiper-bundle.js')}}" defer  ></script>
 <script type="module" src="{{asset('vendor/sweetalert/js/main.js')}}" async defer></script>
 <script src="{{asset('vendor/flatpickr/js/flatpickr.min.js')}}" defer></script>
+<script src="{{asset('vendor/flatpickr/js/plugins/confirmDate.js')}}" defer></script>
 @if(app()->getLocale() !== 'en')
 <script src="{{asset('vendor/flatpickr/js/l10n/' . app()->getLocale() . '.js')}}" defer></script>
 @endif

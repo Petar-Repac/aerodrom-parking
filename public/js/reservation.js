@@ -6,6 +6,7 @@
 // need to be served individually, so this avoids vendoring that whole
 // file tree.
 const flatpickr = window.flatpickr;
+const confirmDatePlugin = window.confirmDatePlugin;
 
 // Prices are normally injected server-side (see
 // resources/views/partials/data/prices.blade.php, backed by the admin-
@@ -100,10 +101,25 @@ function resolvePickerLocale() {
     return (lang === 'sr' || lang === 'ru') ? lang : undefined;
 }
 
+// confirmDatePlugin instances hold per-picker state (their own
+// confirmContainer element), so each picker needs its own instance -
+// sharing one across pickers via the spread pickerOptions below would
+// have them all fighting over the same closure.
+function makeConfirmPlugin() {
+    return new confirmDatePlugin({
+        confirmText: window.translations?.datepicker?.apply || 'OK',
+        theme: 'dark'
+    });
+}
+
 // Shared config for all four pickers: a real 24h time picker (hour/minute
 // spinner inputs, not <select> dropdowns) bundled with the calendar,
 // appended to <body> so it isn't clipped by #reservation-form's
-// position:fixed + overflow:hidden sidebar.
+// position:fixed + overflow:hidden sidebar. Without confirmDatePlugin,
+// picking date+time only "applies" on blur/outside-click, which reads
+// as the picker being stuck open with nothing to confirm - the plugin
+// adds a visible confirm button (once a full date+time is picked) that
+// closes the picker on click.
 const pickerOptions = {
     enableTime: true,
     time_24hr: true,
@@ -116,6 +132,7 @@ const pickerOptions = {
 
 const pickerFrom = flatpickr("#arrival-date", {
     ...pickerOptions,
+    plugins: [makeConfirmPlugin()],
     onChange(selectedDates) {
         if (selectedDates[0]) {
             syncInputs(selectedDates[0], 'from');
@@ -125,6 +142,7 @@ const pickerFrom = flatpickr("#arrival-date", {
 
 const pickerTo = flatpickr("#departure-date", {
     ...pickerOptions,
+    plugins: [makeConfirmPlugin()],
     onChange(selectedDates) {
         if (selectedDates[0]) {
             syncInputs(selectedDates[0], 'to');
@@ -139,6 +157,7 @@ let cta_pickerTo = null;
 if (ctaArrivalElement) {
     cta_pickerFrom = flatpickr(ctaArrivalElement, {
         ...pickerOptions,
+        plugins: [makeConfirmPlugin()],
         onChange(selectedDates) {
             if (selectedDates[0]) {
                 syncInputs(selectedDates[0], 'from');
@@ -150,6 +169,7 @@ if (ctaArrivalElement) {
 if (ctaDepartureElement) {
     cta_pickerTo = flatpickr(ctaDepartureElement, {
         ...pickerOptions,
+        plugins: [makeConfirmPlugin()],
         onChange(selectedDates) {
             if (selectedDates[0]) {
                 syncInputs(selectedDates[0], 'to');
