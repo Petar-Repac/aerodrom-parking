@@ -1,0 +1,21 @@
+/* The bundled easepick theme hides the Apply button entirely while it's
+   disabled (visibility: hidden). With TimePlugin attached, a user can
+   set the time before clicking a calendar day, and while no day is
+   picked the Apply button stays disabled - so it never appears at all,
+   looking like the confirm button is missing. Show it greyed out
+   instead, so it's clear a date still needs to be picked. */
+.container>footer .footer-buttons>button.apply-button:disabled{
+    visibility: visible;
+}
+
+/* TimePlugin adds a time-select row on top of the calendar and footer,
+   making the popup noticeably taller. Inside the #reservation-form
+   sidebar (position: fixed; overflow: hidden/auto) that extra height
+   can land outside the sidebar's visible box and gets clipped with no
+   way to reach it. Cap the popup's own height and let it scroll
+   internally so the footer/Apply button is always reachable. */
+.container.show{
+    max-height: min(440px, calc(100vh - 32px));
+    overflow-y: auto;
+    overflow-x: hidden;
+}

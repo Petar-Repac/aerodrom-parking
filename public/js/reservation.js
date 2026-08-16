@@ -1,6 +1,18 @@
-import easepick from '../vendor/easepick/js/main.js'
+// flatpickr is loaded as a plain classic <script defer> in
+// scripts-homepage.blade.php (before this module's own tag), which
+// attaches it to window.flatpickr - its UMD build only ships one
+// self-contained file, unlike the ESM build which imports several
+// sibling modules (types/options, utils/dom, l10n/default, ...) that
+// need to be served individually, so this avoids vendoring that whole
+// file tree.
+const flatpickr = window.flatpickr;
+const confirmDatePlugin = window.confirmDatePlugin;
 
-const prices = [
+// Prices are normally injected server-side (see
+// resources/views/partials/data/prices.blade.php, backed by the admin-
+// editable price table). This hardcoded list is only a last-resort
+// fallback if that script tag is ever missing.
+const prices = window.PARKING_PRICES || [
     { days: 1, price: 500 },
     { days: 2, price: 900 },
     { days: 3, price: 1300 },
@@ -48,163 +60,162 @@ const prices = [
     { days: 40, price: 8100 }
 ];
 
+const extraDayRate = window.PARKING_EXTRA_DAY_RATE || 200;
+
 const formCharge = document.getElementById('form-charge');
 const ctaCharge = document.getElementById('cta-charge');
-const today = new Date().toISOString().split('T')[0];
 
-const arrival = document.getElementById('arrival-date');
-const departure = document.getElementById('departure-date');
+// Format a Date as YYYY-MM-DD using its local calendar date, not UTC.
+// toISOString() converts to UTC first, which shifts the date backward
+// a day for any timezone ahead of UTC - that shift was causing "today"
+// to be rejected as an arrival date no matter what was picked.
+function toLocalDateString(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+// Format a Date's time-of-day as 24-hour HH:mm, matching the backend's
+// date_format:H:i validation. The arrival/departure pickers' TimePlugin
+// (format12: false) already picks in 24h, so this just serializes it.
+function toTimeString(date) {
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+}
 
 // Check if CTA elements exist
 const ctaArrivalElement = document.getElementById('cta-arrival-date');
 const ctaDepartureElement = document.getElementById('cta-departure-date');
 
-// let calendarNum = (new Date().getDate() > 22)?2: 1;
-let calendarNum = 1;
-const pickerFrom = new easepick.create({
-    element: "#arrival-date",
-    css: [
-        "vendor/easepick/css/index.css"
-    ],
-    zIndex: 10,
-    format: "DD MMMM YYYY",
-    calendars: calendarNum,
-    autoApply: false,
-    grid: calendarNum,
-    positionOverride:"center",
-    LockPlugin: {
-        minDate: new Date().toISOString().split("T")[0]
-    },
-    plugins: [
-        "AmpPlugin",
-        "LockPlugin"
-    ],
-    AmpPlugin: {
-        resetButton: true
-    },
+// Matches easepick's old __lang() helper: resolve the site's chosen
+// language (window.translations.lang, from js.php) to a flatpickr
+// locale key so month/day names follow the page's language instead of
+// always showing English. 'en' needs no locale object - it's
+// flatpickr's built-in default. sr/ru are loaded as separate locale
+// scripts (see scripts-homepage.blade.php) that register themselves
+// onto window.flatpickr.l10ns before this file runs.
+function resolvePickerLocale() {
+    const lang = window.translations?.lang;
+    return (lang === 'sr' || lang === 'ru') ? lang : undefined;
+}
 
-    setup(picker) {
-        picker.on('select', (e) => {
-            syncInputs(e.detail.date, 'from')
-        });
+// confirmDatePlugin instances hold per-picker state (their own
+// confirmContainer element), so each picker needs its own instance -
+// sharing one across pickers via the spread pickerOptions below would
+// have them all fighting over the same closure.
+function makeConfirmPlugin() {
+    return new confirmDatePlugin({
+        confirmText: window.translations?.datepicker?.apply || 'OK',
+        theme: 'dark'
+    });
+}
+
+// Shared config for all four pickers: a real 24h time picker (hour/minute
+// spinner inputs, not <select> dropdowns) bundled with the calendar,
+// appended to <body> so it isn't clipped by #reservation-form's
+// position:fixed + overflow:hidden sidebar. Without confirmDatePlugin,
+// picking date+time only "applies" on blur/outside-click, which reads
+// as the picker being stuck open with nothing to confirm - the plugin
+// adds a visible confirm button (once a full date+time is picked) that
+// closes the picker on click.
+const pickerOptions = {
+    // By default flatpickr detects Android/iOS and silently swaps in a
+    // bare native <input type="datetime-local">, handing off entirely to
+    // the OS's own date/time dialog - unstyled (plain white, no visible
+    // placeholder), not localized to the page's language, and without
+    // the confirm button (confirmDatePlugin explicitly no-ops when
+    // fp.isMobile is true). Disabling that keeps our calendar consistent
+    // across desktop and mobile.
+    disableMobile: true,
+    enableTime: true,
+    time_24hr: true,
+    minuteIncrement: 5,
+    dateFormat: "d F Y H:i",
+    minDate: "today",
+    appendTo: document.body,
+    locale: resolvePickerLocale()
+};
+
+const pickerFrom = flatpickr("#arrival-date", {
+    ...pickerOptions,
+    plugins: [makeConfirmPlugin()],
+    onChange(selectedDates) {
+        if (selectedDates[0]) {
+            syncInputs(selectedDates[0], 'from');
+        }
     }
-})
+});
 
-const pickerTo = new easepick.create({
-    element: "#departure-date",
-    css: [
-        "vendor/easepick/css/index.css"
-    ],
-    zIndex: 10,
-    format: "DD MMMM YYYY",
-    calendars: calendarNum,
-    autoApply: false,
-    grid: calendarNum,
-    positionOverride:"center",
-
-    LockPlugin: {
-        minDate: new Date().toISOString().split("T")[0]
-    },
-    plugins: [
-        "AmpPlugin",
-        "LockPlugin"
-    ],
-    AmpPlugin: {
-        resetButton: true
-    },
-    setup(picker) {
-        picker.on('select', (e) => {
-            syncInputs(e.detail.date, 'to')
-        });
+const pickerTo = flatpickr("#departure-date", {
+    ...pickerOptions,
+    plugins: [makeConfirmPlugin()],
+    onChange(selectedDates) {
+        if (selectedDates[0]) {
+            syncInputs(selectedDates[0], 'to');
+        }
     }
-})
+});
 
 // Only create CTA pickers if the elements exist
 let cta_pickerFrom = null;
 let cta_pickerTo = null;
 
 if (ctaArrivalElement) {
-    cta_pickerFrom = new easepick.create({
-        element: "#cta-arrival-date",
-        css: [
-            "vendor/easepick/css/index.css"
-        ],
-        zIndex: 10,
-        format: "DD MMMM YYYY",
-        calendars: calendarNum,
-        autoApply: false,
-        grid: calendarNum,
-        LockPlugin: {
-            minDate: new Date().toISOString().split("T")[0]
-        },
-        required: true,
-        plugins: [
-            "AmpPlugin",
-            "LockPlugin"
-        ],
-        AmpPlugin: {
-            resetButton: true
-        },
-        setup(picker) {
-            picker.on('select', (e) => {
-                syncInputs(e.detail.date, 'from')
-            });
+    cta_pickerFrom = flatpickr(ctaArrivalElement, {
+        ...pickerOptions,
+        plugins: [makeConfirmPlugin()],
+        onChange(selectedDates) {
+            if (selectedDates[0]) {
+                syncInputs(selectedDates[0], 'from');
+            }
         }
-    })
+    });
 }
 
 if (ctaDepartureElement) {
-    cta_pickerTo = new easepick.create({
-        element: "#cta-departure-date",
-        css: [
-            "vendor/easepick/css/index.css"
-        ],
-        zIndex: 10,
-        format: "DD MMMM YYYY",
-        calendars: calendarNum,
-        autoApply: false,
-        grid: calendarNum,
-        LockPlugin: {
-            minDate: new Date().toISOString().split("T")[0]
-        },
-        required: true,
-        plugins: [
-            "AmpPlugin",
-            "LockPlugin"
-        ],
-        AmpPlugin: {
-            resetButton: true
-        },
-        setup(picker) {
-            picker.on('select', (e) => {
-                syncInputs(e.detail.date, 'to')
-            });
+    cta_pickerTo = flatpickr(ctaDepartureElement, {
+        ...pickerOptions,
+        plugins: [makeConfirmPlugin()],
+        onChange(selectedDates) {
+            if (selectedDates[0]) {
+                syncInputs(selectedDates[0], 'to');
+            }
         }
-    })
+    });
 }
 
-if (arrival) {
-    arrival.removeAttribute('readonly');
-}
-
+// Keep the main picker and its CTA counterpart showing the same date+time.
+// setDate()'s second argument controls whether it fires that picker's own
+// onChange - passing false on the *target* being synced means it can't
+// cascade back into another syncInputs call and recurse between the two.
 function syncInputs(date, fromOrTo) {
-    if(fromOrTo === 'from'){
-        pickerFrom.setDate(date);
-        // Only sync CTA picker if it exists
+    if (fromOrTo === 'from') {
+        pickerFrom.setDate(date, false);
         if (cta_pickerFrom) {
-            cta_pickerFrom.setDate(date);
+            cta_pickerFrom.setDate(date, false);
         }
-    }
-    else {
-        pickerTo.setDate(date);
-        // Only sync CTA picker if it exists
+    } else {
+        pickerTo.setDate(date, false);
         if (cta_pickerTo) {
-            cta_pickerTo.setDate(date);
+            cta_pickerTo.setDate(date, false);
         }
     }
-    if(pickerFrom.getDate() && pickerTo.getDate()){
-        updatePrice()
+    if (pickerFrom.selectedDates[0] && pickerTo.selectedDates[0]) {
+        updatePrice();
     }
+}
+
+// flatpickr keeps its selected date/time in its own internal state,
+// separate from the input's raw value - a plain emailForm.reset() clears
+// the input but leaves the picker still showing (and holding) the old
+// selection, ready to resurface stale dates on the next reservation.
+function clearPickers() {
+    pickerFrom.clear();
+    pickerTo.clear();
+    if (cta_pickerFrom) cta_pickerFrom.clear();
+    if (cta_pickerTo) cta_pickerTo.clear();
 }
 
 let showReservationForm = true;
@@ -224,8 +235,8 @@ function __(key) {
 }
 
 function updatePrice() {
-    let arrivalDate = pickerFrom.getDate();
-    let departureDate = pickerTo.getDate();
+    let arrivalDate = pickerFrom.selectedDates[0];
+    let departureDate = pickerTo.selectedDates[0];
 
     if (!arrivalDate || !departureDate) {
         if (formCharge) formCharge.textContent = __('price_label');
@@ -237,7 +248,7 @@ function updatePrice() {
     let secondDate = new Date(departureDate);
 
     // invalid input
-    if (secondDate < firstDate) {
+    if (secondDate <= firstDate) {
         if (formCharge) formCharge.textContent = __('arrival_before_departure');
         if (ctaCharge) ctaCharge.textContent = __('price_label');
         showFormFirstTime()
@@ -268,7 +279,7 @@ function updatePrice() {
 
     // more than 40 days
     if (numOfDays > 40 ) {
-        price = numOfDays * 200;
+        price = numOfDays * extraDayRate;
     }
     else {
         // check for price in prices array
@@ -333,8 +344,11 @@ pricingCells.forEach(cell => {
 
 // Configuration for API endpoint
 const API_CONFIG = {
-    // Change this to your Laravel app URL
-    baseUrl: 'https://aeroparking.rs', // or your Laravel app domain
+    // Always call back to whatever origin this script is actually running
+    // on (localhost, demo.aeroparking.rs, aeroparking.rs, ...) instead of
+    // a hardcoded domain, which would silently send every request to
+    // production regardless of which environment served the page.
+    baseUrl: window.location.origin,
     endpoints: {
         reservations: '/api/reservations'
     }
@@ -382,6 +396,15 @@ function validateFormData(formData) {
         errors.push(__('enter_departure_date'));
     }
 
+    if (formData.arrivalDate && formData.departureDate && formData.arrivalTime && formData.departureTime) {
+        const arrivalDateTime = new Date(`${formData.arrivalDate}T${formData.arrivalTime}`);
+        const departureDateTime = new Date(`${formData.departureDate}T${formData.departureTime}`);
+
+        if (departureDateTime <= arrivalDateTime) {
+            errors.push(__('arrival_before_departure'));
+        }
+    }
+
     return errors;
 }
 
@@ -391,15 +414,30 @@ if (emailForm) {
     emailForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
+        // Get dates from the pickers in YYYY-MM-DD format (local calendar
+        // date, not the localized "DD MMMM YYYY" display text and not
+        // toISOString(), which would shift the date back a day in
+        // timezones ahead of UTC)
+        const arrivalDate = pickerFrom.selectedDates[0];
+        const departureDate = pickerTo.selectedDates[0];
+
         // Get form data
         const formData = {
             name: document.getElementById('name')?.value?.trim() || '',
             email: document.getElementById('email')?.value?.trim() || '',
             passengers: document.getElementById('passengers')?.value || '',
             phone: document.getElementById('phone')?.value?.trim() || '',
-            arrivalDate: document.getElementById('arrival-date')?.value || '',
-            departureDate: document.getElementById('departure-date')?.value || '',
-            additionalInfo: document.getElementById('additional-info')?.value?.trim() || ''
+            arrivalDate: arrivalDate ? toLocalDateString(new Date(arrivalDate)) : '',
+            departureDate: departureDate ? toLocalDateString(new Date(departureDate)) : '',
+            arrivalTime: arrivalDate ? toTimeString(new Date(arrivalDate)) : '',
+            departureTime: departureDate ? toTimeString(new Date(departureDate)) : '',
+            additionalInfo: document.getElementById('additional-info')?.value?.trim() || '',
+            // /api/reservations runs under the 'api' middleware group, which
+            // doesn't resolve locale from the URL like page routes do - the
+            // backend needs this to send the confirmation email in the
+            // customer's actual language instead of always falling back to
+            // the app default.
+            locale: window.translations?.lang || 'sr'
         };
 
         // Validate form data
@@ -452,6 +490,7 @@ if (emailForm) {
                         confirmButtonText: __('ok'),
                     }).then(() => {
                         emailForm.reset();
+                        clearPickers();
                         const reservationForm = document.getElementById('reservation-form');
                         if (reservationForm) {
                             reservationForm.classList.remove('active');
@@ -461,6 +500,7 @@ if (emailForm) {
                 } else {
                     alert(`${__('reservation_sent_title')} ${__('reservation_sent_message')}`);
                     emailForm.reset();
+                    clearPickers();
                 }
             }
             else {

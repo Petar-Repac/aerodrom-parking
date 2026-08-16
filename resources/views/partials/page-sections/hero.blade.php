@@ -9,15 +9,13 @@
                 <div class="date-input-container">
                     <input id="cta-arrival-date"
                            name="arrival-date"
-                           placeholder="{{ __('messages.hero.arrival_date') }}"
-                           onchange="syncInputs(event)">
+                           placeholder="{{ __('messages.hero.arrival_date') }}">
                 </div>
                 <div class="separator"></div>
                 <div class="date-input-container">
                     <input id="cta-departure-date"
                            name="departure-date"
-                           placeholder="{{ __('messages.hero.departure_date') }}"
-                           onchange="syncInputs(event)">
+                           placeholder="{{ __('messages.hero.departure_date') }}">
                 </div>
             </div>
 
