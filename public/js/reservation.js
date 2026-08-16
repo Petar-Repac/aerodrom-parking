@@ -483,7 +483,13 @@ if (emailForm) {
             departureDate: departureDate ? toLocalDateString(new Date(departureDate)) : '',
             arrivalTime: arrivalDate ? toTimeString(new Date(arrivalDate)) : '',
             departureTime: departureDate ? toTimeString(new Date(departureDate)) : '',
-            additionalInfo: document.getElementById('additional-info')?.value?.trim() || ''
+            additionalInfo: document.getElementById('additional-info')?.value?.trim() || '',
+            // /api/reservations runs under the 'api' middleware group, which
+            // doesn't resolve locale from the URL like page routes do - the
+            // backend needs this to send the confirmation email in the
+            // customer's actual language instead of always falling back to
+            // the app default.
+            locale: window.translations?.lang || 'sr'
         };
 
         // Validate form data
