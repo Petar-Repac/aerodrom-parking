@@ -121,6 +121,14 @@ function makeConfirmPlugin() {
 // adds a visible confirm button (once a full date+time is picked) that
 // closes the picker on click.
 const pickerOptions = {
+    // By default flatpickr detects Android/iOS and silently swaps in a
+    // bare native <input type="datetime-local">, handing off entirely to
+    // the OS's own date/time dialog - unstyled (plain white, no visible
+    // placeholder), not localized to the page's language, and without
+    // the confirm button (confirmDatePlugin explicitly no-ops when
+    // fp.isMobile is true). Disabling that keeps our calendar consistent
+    // across desktop and mobile.
+    disableMobile: true,
     enableTime: true,
     time_24hr: true,
     minuteIncrement: 5,
@@ -336,8 +344,11 @@ pricingCells.forEach(cell => {
 
 // Configuration for API endpoint
 const API_CONFIG = {
-    // Change this to your Laravel app URL
-    baseUrl: 'https://aeroparking.rs', // or your Laravel app domain
+    // Always call back to whatever origin this script is actually running
+    // on (localhost, demo.aeroparking.rs, aeroparking.rs, ...) instead of
+    // a hardcoded domain, which would silently send every request to
+    // production regardless of which environment served the page.
+    baseUrl: window.location.origin,
     endpoints: {
         reservations: '/api/reservations'
     }

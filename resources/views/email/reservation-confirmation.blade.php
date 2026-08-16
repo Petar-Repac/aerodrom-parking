@@ -95,23 +95,23 @@
     <div class="card">
         <h2 class="section-title">{{ __('messages.reservation_confirmation.your_reservation_heading') }}</h2>
         <div class="row">
-            <span class="label">{{ __('messages.reservation_confirmation.reservation_number') }}</span>
+            <span class="label">{{ __('messages.reservation_confirmation.reservation_number') }}: </span>
             <span class="value">{{ $reservation['reservation_id'] }}</span>
         </div>
         <div class="row">
-            <span class="label">{{ __('messages.reservation_confirmation.name') }}</span>
+            <span class="label">{{ __('messages.reservation_confirmation.name') }}: </span>
             <span class="value">{{ $reservation['name'] }}</span>
         </div>
         <div class="row">
-            <span class="label">{{ __('messages.reservation_confirmation.email') }}</span>
+            <span class="label">{{ __('messages.reservation_confirmation.email') }}: </span>
             <span class="value">{{ $reservation['email'] }}</span>
         </div>
         <div class="row">
-            <span class="label">{{ __('messages.reservation_confirmation.phone') }}</span>
+            <span class="label">{{ __('messages.reservation_confirmation.phone') }}: </span>
             <span class="value">{{ $reservation['phone'] }}</span>
         </div>
         <div class="row">
-            <span class="label">{{ __('messages.reservation_confirmation.passengers') }}</span>
+            <span class="label">{{ __('messages.reservation_confirmation.passengers') }}: </span>
             <span class="value">{{ $reservation['passengers'] }}</span>
         </div>
     </div>
@@ -119,15 +119,15 @@
     <div class="card">
         <h2 class="section-title">{{ __('messages.reservation_confirmation.schedule_heading') }}</h2>
         <div class="row">
-            <span class="label">{{ __('messages.reservation_confirmation.arrival') }}</span>
+            <span class="label">{{ __('messages.reservation_confirmation.arrival') }}: </span>
             <span class="value">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $reservation['arrival_date'])->format('d.m.Y') }} {{ __('messages.reservation_confirmation.at') }} {{ $reservation['arrival_time'] }}</span>
         </div>
         <div class="row">
-            <span class="label">{{ __('messages.reservation_confirmation.departure') }}</span>
+            <span class="label">{{ __('messages.reservation_confirmation.departure') }}: </span>
             <span class="value">{{ \Carbon\Carbon::createFromFormat('Y-m-d', $reservation['departure_date'])->format('d.m.Y') }} {{ __('messages.reservation_confirmation.around') }} {{ $reservation['departure_time'] }}</span>
         </div>
         <div class="row">
-            <span class="label">{{ __('messages.reservation_confirmation.duration') }}</span>
+            <span class="label">{{ __('messages.reservation_confirmation.duration') }}: </span>
             <span class="value">{{ $reservation['num_of_days'] }} {{ __('messages.reservation_confirmation.days') }}</span>
         </div>
         <p class="note">{{ __('messages.reservation_confirmation.duration_note') }}</p>
