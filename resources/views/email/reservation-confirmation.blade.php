@@ -140,6 +140,11 @@
     </div>
 
     <div class="card">
+        <h2 class="section-title">{{ __('messages.reservation_confirmation.return_heading') }}</h2>
+        <p>{{ __('messages.reservation_confirmation.return_text') }}</p>
+    </div>
+
+    <div class="card">
         <h2 class="section-title">{{ __('messages.reservation_confirmation.directions_heading') }}</h2>
         <p><strong>{{ __('messages.reservation_confirmation.address_label') }}:</strong> {{ __('messages.reservation_confirmation.address_value') }}</p>
         <p><a href="https://www.google.com/maps/search/?api=1&query=Sremskih+Partizana+133%2C+Sur%C4%8Din" target="_blank">{{ __('messages.reservation_confirmation.maps_link_text') }}</a></p>
