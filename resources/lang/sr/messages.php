@@ -221,10 +221,9 @@ return [
 
     // Email potvrde rezervacije (šalje se klijentu)
     'reservation_confirmation' => [
-        'subject' => 'Potvrda rezervacije :id — Aero Parking Beograd',
+        'subject' => 'Potvrda rezervacije :id - Aero Parking Beograd',
         'greeting' => 'Poštovani/a :name,',
-        'thank_you' => 'Hvala što ste rezervisali kod nas! Vaš zahtev za rezervaciju je uspešno primljen.',
-        'follow_up' => 'Naš tim će vas uskoro kontaktirati telefonom ili emailom radi potvrde termina.',
+        'thank_you' => 'Hvala što ste rezervisali kod nas. Vaša rezervacija je potvrđena.',
         'your_reservation_heading' => 'Vaša rezervacija',
         'reservation_number' => 'Broj rezervacije',
         'name' => 'Ime i prezime',
@@ -244,13 +243,16 @@ return [
         'transfer_recommendation' => 'Preporučujemo da na parking stignete najkasnije 2 sata i 30 minuta pre poletanja.',
         'return_heading' => 'Po povratku',
         'return_text' => 'Čim preuzmete prtljag i izađete iz zgrade aerodroma, pozovite nas na +381 69 445 4255, vozač kreće po Vas u najkraćem roku.',
+        'payment_heading' => 'Plaćanje',
+        'payment_method_onsite' => 'Način plaćanja: na licu mesta, prilikom preuzimanja vozila',
+        'amount_label' => 'Iznos (sa PDV-om)',
+        'cancellation_heading' => 'Ako odustanete',
+        'cancellation_text' => 'Molimo Vas da nas obavestite na +381 69 445 4255 ili rezervacije@aeroparking.rs.',
         'directions_heading' => 'Kako do nas',
         'address_label' => 'Adresa',
         'address_value' => 'Sremskih Partizana 133, Surčin',
         'maps_link_text' => 'Pogledajte na Google mapi',
         'contact_heading' => 'Kontakt',
-        'contact_phone_note' => '(dostupni 24/7)',
         'footer_auto_notice' => 'Ovo je automatska poruka. Za sva pitanja koristite kontakt podatke iznad.',
-        'footer_rights' => 'Sva prava zadržana.',
     ],
 ];

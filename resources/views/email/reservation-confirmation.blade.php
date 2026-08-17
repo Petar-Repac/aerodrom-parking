@@ -65,11 +65,6 @@
             color: #222;
             text-align: right;
         }
-        .note {
-            font-size: 13px;
-            color: #777;
-            font-style: italic;
-        }
         .footer {
             text-align: center;
             font-size: 12px;
@@ -90,7 +85,6 @@
 
     <p class="greeting">{{ __('messages.reservation_confirmation.greeting', ['name' => $reservation['name']]) }}</p>
     <p>{{ __('messages.reservation_confirmation.thank_you') }}</p>
-    <p>{{ __('messages.reservation_confirmation.follow_up') }}</p>
 
     <div class="card">
         <h2 class="section-title">{{ __('messages.reservation_confirmation.your_reservation_heading') }}</h2>
@@ -128,9 +122,8 @@
         </div>
         <div class="row">
             <span class="label">{{ __('messages.reservation_confirmation.duration') }}: </span>
-            <span class="value">{{ $reservation['num_of_days'] }} {{ __('messages.reservation_confirmation.days') }}</span>
+            <span class="value">{{ $reservation['num_of_days'] }} {{ __('messages.reservation_confirmation.days') }} {{ __('messages.reservation_confirmation.duration_note') }}</span>
         </div>
-        <p class="note">{{ __('messages.reservation_confirmation.duration_note') }}</p>
     </div>
 
     <div class="card">
@@ -145,6 +138,22 @@
     </div>
 
     <div class="card">
+        <h2 class="section-title">{{ __('messages.reservation_confirmation.payment_heading') }}</h2>
+        <div class="row">
+            <span class="label">{{ __('messages.reservation_confirmation.payment_method_onsite') }}</span>
+        </div>
+        <div class="row">
+            <span class="label">{{ __('messages.reservation_confirmation.amount_label') }}: </span>
+            <span class="value">{{ $reservation['amount'] ?? '-' }} RSD</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="section-title">{{ __('messages.reservation_confirmation.cancellation_heading') }}</h2>
+        <p>{{ __('messages.reservation_confirmation.cancellation_text') }}</p>
+    </div>
+
+    <div class="card">
         <h2 class="section-title">{{ __('messages.reservation_confirmation.directions_heading') }}</h2>
         <p><strong>{{ __('messages.reservation_confirmation.address_label') }}:</strong> {{ __('messages.reservation_confirmation.address_value') }}</p>
         <p><a href="https://www.google.com/maps/search/?api=1&query=Sremskih+Partizana+133%2C+Sur%C4%8Din" target="_blank">{{ __('messages.reservation_confirmation.maps_link_text') }}</a></p>
@@ -153,7 +162,7 @@
     <div class="card">
         <h2 class="section-title">{{ __('messages.reservation_confirmation.contact_heading') }}</h2>
         <p>
-            <strong>{{ __('messages.reservation_confirmation.phone') }}:</strong> <a href="tel:+381694454255">+381 69 445 4255</a> {{ __('messages.reservation_confirmation.contact_phone_note') }}<br>
+            <strong>{{ __('messages.reservation_confirmation.phone') }}:</strong> <a href="tel:+381694454255">+381 69 445 4255</a><br>
             <strong>Email:</strong> <a href="mailto:rezervacije@aeroparking.rs">rezervacije@aeroparking.rs</a>
         </p>
     </div>
@@ -161,7 +170,7 @@
     <hr class="divider">
     <div class="footer">
         <p>{{ __('messages.reservation_confirmation.footer_auto_notice') }}</p>
-        <p>&copy; {{ date('Y') }} Aero Parking. {{ __('messages.reservation_confirmation.footer_rights') }}</p>
+        <p>&copy; {{ date('Y') }} Aero Parking</p>
     </div>
 </div>
 </body>

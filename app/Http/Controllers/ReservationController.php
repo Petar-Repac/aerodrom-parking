@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\EmailService;
+use App\Services\ParkingPriceService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -12,10 +13,12 @@ use Illuminate\Support\Facades\Validator;
 class ReservationController extends Controller
 {
     protected EmailService $emailService;
+    protected ParkingPriceService $priceService;
 
-    public function __construct(EmailService $emailService)
+    public function __construct(EmailService $emailService, ParkingPriceService $priceService)
     {
         $this->emailService = $emailService;
+        $this->priceService = $priceService;
     }
 
     /**
@@ -134,6 +137,7 @@ class ReservationController extends Controller
                 'departure_date' => trim((string) $request->input('departureDate')),
                 'departure_time' => trim((string) $request->input('departureTime')),
                 'num_of_days' => $numOfDays,
+                'amount' => $this->calculateAmount($numOfDays),
             ];
 
             try {
@@ -225,6 +229,25 @@ class ReservationController extends Controller
         }
 
         return htmlspecialchars(stripslashes(trim($data)), ENT_QUOTES, 'UTF-8');
+    }
+
+    /**
+     * Mirrors reservation.js's client-side price lookup (same admin-
+     * editable price table via ParkingPriceService) so the confirmation
+     * email can show the amount the customer already saw on the form.
+     *
+     * @return int|null Null only if the price table has a gap for this
+     *                   day count (e.g. mid-range days not yet seeded).
+     */
+    private function calculateAmount(int $numOfDays): ?int
+    {
+        $data = $this->priceService->getPrices();
+
+        if ($numOfDays > ParkingPriceService::MAX_DAYS) {
+            return $numOfDays * $data['extra_day_rate'];
+        }
+
+        return $data['prices'][$numOfDays] ?? null;
     }
 
     /**
