@@ -104,42 +104,84 @@ function resolvePickerLocale() {
 // confirmDatePlugin instances hold per-picker state (their own
 // confirmContainer element), so each picker needs its own instance -
 // sharing one across pickers via the spread pickerOptions below would
-// have them all fighting over the same closure.
+// have them all fighting over the same closure. showAlways is required
+// here: the plugin's default onChange only reveals the button when
+// fp.config.enableTime/mode==="multiple"/monthSelect is set (see
+// confirmDate.js), none of which apply now that dates and times are
+// separate single-date pickers - without it the button would never
+// appear at all.
 function makeConfirmPlugin() {
     return new confirmDatePlugin({
         confirmText: window.translations?.datepicker?.apply || 'OK',
-        theme: 'dark'
+        theme: 'dark',
+        showAlways: true
     });
 }
 
-// Shared config for all four pickers: a real 24h time picker (hour/minute
-// spinner inputs, not <select> dropdowns) bundled with the calendar,
-// appended to <body> so it isn't clipped by #reservation-form's
-// position:fixed + overflow:hidden sidebar. Without confirmDatePlugin,
-// picking date+time only "applies" on blur/outside-click, which reads
-// as the picker being stuck open with nothing to confirm - the plugin
-// adds a visible confirm button (once a full date+time is picked) that
-// closes the picker on click.
-const pickerOptions = {
+// confirmDatePlugin explicitly no-ops for noCalendar pickers (see
+// confirmDate.js: `if (fp.config.noCalendar || fp.isMobile) return {}`),
+// since it was written to gate the confirm button behind a date/time
+// combo picked on a calendar grid - our time-only spinners have no grid.
+// This is a trimmed copy of that plugin's onReady step (same CSS classes,
+// so it reuses the already-loaded confirmDate.css) with the noCalendar
+// bailout removed and the button always visible, since a bare hour/minute
+// spinner has a sensible value the moment it opens.
+function makeTimeConfirmPlugin() {
+    const confirmText = window.translations?.datepicker?.apply || 'OK';
+    return function (fp) {
+        if (fp.isMobile) return {};
+        return {
+            onReady: function () {
+                const confirmContainer = fp._createElement('div', 'flatpickr-confirm visible darkTheme', confirmText);
+                confirmContainer.tabIndex = -1;
+                confirmContainer.addEventListener('click', fp.close);
+                fp.calendarContainer.appendChild(confirmContainer);
+            }
+        };
+    };
+}
+
+// Shared config for the date-only pickers (sidebar arrival/departure date
+// inputs and both CTA inputs), appended to <body> so it isn't clipped by
+// #reservation-form's position:fixed + overflow:hidden sidebar. Without
+// confirmDatePlugin, picking a date only "applies" on blur/outside-click,
+// which reads as the picker being stuck open with nothing to confirm - the
+// plugin adds a visible confirm button that closes the picker on click.
+const dateOnlyOptions = {
     // By default flatpickr detects Android/iOS and silently swaps in a
-    // bare native <input type="datetime-local">, handing off entirely to
-    // the OS's own date/time dialog - unstyled (plain white, no visible
-    // placeholder), not localized to the page's language, and without
-    // the confirm button (confirmDatePlugin explicitly no-ops when
-    // fp.isMobile is true). Disabling that keeps our calendar consistent
-    // across desktop and mobile.
+    // bare native <input type="date">, handing off entirely to the OS's
+    // own date dialog - unstyled (plain white, no visible placeholder),
+    // not localized to the page's language, and without the confirm
+    // button (confirmDatePlugin explicitly no-ops when fp.isMobile is
+    // true). Disabling that keeps our calendar consistent across desktop
+    // and mobile.
     disableMobile: true,
-    enableTime: true,
-    time_24hr: true,
-    minuteIncrement: 5,
-    dateFormat: "d F Y H:i",
+    // A single-date (non enableTime) flatpickr closes itself the instant a
+    // day is clicked (closeOnSelect defaults to true), which never gave
+    // the confirm button a chance to be seen or clicked. Keeping it open
+    // until the confirm button is clicked matches the time pickers' flow.
+    closeOnSelect: false,
+    dateFormat: "d F Y",
     minDate: "today",
     appendTo: document.body,
     locale: resolvePickerLocale()
 };
 
+// Shared config for the sidebar's separate time-of-day pickers. noCalendar
+// makes this a bare hour/minute spinner (no calendar grid).
+const timeOnlyOptions = {
+    disableMobile: true,
+    enableTime: true,
+    noCalendar: true,
+    time_24hr: true,
+    minuteIncrement: 30,
+    dateFormat: "H:i",
+    appendTo: document.body,
+    locale: resolvePickerLocale()
+};
+
 const pickerFrom = flatpickr("#arrival-date", {
-    ...pickerOptions,
+    ...dateOnlyOptions,
     plugins: [makeConfirmPlugin()],
     onChange(selectedDates) {
         if (selectedDates[0]) {
@@ -149,7 +191,7 @@ const pickerFrom = flatpickr("#arrival-date", {
 });
 
 const pickerTo = flatpickr("#departure-date", {
-    ...pickerOptions,
+    ...dateOnlyOptions,
     plugins: [makeConfirmPlugin()],
     onChange(selectedDates) {
         if (selectedDates[0]) {
@@ -159,13 +201,18 @@ const pickerTo = flatpickr("#departure-date", {
     onClose: expandSidebarIfReady
 });
 
-// Only create CTA pickers if the elements exist
+const timePickerFrom = flatpickr("#arrival-time", { ...timeOnlyOptions, plugins: [makeTimeConfirmPlugin()] });
+const timePickerTo = flatpickr("#departure-time", { ...timeOnlyOptions, plugins: [makeTimeConfirmPlugin()] });
+
+// Only create CTA pickers if the elements exist. CTA is date-only - it's
+// a landing-page teaser that feeds the sidebar's arrival/departure date
+// fields, not a full booking form, so it never collects time.
 let cta_pickerFrom = null;
 let cta_pickerTo = null;
 
 if (ctaArrivalElement) {
     cta_pickerFrom = flatpickr(ctaArrivalElement, {
-        ...pickerOptions,
+        ...dateOnlyOptions,
         plugins: [makeConfirmPlugin()],
         onChange(selectedDates) {
             if (selectedDates[0]) {
@@ -177,7 +224,7 @@ if (ctaArrivalElement) {
 
 if (ctaDepartureElement) {
     cta_pickerTo = flatpickr(ctaDepartureElement, {
-        ...pickerOptions,
+        ...dateOnlyOptions,
         plugins: [makeConfirmPlugin()],
         onChange(selectedDates) {
             if (selectedDates[0]) {
@@ -188,10 +235,11 @@ if (ctaDepartureElement) {
     });
 }
 
-// Keep the main picker and its CTA counterpart showing the same date+time.
-// setDate()'s second argument controls whether it fires that picker's own
-// onChange - passing false on the *target* being synced means it can't
-// cascade back into another syncInputs call and recurse between the two.
+// Keep the sidebar date picker and its CTA counterpart showing the same
+// date. setDate()'s second argument controls whether it fires that
+// picker's own onChange - passing false on the *target* being synced means
+// it can't cascade back into another syncInputs call and recurse between
+// the two.
 function syncInputs(date, fromOrTo) {
     if (fromOrTo === 'from') {
         pickerFrom.setDate(date, false);
@@ -216,6 +264,8 @@ function syncInputs(date, fromOrTo) {
 function clearPickers() {
     pickerFrom.clear();
     pickerTo.clear();
+    timePickerFrom.clear();
+    timePickerTo.clear();
     if (cta_pickerFrom) cta_pickerFrom.clear();
     if (cta_pickerTo) cta_pickerTo.clear();
 }
@@ -277,10 +327,6 @@ function updatePrice() {
 
     // Convert milliseconds to days and add 1 to count both start and end dates
     let numOfDays = Math.round(diff / (1000 * 60 * 60 * 24)) + 1;
-
-    //  arrival after 22h and departure before 2AM
-    let arrivalHour = firstDate.getHours();
-    let departureHour = secondDate.getHours();
 
     if(numOfDays === 0) {
         if (formCharge) formCharge.textContent = `Cena: - - -`;
@@ -407,6 +453,14 @@ function validateFormData(formData) {
         errors.push(__('enter_departure_date'));
     }
 
+    if (!formData.arrivalTime) {
+        errors.push(__('enter_arrival_time'));
+    }
+
+    if (!formData.departureTime) {
+        errors.push(__('enter_departure_time'));
+    }
+
     if (formData.arrivalDate && formData.departureDate && formData.arrivalTime && formData.departureTime) {
         const arrivalDateTime = new Date(`${formData.arrivalDate}T${formData.arrivalTime}`);
         const departureDateTime = new Date(`${formData.departureDate}T${formData.departureTime}`);
@@ -425,12 +479,16 @@ if (emailForm) {
     emailForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        // Get dates from the pickers in YYYY-MM-DD format (local calendar
-        // date, not the localized "DD MMMM YYYY" display text and not
-        // toISOString(), which would shift the date back a day in
-        // timezones ahead of UTC)
+        // Get dates and times from their respective pickers. Dates are
+        // serialized as YYYY-MM-DD from local calendar values (not the
+        // localized "DD MMMM YYYY" display text and not toISOString(),
+        // which would shift the date back a day in timezones ahead of
+        // UTC); times come from the separate time-only pickers, not the
+        // date pickers' own (unused) time-of-day component.
         const arrivalDate = pickerFrom.selectedDates[0];
         const departureDate = pickerTo.selectedDates[0];
+        const arrivalTime = timePickerFrom.selectedDates[0];
+        const departureTime = timePickerTo.selectedDates[0];
 
         // Get form data
         const formData = {
@@ -440,8 +498,8 @@ if (emailForm) {
             phone: document.getElementById('phone')?.value?.trim() || '',
             arrivalDate: arrivalDate ? toLocalDateString(new Date(arrivalDate)) : '',
             departureDate: departureDate ? toLocalDateString(new Date(departureDate)) : '',
-            arrivalTime: arrivalDate ? toTimeString(new Date(arrivalDate)) : '',
-            departureTime: departureDate ? toTimeString(new Date(departureDate)) : '',
+            arrivalTime: arrivalTime ? toTimeString(new Date(arrivalTime)) : '',
+            departureTime: departureTime ? toTimeString(new Date(departureTime)) : '',
             additionalInfo: document.getElementById('additional-info')?.value?.trim() || '',
             // /api/reservations runs under the 'api' middleware group, which
             // doesn't resolve locale from the URL like page routes do - the

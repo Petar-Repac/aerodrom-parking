@@ -118,7 +118,18 @@
                                         id="arrival-date"
                                         name="arrival-date"
                                         class="date-picker styled-input"
-                                        placeholder="{{ __('messages.reservation_form.arrival') }}"
+                                        placeholder="{{ __('messages.reservation_form.arrival_date') }}"
+                                        required
+                                    />
+                                </div>
+                                <div class="input-group">
+                                    <i class="bi bi-alarm input-icon"></i>
+                                    <input
+                                        type="text"
+                                        id="arrival-time"
+                                        name="arrival-time"
+                                        class="time-picker styled-input"
+                                        placeholder="{{ __('messages.reservation_form.arrival_time') }}"
                                         required
                                     />
                                 </div>
@@ -132,7 +143,18 @@
                                         id="departure-date"
                                         name="departure-date"
                                         class="date-picker styled-input"
-                                        placeholder="{{ __('messages.reservation_form.departure') }}"
+                                        placeholder="{{ __('messages.reservation_form.departure_date') }}"
+                                        required
+                                    />
+                                </div>
+                                <div class="input-group">
+                                    <i class="bi bi-alarm input-icon"></i>
+                                    <input
+                                        type="text"
+                                        id="departure-time"
+                                        name="departure-time"
+                                        class="time-picker styled-input"
+                                        placeholder="{{ __('messages.reservation_form.departure_time') }}"
                                         required
                                     />
                                 </div>

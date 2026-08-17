@@ -22,6 +22,8 @@ return [
     'passengers_min' => 'Количество пассажиров должно быть не менее 1',
     'enter_arrival_date' => 'Введите дату прибытия',
     'enter_departure_date' => 'Введите дату отъезда',
+    'enter_arrival_time' => 'Введите время прибытия',
+    'enter_departure_time' => 'Введите время отъезда',
     'data_error' => 'Ошибка данных!',
 
     // Form submission

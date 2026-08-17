@@ -22,6 +22,8 @@ return [
     'passengers_min' => 'Number of passengers must be at least 1',
     'enter_arrival_date' => 'Enter arrival date',
     'enter_departure_date' => 'Enter departure date',
+    'enter_arrival_time' => 'Enter arrival time',
+    'enter_departure_time' => 'Enter departure time',
     'data_error' => 'Data Error!',
 
     // Form submission
