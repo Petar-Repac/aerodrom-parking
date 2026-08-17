@@ -235,6 +235,40 @@ if (ctaDepartureElement) {
     });
 }
 
+// flatpickr only recalculates a popup's position on open and on window
+// resize (see the vendored flatpickr.min.js - no scroll listener at all),
+// which normally goes unnoticed because a plain page scroll moves an
+// absolutely-positioned popup along with the rest of the document. That
+// breaks down for #reservation-form: it's `position: fixed` with its own
+// `overflow-y: auto` (see style.css), so scrolling *inside* the sidebar -
+// desktop mouse wheel, or a mobile swipe, since disableMobile keeps this
+// custom picker on phones too - moves the input within the viewport
+// without moving window scroll at all, leaving the popup (appended to
+// <body>, positioned once at open) behind. Recomputing on every scroll
+// keeps it glued to whichever input opened it; capture:true is needed
+// because native scroll events don't bubble, so a plain window listener
+// would only ever see window's own scroll, not the sidebar's.
+const allPickers = [pickerFrom, pickerTo, timePickerFrom, timePickerTo, cta_pickerFrom, cta_pickerTo].filter(Boolean);
+let openPicker = null;
+
+allPickers.forEach(function (fp) {
+    fp.config.onOpen.push(function () { openPicker = fp; });
+    fp.config.onClose.push(function () { if (openPicker === fp) openPicker = null; });
+});
+
+let repositionQueued = false;
+function repositionOpenPicker() {
+    if (!openPicker || repositionQueued) return;
+    repositionQueued = true;
+    requestAnimationFrame(function () {
+        repositionQueued = false;
+        if (openPicker && openPicker.isOpen) {
+            openPicker._positionCalendar();
+        }
+    });
+}
+window.addEventListener('scroll', repositionOpenPicker, { capture: true, passive: true });
+
 // Keep the sidebar date picker and its CTA counterpart showing the same
 // date. setDate()'s second argument controls whether it fires that
 // picker's own onChange - passing false on the *target* being synced means
