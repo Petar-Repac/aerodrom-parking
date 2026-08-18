@@ -23,27 +23,6 @@
     border-color: #742CCC;
 }
 
-.numInputWrapper span.arrowUp:after {
-    border-bottom-color: #b98bf0;
-}
-
-.numInputWrapper span.arrowDown:after {
-    border-top-color: #b98bf0;
-}
-
-.numInputWrapper span:hover {
-    background: rgba(116, 44, 204, 0.25);
-}
-
-.flatpickr-time input.flatpickr-hour,
-.flatpickr-time input.flatpickr-minute {
-    font-weight: 600;
-}
-
-.flatpickr-time input:focus {
-    background: rgba(116, 44, 204, 0.15);
-}
-
 .flatpickr-confirm {
     background: #742CCC;
     font-weight: 600;

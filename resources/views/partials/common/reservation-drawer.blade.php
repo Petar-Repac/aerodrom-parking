@@ -124,14 +124,20 @@
                                 </div>
                                 <div class="input-group">
                                     <i class="bi bi-alarm input-icon"></i>
-                                    <input
-                                        type="text"
+                                    <select
                                         id="arrival-time"
                                         name="arrival-time"
-                                        class="time-picker styled-input"
-                                        placeholder="{{ __('messages.reservation_form.arrival_time') }}"
+                                        class="time-select styled-input"
                                         required
-                                    />
+                                    >
+                                        <option value="" disabled selected>{{ __('messages.reservation_form.arrival_time') }}</option>
+                                        @for ($h = 0; $h < 24; $h++)
+                                            @foreach ([0, 30] as $m)
+                                                @php($t = sprintf('%02d:%02d', $h, $m))
+                                                <option value="{{ $t }}">{{ $t }}</option>
+                                            @endforeach
+                                        @endfor
+                                    </select>
                                 </div>
                             </div>
 
@@ -149,14 +155,20 @@
                                 </div>
                                 <div class="input-group">
                                     <i class="bi bi-alarm input-icon"></i>
-                                    <input
-                                        type="text"
+                                    <select
                                         id="departure-time"
                                         name="departure-time"
-                                        class="time-picker styled-input"
-                                        placeholder="{{ __('messages.reservation_form.departure_time') }}"
+                                        class="time-select styled-input"
                                         required
-                                    />
+                                    >
+                                        <option value="" disabled selected>{{ __('messages.reservation_form.departure_time') }}</option>
+                                        @for ($h = 0; $h < 24; $h++)
+                                            @foreach ([0, 30] as $m)
+                                                @php($t = sprintf('%02d:%02d', $h, $m))
+                                                <option value="{{ $t }}">{{ $t }}</option>
+                                            @endforeach
+                                        @endfor
+                                    </select>
                                 </div>
                             </div>
                         </div>

@@ -76,15 +76,6 @@ function toLocalDateString(date) {
     return `${year}-${month}-${day}`;
 }
 
-// Format a Date's time-of-day as 24-hour HH:mm, matching the backend's
-// date_format:H:i validation. The arrival/departure pickers' TimePlugin
-// (format12: false) already picks in 24h, so this just serializes it.
-function toTimeString(date) {
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    return `${hours}:${minutes}`;
-}
-
 // Check if CTA elements exist
 const ctaArrivalElement = document.getElementById('cta-arrival-date');
 const ctaDepartureElement = document.getElementById('cta-departure-date');
@@ -118,29 +109,6 @@ function makeConfirmPlugin() {
     });
 }
 
-// confirmDatePlugin explicitly no-ops for noCalendar pickers (see
-// confirmDate.js: `if (fp.config.noCalendar || fp.isMobile) return {}`),
-// since it was written to gate the confirm button behind a date/time
-// combo picked on a calendar grid - our time-only spinners have no grid.
-// This is a trimmed copy of that plugin's onReady step (same CSS classes,
-// so it reuses the already-loaded confirmDate.css) with the noCalendar
-// bailout removed and the button always visible, since a bare hour/minute
-// spinner has a sensible value the moment it opens.
-function makeTimeConfirmPlugin() {
-    const confirmText = window.translations?.datepicker?.apply || 'OK';
-    return function (fp) {
-        if (fp.isMobile) return {};
-        return {
-            onReady: function () {
-                const confirmContainer = fp._createElement('div', 'flatpickr-confirm visible darkTheme', confirmText);
-                confirmContainer.tabIndex = -1;
-                confirmContainer.addEventListener('click', fp.close);
-                fp.calendarContainer.appendChild(confirmContainer);
-            }
-        };
-    };
-}
-
 // Shared config for the date-only pickers (sidebar arrival/departure date
 // inputs and both CTA inputs), appended to <body> so it isn't clipped by
 // #reservation-form's position:fixed + overflow:hidden sidebar. Without
@@ -167,19 +135,6 @@ const dateOnlyOptions = {
     locale: resolvePickerLocale()
 };
 
-// Shared config for the sidebar's separate time-of-day pickers. noCalendar
-// makes this a bare hour/minute spinner (no calendar grid).
-const timeOnlyOptions = {
-    disableMobile: true,
-    enableTime: true,
-    noCalendar: true,
-    time_24hr: true,
-    minuteIncrement: 30,
-    dateFormat: "H:i",
-    appendTo: document.body,
-    locale: resolvePickerLocale()
-};
-
 const pickerFrom = flatpickr("#arrival-date", {
     ...dateOnlyOptions,
     plugins: [makeConfirmPlugin()],
@@ -201,8 +156,15 @@ const pickerTo = flatpickr("#departure-date", {
     onClose: expandSidebarIfReady
 });
 
-const timePickerFrom = flatpickr("#arrival-time", { ...timeOnlyOptions, plugins: [makeTimeConfirmPlugin()] });
-const timePickerTo = flatpickr("#departure-time", { ...timeOnlyOptions, plugins: [makeTimeConfirmPlugin()] });
+// Arrival/departure time are plain native <select> elements (see
+// reservation-drawer.blade.php) rather than flatpickr instances - a
+// flatpickr time-only picker kept auto-selecting its own hour input's
+// text on every open regardless of any guard added against it (see git
+// history), which is exactly the mobile text-selection callout this was
+// meant to avoid. A native select can't hold an invalid value and has no
+// text to select in the first place.
+const timeFromSelect = document.getElementById('arrival-time');
+const timeToSelect = document.getElementById('departure-time');
 
 // Only create CTA pickers if the elements exist. CTA is date-only - it's
 // a landing-page teaser that feeds the sidebar's arrival/departure date
@@ -248,7 +210,7 @@ if (ctaDepartureElement) {
 // keeps it glued to whichever input opened it; capture:true is needed
 // because native scroll events don't bubble, so a plain window listener
 // would only ever see window's own scroll, not the sidebar's.
-const allPickers = [pickerFrom, pickerTo, timePickerFrom, timePickerTo, cta_pickerFrom, cta_pickerTo].filter(Boolean);
+const allPickers = [pickerFrom, pickerTo, cta_pickerFrom, cta_pickerTo].filter(Boolean);
 let openPicker = null;
 
 allPickers.forEach(function (fp) {
@@ -298,8 +260,8 @@ function syncInputs(date, fromOrTo) {
 function clearPickers() {
     pickerFrom.clear();
     pickerTo.clear();
-    timePickerFrom.clear();
-    timePickerTo.clear();
+    if (timeFromSelect) timeFromSelect.value = '';
+    if (timeToSelect) timeToSelect.value = '';
     if (cta_pickerFrom) cta_pickerFrom.clear();
     if (cta_pickerTo) cta_pickerTo.clear();
 }
@@ -513,16 +475,13 @@ if (emailForm) {
     emailForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        // Get dates and times from their respective pickers. Dates are
-        // serialized as YYYY-MM-DD from local calendar values (not the
-        // localized "DD MMMM YYYY" display text and not toISOString(),
-        // which would shift the date back a day in timezones ahead of
-        // UTC); times come from the separate time-only pickers, not the
-        // date pickers' own (unused) time-of-day component.
+        // Dates are serialized as YYYY-MM-DD from local calendar values
+        // (not the localized "DD MMMM YYYY" display text and not
+        // toISOString(), which would shift the date back a day in
+        // timezones ahead of UTC). Times come straight from the select
+        // elements' values, already in HH:mm.
         const arrivalDate = pickerFrom.selectedDates[0];
         const departureDate = pickerTo.selectedDates[0];
-        const arrivalTime = timePickerFrom.selectedDates[0];
-        const departureTime = timePickerTo.selectedDates[0];
 
         // Get form data
         const formData = {
@@ -532,8 +491,8 @@ if (emailForm) {
             phone: document.getElementById('phone')?.value?.trim() || '',
             arrivalDate: arrivalDate ? toLocalDateString(new Date(arrivalDate)) : '',
             departureDate: departureDate ? toLocalDateString(new Date(departureDate)) : '',
-            arrivalTime: arrivalTime ? toTimeString(new Date(arrivalTime)) : '',
-            departureTime: departureTime ? toTimeString(new Date(departureTime)) : '',
+            arrivalTime: timeFromSelect?.value || '',
+            departureTime: timeToSelect?.value || '',
             additionalInfo: document.getElementById('additional-info')?.value?.trim() || '',
             // /api/reservations runs under the 'api' middleware group, which
             // doesn't resolve locale from the URL like page routes do - the
