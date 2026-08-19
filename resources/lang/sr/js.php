@@ -22,6 +22,8 @@ return [
     'passengers_min' => 'Broj putnika mora biti najmanje 1',
     'enter_arrival_date' => 'Unesite datum dolaska',
     'enter_departure_date' => 'Unesite datum odlaska',
+    'enter_arrival_time' => 'Unesite vreme dolaska',
+    'enter_departure_time' => 'Unesite vreme odlaska',
     'data_error' => 'Greška u podacima!',
 
     // Form submission
