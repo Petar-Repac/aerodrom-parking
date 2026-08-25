@@ -220,8 +220,7 @@
 
     <div class="card">
         <h2 class="section-title">{{ __('messages.payment.directions_heading') }}</h2>
-        <p><strong>{{ __('messages.payment.address_label') }}:</strong> {{ __('messages.payment.address_value') }}</p>
-        <p><a href="https://www.google.com/maps/search/?api=1&query=Sremskih+Partizana+133%2C+Sur%C4%8Din" target="_blank">{{ __('messages.payment.maps_link_text') }}</a></p>
+        <p><a href="https://maps.app.goo.gl/szPLxCSLnFZUF6ZM9?g_st=aw" target="_blank">{{ __('messages.payment.maps_link_text') }}</a></p>
     </div>
 
     <div class="card">
