@@ -14,6 +14,7 @@ return [
 
     // Date validation
     'arrival_before_departure' => 'Дата прибытия должна быть раньше даты отъезда.',
+    'arrival_in_past' => 'Дата и время прибытия не могут быть в прошлом.',
 
     // Form validation
     'name_min_length' => 'Имя должно содержать не менее 2 символов',

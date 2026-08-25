@@ -461,7 +461,9 @@ function validateFormData(formData) {
         const arrivalDateTime = new Date(`${formData.arrivalDate}T${formData.arrivalTime}`);
         const departureDateTime = new Date(`${formData.departureDate}T${formData.departureTime}`);
 
-        if (departureDateTime <= arrivalDateTime) {
+        if (arrivalDateTime < new Date()) {
+            errors.push(__('arrival_in_past'));
+        } else if (departureDateTime <= arrivalDateTime) {
             errors.push(__('arrival_before_departure'));
         }
     }

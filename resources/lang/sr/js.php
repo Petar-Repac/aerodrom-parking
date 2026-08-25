@@ -14,6 +14,7 @@ return [
 
     // Date validation
     'arrival_before_departure' => 'Datum dolaska mora biti pre datuma odlaska.',
+    'arrival_in_past' => 'Datum i vreme dolaska ne mogu biti u prošlosti.',
 
     // Form validation
     'name_min_length' => 'Ime mora imati najmanje 2 karaktera',
