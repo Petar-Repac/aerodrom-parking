@@ -156,6 +156,11 @@
     </div>
 
     <div class="card">
+        <h2 class="section-title">{{ __('messages.payment.return_heading') }}</h2>
+        <p>{{ __('messages.payment.return_text') }}</p>
+    </div>
+
+    <div class="card">
         <h2 class="section-title">{{ __('messages.payment.payment_information') }}</h2>
 
         @if($reservation['payment_method'] === 'payment-online')

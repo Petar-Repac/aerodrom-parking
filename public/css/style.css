@@ -3145,6 +3145,32 @@ section {
     cursor: pointer;
 }
 
+/* Time selects: native <select>, styled to match .styled-input. appearance:none
+   drops the browser's own dropdown arrow so the custom chevron (an inline SVG,
+   since the site only vendors a subset of bootstrap-icons and it doesn't
+   include one) can sit in the same spot across browsers - the open dropdown
+   list itself is native chrome and can't be reliably themed cross-browser, so
+   only the closed select box matches the dark theme. */
+#reservation-form select.time-select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23b98bf0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+#reservation-form select.time-select:invalid {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#reservation-form select.time-select option {
+    background-color: #331e36;
+    color: #fff;
+}
+
 
 
 /* Contact Info Grid */

@@ -15,6 +15,7 @@ return [
     // Date validation
     'arrival_before_departure' => 'Datum dolaska mora biti pre datuma odlaska.',
     'arrival_date_past' => 'Datum dolaska ne može biti u prošlosti. Izaberite današnji ili neki kasniji datum.',
+    'arrival_in_past' => 'Datum i vreme dolaska ne mogu biti u prošlosti.',
 
     // Form validation
     'name_min_length' => 'Ime mora imati najmanje 2 karaktera',
@@ -23,6 +24,8 @@ return [
     'passengers_min' => 'Broj putnika mora biti najmanje 1',
     'enter_arrival_date' => 'Unesite datum dolaska',
     'enter_departure_date' => 'Unesite datum odlaska',
+    'enter_arrival_time' => 'Unesite vreme dolaska',
+    'enter_departure_time' => 'Unesite vreme odlaska',
     'data_error' => 'Greška u podacima!',
     'invalid_price' => 'Izaberite datume da vidite cenu',
 

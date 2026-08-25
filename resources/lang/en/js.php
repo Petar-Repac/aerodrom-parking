@@ -15,6 +15,7 @@ return [
     // Date validation
     'arrival_before_departure' => 'Arrival date must be before departure date.',
     'arrival_date_past' => 'Arrival date cannot be in the past. Please select today or a later date.',
+    'arrival_in_past' => 'Arrival date and time cannot be in the past.',
 
     // Form validation
     'name_min_length' => 'Name must be at least 2 characters',
@@ -23,6 +24,8 @@ return [
     'passengers_min' => 'Number of passengers must be at least 1',
     'enter_arrival_date' => 'Enter arrival date',
     'enter_departure_date' => 'Enter departure date',
+    'enter_arrival_time' => 'Enter arrival time',
+    'enter_departure_time' => 'Enter departure time',
     'data_error' => 'Data Error!',
     'invalid_price' => 'Please select dates to see the price',
 

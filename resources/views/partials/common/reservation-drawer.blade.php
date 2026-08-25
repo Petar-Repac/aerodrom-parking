@@ -120,11 +120,26 @@
                                         id="arrival-date"
                                         name="arrival-date"
                                         class="date-picker styled-input"
-                                        placeholder="{{ __('messages.reservation_form.arrival') }}"
+                                        placeholder="{{ __('messages.reservation_form.arrival_date') }}"
                                         required
-                                        onkeydown="return false;"
-                                        style="caret-color: transparent !important;"
                                     />
+                                </div>
+                                <div class="input-group">
+                                    <i class="bi bi-alarm input-icon"></i>
+                                    <select
+                                        id="arrival-time"
+                                        name="arrival-time"
+                                        class="time-select styled-input"
+                                        required
+                                    >
+                                        <option value="" disabled selected>{{ __('messages.reservation_form.arrival_time') }}</option>
+                                        @for ($h = 0; $h < 24; $h++)
+                                            @foreach ([0, 30] as $m)
+                                                @php($t = sprintf('%02d:%02d', $h, $m))
+                                                <option value="{{ $t }}">{{ $t }}</option>
+                                            @endforeach
+                                        @endfor
+                                    </select>
                                 </div>
                             </div>
 
@@ -136,9 +151,26 @@
                                         id="departure-date"
                                         name="departure-date"
                                         class="date-picker styled-input"
-                                        placeholder="{{ __('messages.reservation_form.departure') }}"
+                                        placeholder="{{ __('messages.reservation_form.departure_date') }}"
                                         required
                                     />
+                                </div>
+                                <div class="input-group">
+                                    <i class="bi bi-alarm input-icon"></i>
+                                    <select
+                                        id="departure-time"
+                                        name="departure-time"
+                                        class="time-select styled-input"
+                                        required
+                                    >
+                                        <option value="" disabled selected>{{ __('messages.reservation_form.departure_time') }}</option>
+                                        @for ($h = 0; $h < 24; $h++)
+                                            @foreach ([0, 30] as $m)
+                                                @php($t = sprintf('%02d:%02d', $h, $m))
+                                                <option value="{{ $t }}">{{ $t }}</option>
+                                            @endforeach
+                                        @endfor
+                                    </select>
                                 </div>
                             </div>
                         </div>
