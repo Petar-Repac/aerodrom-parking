@@ -101,49 +101,49 @@
     <div class="card">
         <h2 class="section-title">{{ __('messages.payment.your_reservation') }}</h2>
         <div class="row">
-            <span class="label">{{ __('messages.payment.reservation_number') }} :&nbsp;</span>
+            <span class="label">{{ __('messages.payment.reservation_number') }}:&nbsp;</span>
             <span class="value">{{ $reservation['reservation_id'] }}</span>
         </div>
         <div class="row">
-            <span class="label">{{ __('messages.payment.name') }} :&nbsp;</span>
-            <span class="value">{{ $reservation['name'] }} :&nbsp;</span>
+            <span class="label">{{ __('messages.payment.name') }}:&nbsp;</span>
+            <span class="value">{{ $reservation['name'] }}</span>
         </div>
         <div class="row">
-            <span class="label">{{ __('messages.payment.email') }} :&nbsp;</span>
+            <span class="label">{{ __('messages.payment.email') }}:&nbsp;</span>
             <span class="value">{{ $reservation['email'] }}</span>
         </div>
         <div class="row">
-            <span class="label">{{ __('messages.payment.phone') }} :&nbsp;</span>
+            <span class="label">{{ __('messages.payment.phone') }}:&nbsp;</span>
             <span class="value">{{ $reservation['phone'] }}</span>
         </div>
         <div class="row">
-            <span class="label">{{ __('messages.payment.passengers') }} :&nbsp;</span>
+            <span class="label">{{ __('messages.payment.passengers') }}:&nbsp;</span>
             <span class="value">{{ $reservation['passengers'] }}</span>
         </div>
     </div>
 
     <div class="card">
-        <h2 class="section-title">{{ __('messages.payment.reservation_details') }} :&nbsp;</h2>
+        <h2 class="section-title">{{ __('messages.payment.reservation_details') }}:&nbsp;</h2>
         <div class="row">
-            <span class="label">{{ __('messages.payment.arrival') }} :&nbsp;</span>
+            <span class="label">{{ __('messages.payment.arrival') }}:&nbsp;</span>
             <span class="value">
                 {{ \Carbon\Carbon::parse($reservation['arrival_date'])->format('d.m.Y') }}
                 @if(!empty($reservation['arrival_time']))
-                    {{ __('messages.payment.at') }} :&nbsp; {{ $reservation['arrival_time'] }}
+                    {{ __('messages.payment.at') }} {{ $reservation['arrival_time'] }}
                 @endif
             </span>
         </div>
         <div class="row">
-            <span class="label">{{ __('messages.payment.departure') }} :&nbsp;</span>
+            <span class="label">{{ __('messages.payment.departure') }}:&nbsp;</span>
             <span class="value">
                 {{ \Carbon\Carbon::parse($reservation['departure_date'])->format('d.m.Y') }}
                 @if(!empty($reservation['departure_time']))
-                    {{ __('messages.payment.around') }} :&nbsp; {{ $reservation['departure_time'] }}
+                    {{ __('messages.payment.around') }} {{ $reservation['departure_time'] }}
                 @endif
             </span>
         </div>
         <div class="row">
-            <span class="label">{{ __('messages.payment.duration') }} :&nbsp;</span>
+            <span class="label">{{ __('messages.payment.duration') }}:&nbsp;</span>
             <span class="value">{{ $reservation['num_of_days'] }} {{ __('messages.payment.days') }}</span>
         </div>
         <p class="note">{{ __('messages.payment.duration_note') }}</p>
@@ -165,38 +165,38 @@
 
         @if($reservation['payment_method'] === 'payment-online')
             <div class="row">
-                <span class="label">{{ __('messages.payment.status_label') }} :&nbsp;</span>
+                <span class="label">{{ __('messages.payment.status_label') }}:&nbsp;</span>
                 <span class="value">{{ __('messages.payment.payment_completed_status') }}</span>
             </div>
             <div class="row">
-                <span class="label">{{ __('messages.payment.amount_paid_label') }} :&nbsp;</span>
+                <span class="label">{{ __('messages.payment.amount_paid_label') }}:&nbsp;</span>
                 <span class="value">{{ number_format($reservation['total_price'], 2, ',', '.') }} RSD</span>
             </div>
             @if(!empty($reservation['ws_pay_order_id']))
                 <div class="row">
-                    <span class="label">{{ __('messages.payment.transaction_id') }} :&nbsp;</span>
+                    <span class="label">{{ __('messages.payment.transaction_id') }}:&nbsp;</span>
                     <span class="value">{{ $reservation['ws_pay_order_id'] }}</span>
                 </div>
             @endif
             @if(!empty($reservation['approval_code']))
                 <div class="row">
-                    <span class="label">{{ __('messages.payment.approval_code') }} :&nbsp;</span>
+                    <span class="label">{{ __('messages.payment.approval_code') }}:&nbsp;</span>
                     <span class="value">{{ $reservation['approval_code'] }}</span>
                 </div>
             @endif
             @if(!empty($reservation['payment_date']))
                 <div class="row">
-                    <span class="label">{{ __('messages.payment.payment_date') }} :&nbsp;</span>
+                    <span class="label">{{ __('messages.payment.payment_date') }}:&nbsp;</span>
                     <span class="value">{{ \Carbon\Carbon::parse($reservation['payment_date'])->setTimezone('Europe/Belgrade')->format('d.m.Y H:i') }}</span>
                 </div>
             @endif
         @else
             <div class="row">
-                <span class="label">{{ __('messages.payment.payment_method_label') }} :&nbsp;</span>
-                <span class="value">{{ __('messages.payment.pay_onsite_value') }} :&nbsp;</span>
+                <span class="label">{{ __('messages.payment.payment_method_label') }}:&nbsp;</span>
+                <span class="value">{{ __('messages.payment.pay_onsite_value') }}:&nbsp;</span>
             </div>
             <div class="row">
-                <span class="label">{{ __('messages.payment.amount_due_label') }} :&nbsp;</span>
+                <span class="label">{{ __('messages.payment.amount_due_label') }}:&nbsp;</span>
                 <span class="value">{{ number_format($reservation['total_price'], 2, ',', '.') }} RSD</span>
             </div>
             <p class="note">{{ __('messages.payment.accepted_payment_methods') }}</p>

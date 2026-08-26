@@ -58,16 +58,18 @@ class EmailService
             // Set timeout for reading server response
             $mail->SMTPKeepAlive = false;
 
-            // Recipients
+            // Recipients (comma-separated $to is supported, e.g. multiple demo admins)
             $mail->setFrom(config('mail.from.address'), config('mail.from.name'));
-            $mail->addAddress($to, $toName);
+            foreach (array_filter(array_map('trim', explode(',', $to))) as $recipient) {
+                $mail->addAddress($recipient, $toName);
+            }
 
             // Set charset to UTF-8
             $mail->CharSet = 'UTF-8';
 
             // Content
             $mail->isHTML(true);
-            $mail->Subject = $subject;
+            $mail->Subject = $this->applyDemoSubjectPrefix($subject);
             $mail->Body = $content;
 
             // Add attachments
@@ -102,6 +104,22 @@ class EmailService
             Log::error("Email sending failed: " . $e->getMessage());
             return false;
         }
+    }
+
+    /**
+     * Prefix the subject with "[DEMO]" when DEMO_MODE is enabled, so demo
+     * environment emails are never mistaken for real production activity.
+     *
+     * @param string $subject
+     * @return string
+     */
+    private function applyDemoSubjectPrefix(string $subject): string
+    {
+        if (! config('mail.demo.enabled')) {
+            return $subject;
+        }
+
+        return str_starts_with($subject, '[DEMO]') ? $subject : '[DEMO] ' . $subject;
     }
 
     /**

@@ -110,7 +110,9 @@ return [
 
 
     'reservation' => [
-        'to' => env('RESERVATION_EMAIL', 'petarrepac15@gmail.com'),
+        'to' => env('DEMO_MODE', false)
+            ? env('DEMO_ADMIN_EMAILS', env('RESERVATION_EMAIL', 'petarrepac15@gmail.com'))
+            : env('RESERVATION_EMAIL', 'petarrepac15@gmail.com'),
         'from_name' => env('RESERVATION_FROM_NAME', 'AeroParking Reservations'),
     ],
     'from' => [
@@ -118,8 +120,25 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
     'contact' => [
-        'address' => env('MAIL_CONTACT_EMAIL', 'hello@example.com'),
+        'address' => env('DEMO_MODE', false)
+            ? env('DEMO_ADMIN_EMAILS', env('MAIL_CONTACT_EMAIL', 'hello@example.com'))
+            : env('MAIL_CONTACT_EMAIL', 'hello@example.com'),
         'name' => env('MAIL_CONTACT_NAME', 'Example'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Demo Mode
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, every outgoing email subject is prefixed with "[DEMO]"
+    | and admin-facing notifications (reservation + contact) are redirected
+    | to DEMO_ADMIN_EMAILS instead of the real admin inboxes above.
+    |
+    */
+
+    'demo' => [
+        'enabled' => env('DEMO_MODE', false),
     ],
 
 ];
