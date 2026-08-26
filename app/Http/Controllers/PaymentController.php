@@ -246,26 +246,36 @@ class PaymentController extends Controller
                     return view('payment.error')->with('error', 'Reservation not found.');
                 }
 
-                // Update reservation with payment details
-                $reservation->update([
-                    'status' => 'paid',
-                    'ws_pay_order_id' => $processedData['ws_pay_order_id'],
-                    'approval_code' => $processedData['approval_code'],
-                    'stan' => $processedData['stan'],
-                    'payment_amount' => $processedData['amount'],
-                    'payment_date' => $processedData['datetime'] ? now() : null,
-                    'credit_card_number' => $processedData['credit_card_number'] ?? null,
-                    'payment_status' => 'completed',
-                ]);
+                // WSPay's return_url is a plain GET, so the customer's browser
+                // can replay this exact same request (refresh, back/forward,
+                // double-tapping the redirect) any number of times. Only
+                // update the reservation and send the emails the first time -
+                // a replay just re-renders the success page from what's
+                // already stored, instead of sending duplicate emails.
+                if (!$reservation->isPaymentCompleted()) {
+                    $reservation->update([
+                        'status' => 'paid',
+                        'ws_pay_order_id' => $processedData['ws_pay_order_id'],
+                        'approval_code' => $processedData['approval_code'],
+                        'stan' => $processedData['stan'],
+                        'payment_amount' => $processedData['amount'],
+                        'payment_date' => $processedData['datetime'] ? now() : null,
+                        'credit_card_number' => $processedData['credit_card_number'] ?? null,
+                        'payment_status' => 'completed',
+                    ]);
 
-                // Send emails
-                $this->sendReservationEmail($reservation->toArray(), 'online_success');
-                $this->sendUserConfirmationEmail($reservation->toArray());
+                    $this->sendReservationEmail($reservation->toArray(), 'online_success');
+                    $this->sendUserConfirmationEmail($reservation->toArray());
 
-                Log::info('Payment successful', [
-                    'reservation_id' => $reservationId,
-                    'ws_pay_order_id' => $processedData['ws_pay_order_id']
-                ]);
+                    Log::info('Payment successful', [
+                        'reservation_id' => $reservationId,
+                        'ws_pay_order_id' => $processedData['ws_pay_order_id']
+                    ]);
+                } else {
+                    Log::info('Payment success callback re-hit for an already-paid reservation - skipping duplicate update/emails', [
+                        'reservation_id' => $reservationId
+                    ]);
+                }
 
                 return view('payment.success', [
                     'reservation' => $reservation->toArray(),
@@ -302,22 +312,30 @@ class PaymentController extends Controller
                 $reservation = Reservation::where('reservation_id', $reservationId)->first();
 
                 if ($reservation) {
-                    // Update reservation status
-                    $reservation->update([
-                        'status' => 'payment_failed',
-                        'error_message' => $processedData['error_message'] ?? 'Payment failed'
-                    ]);
+                    // Same replay risk as paymentSuccess() - WSPay's
+                    // return_error_url is a GET the browser can reload, so
+                    // only update/email once per reservation.
+                    if (!$reservation->isPaymentFailed()) {
+                        $reservation->update([
+                            'status' => 'payment_failed',
+                            'error_message' => $processedData['error_message'] ?? 'Payment failed'
+                        ]);
 
-                    // Notify admin about failed payment
-                    $this->sendReservationEmail($reservation->toArray(), 'online_failed');
+                        // Notify admin about failed payment
+                        $this->sendReservationEmail($reservation->toArray(), 'online_failed');
 
-                    // Notify user about failed payment
-                    $this->sendUserFailedPaymentEmail($reservation->toArray());
+                        // Notify user about failed payment
+                        $this->sendUserFailedPaymentEmail($reservation->toArray());
 
-                    Log::warning('Payment error', [
-                        'reservation_id' => $reservationId,
-                        'error' => $processedData['error_message'] ?? 'Unknown'
-                    ]);
+                        Log::warning('Payment error', [
+                            'reservation_id' => $reservationId,
+                            'error' => $processedData['error_message'] ?? 'Unknown'
+                        ]);
+                    } else {
+                        Log::info('Payment error callback re-hit for an already-failed reservation - skipping duplicate update/emails', [
+                            'reservation_id' => $reservationId
+                        ]);
+                    }
 
                     return view('payment.error', [
                         'reservation' => $reservation->toArray(),
@@ -355,14 +373,18 @@ class PaymentController extends Controller
                 $reservation = Reservation::where('reservation_id', $reservationId)->first();
 
                 if ($reservation) {
-                    // Update reservation status
-                    $reservation->update([
-                        'status' => 'cancelled'
-                    ]);
+                    // No emails are sent on cancellation, but guard the same
+                    // way as the other two callbacks so a refresh doesn't
+                    // spam the log with redundant "cancelled" entries.
+                    if ($reservation->status !== 'cancelled') {
+                        $reservation->update([
+                            'status' => 'cancelled'
+                        ]);
 
-                    Log::info('Payment cancelled', [
-                        'reservation_id' => $reservationId
-                    ]);
+                        Log::info('Payment cancelled', [
+                            'reservation_id' => $reservationId
+                        ]);
+                    }
 
                     return view('payment.cancel', [
                         'reservation' => $reservation->toArray(),
