@@ -53,6 +53,11 @@ foreach ($locales as $locale => $prefix) {
             return view('terms');
         })->name($routePrefix . 'terms');
 
+        // Privacy Policy
+        Route::get('/' . RouteHelper::getLocalizedPath('privacy', $locale), function () {
+            return view('privacy');
+        })->name($routePrefix . 'privacy');
+
     });
 }
 

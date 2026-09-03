@@ -8,6 +8,7 @@ return [
         'about' => 'About',
         'contact' => 'Contact',
         'terms' => 'Terms & Conditions',
+        'privacy' => 'Privacy Policy',
     ],
 
     // Hero Section
@@ -58,7 +59,9 @@ return [
 
     'payment' => [
         'success_title' => 'Payment Successful!',
-        'success_message' => 'Your payment was processed successfully. Thank you for choosing Aeroparking!',
+        'success_message' => 'Transaction successful. Your payment card account has been charged. Thank you for choosing Aeroparking!',
+        'service' => 'Service',
+        'service_name' => 'Airport parking with free transfer',
         'error_title' => 'Payment Failed',
         'error_message' => 'There was an error processing your payment.',
         'cancel_title' => 'Payment Cancelled',
@@ -301,7 +304,7 @@ return [
 
         'section_3' => [
             'title' => '3. Terms of Sale (including payment, delivery, complaints)',
-            'content' => '<strong>Payment:</strong><br>Supported methods: Online card payment (Visa, Mastercard, DinaCard, American Express) in advance via the Website.<br>Currency: RSD (Serbian dinars).<br>On-site payment: Cash or card payment available on location (same card types).<br>There are no hidden fees; the transfer is free of charge.<br><br><strong>Service Delivery:</strong><br>Upon successful reservation and payment, the User receives an email confirmation for parking access.<br>Delivery: The service is provided on the territory of the Republic of Serbia (Surčin).<br>Timeframe: Immediately upon arrival at the parking lot, with transfer within 5–10 minutes.<br><br><strong>Complaints and Cancellation:</strong><br>Cancellation policy for online payments: Free cancellation within 24 hours of making the reservation (full refund within 7 days). No-show: the full amount is retained.<br>Complaints: The User may file a complaint within 7 days of service completion (e.g., vehicle damage). Contact us via email or phone; response within 48 hours.<br>Refund: Via the same payment method, in accordance with the Consumer Protection Law.',
+            'content' => '<strong>Payment:</strong><br>Supported methods: Online card payment (Visa, Mastercard, Maestro, DinaCard) in advance via the Website.<br>Currency: RSD (Serbian dinars).<br>On-site payment: Cash or card payment available on location (same card types).<br>There are no hidden fees; the transfer is free of charge.<br><br><strong>Service Delivery:</strong><br>Upon successful reservation and payment, the User receives an email confirmation for parking access.<br>Delivery: The service is provided on the territory of the Republic of Serbia (Surčin).<br>Timeframe: Immediately upon arrival at the parking lot, with transfer within 5–10 minutes.<br><br><strong>Complaints and Cancellation:</strong><br>Cancellation policy for online payments: Free cancellation within 24 hours of making the reservation (full refund within 7 days). No-show: the full amount is retained.<br>Complaints: The User may file a complaint within 7 days of service completion (e.g., vehicle damage). Contact us via email or phone; response within 48 hours.<br>Refund: Via the same payment method, in accordance with the Consumer Protection Law.',
         ],
 
         'section_4' => [
@@ -315,15 +318,68 @@ return [
         ],
 
         'section_6' => [
-            'title' => '6. Currency Conversion Statement (for foreign card transactions)',
-            'content' => 'When paying with a foreign card (e.g., from the EU or USA), the amount is charged in the dinar equivalent at the middle exchange rate of the National Bank of Serbia (NBS) on the transaction date, or at the rate of the authorizing bank. Additional conversion fees may be charged by the card issuer (e.g., 1–3% fee), for which We are not responsible. We recommend checking with your bank before making a payment. All payments are in RSD; no other currencies are supported directly.',
+            'title' => '6. Currency Conversion Statement',
+            'content' => 'All payments will be charged in Serbian currency - Dinar (RSD). The amount your credit card account will be charged for is obtained through the conversion of the price in Euro into Serbian dinar according to the current exchange rate of the Serbian National Bank. When charging your credit card, the same amount is converted into your local currency according to the exchange rate of credit card associations. As a result of this conversion there is a possibility of a slight difference from the original price stated in our web site.',
         ],
 
         'section_7' => [
             'title' => '7. Payment & Security Declarations (WSpay/Monri)',
-            'content' => '<strong>Payment Authorization:</strong><br>Payments are processed via the WSpay payment system, authorized by Monri Payments. Card payments are fully secure: card details are entered directly on the bank/processor page and are never accessible to the seller. The seller does not store card data.<br><br><strong>Card Data Protection:</strong><br>The WSpay system applies the PCI DSS standard for payment card data protection. All card data is transmitted via SSL encryption (256-bit). The seller does not obtain or store card details.<br><br><strong>Payment Complaints:</strong><br>If you believe your card was incorrectly charged, please contact us at rezervacije@aeroparking.rs or +381 69 445 4255. All complaints are resolved within 24 hours. For unauthorized transactions, please also contact your card-issuing bank.<br><br><strong>Accepted cards:</strong> Visa, Mastercard, Maestro, DinaCard, American Express.<br><br><strong>Currency:</strong> All transactions are in RSD (Serbian dinars). There are no hidden fees.<br><br><strong>VAT Statement:</strong><br>Nexus Temporis Corporation d.o.o. is not registered for VAT. Displayed prices are final and are not subject to additional VAT calculation.',
+            'content' => '<strong>Payment Authorization:</strong><br>Payments are processed via the WSpay payment system, authorized by Monri Payments. Card payments are fully secure: card details are entered directly on the bank/processor page and are never accessible to the seller. The seller does not store card data.<br><br><strong>Card Data Protection:</strong><br>The WSpay system applies the PCI DSS standard for payment card data protection. All card data is transmitted via SSL encryption (256-bit). The seller does not obtain or store card details.<br><br><strong>Payment Complaints:</strong><br>If you believe your card was incorrectly charged, please contact us at rezervacije@aeroparking.rs or +381 69 445 4255. All complaints are resolved within 24 hours. For unauthorized transactions, please also contact your card-issuing bank.<br><br><strong>Accepted cards:</strong> Visa, Mastercard, Maestro, DinaCard.<br><br><strong>Currency:</strong> All transactions are in RSD (Serbian dinars). There are no hidden fees.<br><br><strong>VAT Statement:</strong><br>Nexus Temporis Corporation d.o.o. is not registered for VAT. Displayed prices are final and are not subject to additional VAT calculation.',
+        ],
+
+        'section_8' => [
+            'title' => '8. Protection of Confidential Transaction Data',
+            'content' => 'When entering payment card details, confidential information is transmitted over the public network in a protected (encrypted) form using the SSL protocol and PKI system, the currently most advanced cryptographic technology. Data security during purchase is guaranteed by the payment card processor. At no point is the payment card data accessible to our system.',
+        ],
+
+        'section_9' => [
+            'title' => '9. Protection of User Privacy',
+            'content' => 'On behalf of Nexus Temporis Corporation d.o.o. (Aero Parking branch), we undertake to protect the privacy of all our customers. We collect only the necessary, basic data about customers/users and data required for business operations and informing users, in accordance with good business practice and with the aim of providing a quality service. We give customers the option to choose, including the option to be removed from mailing lists used for marketing campaigns. All customer/user data is strictly kept and accessible only to employees for whom this data is necessary to perform their job. All employees of Nexus Temporis Corporation d.o.o. (Aero Parking branch) (and business partners) are responsible for respecting the principles of privacy protection. For more information, see our <a href=":privacy_url">Privacy Policy</a>.',
+        ],
+
+        'section_10' => [
+            'title' => '10. Refunds',
+            'content' => 'In the event of returned goods and a refund to a customer who has previously paid with one of the payment cards, in whole or in part, regardless of the reason for the return, Nexus Temporis Corporation d.o.o. (Aero Parking branch) is obliged to process the refund exclusively via the Visa, Mastercard, DinaCard and Maestro payment methods, meaning that the bank will, at the seller\'s request, refund the amount to the cardholder\'s account.',
         ],
 
         'closing' => 'These Terms may be amended; Users will be notified via email or on the Website.',
+    ],
+
+    // Privacy Policy Page
+    'privacy' => [
+        'title' => 'Privacy Policy',
+        'intro' => 'This Privacy Policy (hereinafter: "Policy") explains how Nexus Temporis Corporation d.o.o. (Aero Parking branch), headquartered in Belgrade, collects, uses, and protects the personal data of users who visit our website and use our airport parking reservation services. By using the Website, the user confirms that they are aware of this Policy.',
+
+        'section_1' => [
+            'title' => '1. Protection of User Privacy',
+            'content' => 'On behalf of Nexus Temporis Corporation d.o.o. (Aero Parking branch), we undertake to protect the privacy of all our customers. We collect only the necessary, basic data about customers/users and data required for business operations and informing users, in accordance with good business practice and with the aim of providing a quality service. We give customers the option to choose, including the option to be removed from mailing lists used for marketing campaigns. All customer/user data is strictly kept and accessible only to employees for whom this data is necessary to perform their job. All employees of Nexus Temporis Corporation d.o.o. (Aero Parking branch) (and business partners) are responsible for respecting the principles of privacy protection.',
+        ],
+
+        'section_2' => [
+            'title' => '2. What Data We Collect',
+            'content' => 'During the reservation process we collect: full name, email address, phone number, vehicle registration number, arrival/departure dates and times, and flight number (optional). We do not collect or store payment card data — it is processed exclusively via the WSpay/Monri payment system, directly on the bank/processor page.',
+        ],
+
+        'section_3' => [
+            'title' => '3. Purpose of Processing and Legal Basis',
+            'content' => 'We process data to complete reservations, send confirmations, contact you in case of changes (e.g., flight delay), and improve our services. We do not use data for marketing without the user\'s explicit consent. The legal basis for processing is the performance of a contractual obligation (Art. 12 of the Law on Personal Data Protection), and for marketing communication — the user\'s consent.',
+        ],
+
+        'section_4' => [
+            'title' => '4. Protection of Confidential Transaction Data',
+            'content' => 'When entering payment card details, confidential information is transmitted over the public network in a protected (encrypted) form using the SSL protocol and PKI system, the currently most advanced cryptographic technology. Data security during purchase is guaranteed by the payment card processor. At no point is the payment card data accessible to our system.',
+        ],
+
+        'section_5' => [
+            'title' => '5. Data Sharing, Retention and Deletion',
+            'content' => 'We share data only with partners necessary to provide the service (e.g., payment provider, transfer driver/courier). We do not sell data to third parties. Data is retained for 2 years after the service is provided (due to tax obligations), after which it is permanently deleted.',
+        ],
+
+        'section_6' => [
+            'title' => '6. User Rights and Contact',
+            'content' => 'Users may at any time request access to, correction, deletion, or restriction of processing of their personal data by sending a request to rezervacije@aeroparking.rs. We respond within 30 days. For questions regarding personal data protection, users may also contact the Commissioner for Information of Public Importance and Personal Data Protection of the Republic of Serbia.',
+        ],
+
+        'closing' => 'This Privacy Policy may be amended from time to time to comply with legal regulations or business changes. We will notify you of any changes via the Website or email.',
     ],
 ];

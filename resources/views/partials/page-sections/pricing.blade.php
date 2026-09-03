@@ -56,7 +56,10 @@
         document.querySelectorAll('.pricing-cell .price').forEach(function (el) {
             var price = el.closest('.pricing-cell').dataset.price;
             if (price && !isNaN(price)) {
-                var formatted = parseFloat(price).toFixed(2).replace('.', ',');
+                var formatted = new Intl.NumberFormat('sr-RS', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(parseFloat(price));
                 el.textContent = formatted + ' RSD';
             }
         });

@@ -8,6 +8,7 @@ return [
         'about' => 'O nama',
         'contact' => 'Kontakt',
         'terms' => 'Uslovi korišćenja',
+        'privacy' => 'Politika privatnosti',
     ],
 
     // Hero Section
@@ -61,7 +62,9 @@ return [
     'payment' => [
         // Success page
         'success_title' => 'Plaćanje uspešno!',
-        'success_message' => 'Vaše plaćanje je uspešno izvršeno. Hvala što ste izabrali Aeroparking!',
+        'success_message' => 'Transakcija je uspešna. Vaš račun platne kartice je zadužen. Hvala što ste izabrali Aeroparking!',
+        'service' => 'Usluga',
+        'service_name' => 'Aerodromski parking sa besplatnim transferom',
 
         // Error page
         'error_title' => 'Plaćanje nije uspelo',
@@ -317,7 +320,7 @@ return [
 
         'section_3' => [
             'title' => '3. Uslovi prodaje (uključujući plaćanje, dostavu, reklamacije)',
-            'content' => '<strong>Plaćanje:</strong><br>Podržane metode: Online plaćanje karticama (Visa, Mastercard, DinaCard, American Express) unapred preko Sajta.<br>Valuta: RSD (srpski dinari).<br>Plaćanje uživo: Moguće na licu mesta kešom ili karticom (iste vrste kartica).<br>Nema skrivenih troškova; transfer je besplatan.<br><br><strong>Dostava usluge:</strong><br>Nakon uspešne rezervacije i plaćanja, Korisnik dobija potvrdu na email za pristup parkingu.<br>Dostava: Usluga se pruža na teritoriji Republike Srbije (Surčin).<br>Rok: Odmah po dolasku na parking, sa transferom u roku od 5–10 minuta.<br><br><strong>Reklamacije i otkazivanje:</strong><br>Rok za otkaz prilikom online plaćanja: Besplatan otkaz do 24 sata nakon izvršene rezervacije (povraćaj punog iznosa u roku od 7 dana). No-show (nedolazak): pun iznos se zadržava.<br>Reklamacije: Korisnik može podneti reklamaciju u roku od 7 dana od završetka usluge (npr. oštećenje vozila). Kontaktirajte nas email-om ili telefonom; odgovor u roku od 48 sati.<br>Povraćaj novca: Preko iste metode plaćanja, u skladu sa Zakonom o zaštiti potrošača.',
+            'content' => '<strong>Plaćanje:</strong><br>Podržane metode: Online plaćanje karticama (Visa, Mastercard, Maestro, DinaCard) unapred preko Sajta.<br>Valuta: RSD (srpski dinari).<br>Plaćanje uživo: Moguće na licu mesta kešom ili karticom (iste vrste kartica).<br>Nema skrivenih troškova; transfer je besplatan.<br><br><strong>Dostava usluge:</strong><br>Nakon uspešne rezervacije i plaćanja, Korisnik dobija potvrdu na email za pristup parkingu.<br>Dostava: Usluga se pruža na teritoriji Republike Srbije (Surčin).<br>Rok: Odmah po dolasku na parking, sa transferom u roku od 5–10 minuta.<br><br><strong>Reklamacije i otkazivanje:</strong><br>Rok za otkaz prilikom online plaćanja: Besplatan otkaz do 24 sata nakon izvršene rezervacije (povraćaj punog iznosa u roku od 7 dana). No-show (nedolazak): pun iznos se zadržava.<br>Reklamacije: Korisnik može podneti reklamaciju u roku od 7 dana od završetka usluge (npr. oštećenje vozila). Kontaktirajte nas email-om ili telefonom; odgovor u roku od 48 sati.<br>Povraćaj novca: Preko iste metode plaćanja, u skladu sa Zakonom o zaštiti potrošača.',
         ],
 
         'section_4' => [
@@ -331,15 +334,68 @@ return [
         ],
 
         'section_6' => [
-            'title' => '6. Izjava o konverziji (za stranice sa inostranim karticama)',
-            'content' => 'Kod plaćanja inostranim karticama (npr. iz EU ili SAD), iznos se obračunava u dinarskoj protivvrednosti po srednjem kursu Narodne banke Srbije (NBS) na dan transakcije, ili po kursu banke koja vrši autorizaciju. Mogući su dodatni troškovi konverzije od strane izdavaoca kartice (npr. 1–3% fee), za koje Mi nismo odgovorni. Preporučujemo proveru sa vašom bankom pre plaćanja. Sva plaćanja su u RSD; nema podrške za druge valute direktno.',
+            'title' => '6. Izjava o konverziji',
+            'content' => 'Sva plaćanja biće izvršena u lokalnoj valuti Republike Srbije – dinar (RSD). Za informativni prikaz cena u drugim valutama koristi se srednji kurs Narodne Banke Srbije. Iznos za koji će biti zadužena platna kartica biće izražen u lokalnoj valuti kroz konverziju u istu po kursu koji koriste kartičarske organizacije, a koji u trenutku transakcije ne može biti poznat. Kao rezultat ove konverzije postoji mogućnost neznatne razlike od originalne cene navedene na internet stranici.',
         ],
 
         'section_7' => [
             'title' => '7. Izjave o plaćanju i bezbednosti (WSpay/Monri)',
-            'content' => '<strong>Autorizacija plaćanja:</strong><br>Plaćanje se vrši putem WSpay sistema za naplatu, ovlašćenog od strane Monri Payments. Plaćanje karticom je u potpunosti bezbedno: podaci o kartici se unose direktno na stranici banke/procesora i nijednog trenutka nisu dostupni prodavcu. Prodavac ne čuva podatke o kartici kupca.<br><br><strong>Zaštita podataka o kartici:</strong><br>Za realizaciju plaćanja koristi se WSpay sistem koji primenjuje PCI DSS standard za zaštitu podataka o platnim karticama. Svi podaci o kartici prenose se SSL enkripcijom (256-bit). Prodavac ne dolazi u posed podataka o kartici niti ih čuva.<br><br><strong>Reklamacije za naplatu:</strong><br>Ukoliko smatrate da je Vaša kartica pogrešno naplaćena, molimo Vas da nas kontaktirate na rezervacije@aeroparking.rs ili +381 69 445 4255. Sve reklamacije rešavamo u roku od 24 sata. Ako se radi o neautorizovanoj transakciji, molimo Vas da kontaktirate banku koja je izdala Vašu karticu.<br><br><strong>Prihvaćene kartice:</strong> Visa, Mastercard, Maestro, DinaCard, American Express.<br><br><strong>Valuta:</strong> Sve transakcije su u RSD (srpski dinari). Nema skrivenih troškova.<br><br><strong>PDV izjava:</strong><br>Nexus Temporis Corporation d.o.o. nije u sistemu PDV-a. Iskazane cene su konačne i ne podležu dodatnom obračunu PDV-a.<br><br>{{-- TODO: Ako je kompanija u sistemu PDV-a, zameniti gornju rečenicu sa: "PDV je uračunat u iskazane cene. Na svakom koraku kupovine, ukupna (total) cena proizvoda/usluge prikazana je sa PDV-om (ukupno sa PDV-om)." --}}',
+            'content' => '<strong>Autorizacija plaćanja:</strong><br>Plaćanje se vrši putem WSpay sistema za naplatu, ovlašćenog od strane Monri Payments. Plaćanje karticom je u potpunosti bezbedno: podaci o kartici se unose direktno na stranici banke/procesora i nijednog trenutka nisu dostupni prodavcu. Prodavac ne čuva podatke o kartici kupca.<br><br><strong>Zaštita podataka o kartici:</strong><br>Za realizaciju plaćanja koristi se WSpay sistem koji primenjuje PCI DSS standard za zaštitu podataka o platnim karticama. Svi podaci o kartici prenose se SSL enkripcijom (256-bit). Prodavac ne dolazi u posed podataka o kartici niti ih čuva.<br><br><strong>Reklamacije za naplatu:</strong><br>Ukoliko smatrate da je Vaša kartica pogrešno naplaćena, molimo Vas da nas kontaktirate na rezervacije@aeroparking.rs ili +381 69 445 4255. Sve reklamacije rešavamo u roku od 24 sata. Ako se radi o neautorizovanoj transakciji, molimo Vas da kontaktirate banku koja je izdala Vašu karticu.<br><br><strong>Prihvaćene kartice:</strong> Visa, Mastercard, Maestro, DinaCard.<br><br><strong>Valuta:</strong> Sve transakcije su u RSD (srpski dinari). Nema skrivenih troškova.<br><br><strong>PDV izjava:</strong><br>Nexus Temporis Corporation d.o.o. nije u sistemu PDV-a. Iskazane cene su konačne i ne podležu dodatnom obračunu PDV-a.<br><br>{{-- TODO: Ako je kompanija u sistemu PDV-a, zameniti gornju rečenicu sa: "PDV je uračunat u iskazane cene. Na svakom koraku kupovine, ukupna (total) cena proizvoda/usluge prikazana je sa PDV-om (ukupno sa PDV-om)." --}}',
+        ],
+
+        'section_8' => [
+            'title' => '8. Zaštita poverljivih podataka o transakciji',
+            'content' => 'Prilikom unošenja podataka o platnoj kartici, poverljive informacije se prenose putem javne mreže u zaštićenoj (kriptovanoj) formi upotrebom SSL protokola i PKI sistema, kao trenutno najsavremenije kriptografske tehnologije. Sigurnost podataka prilikom kupovine garantuje procesor platnih kartica. Niti jednog trenutka podaci o platnoj kartici nisu dostupni našem sistemu.',
+        ],
+
+        'section_9' => [
+            'title' => '9. Zaštita privatnosti korisnika',
+            'content' => 'U ime Nexus Temporis Corporation d.o.o. (Aero Parking ogranak) obavezujemo se da ćemo čuvati privatnost svih naših kupaca. Prikupljamo samo neophodne, osnovne podatke o kupcima/korisnicima i podatke neophodne za poslovanje i informisanje korisnika u skladu sa dobrim poslovnim običajima i u cilju pružanja kvalitetne usluge. Dajemo kupcima mogućnost izbora uključujući mogućnost odluke da li žele ili ne da se izbrišu sa mailing lista koje se koriste za marketinške kampanje. Svi podaci o korisnicima/kupcima se strogo čuvaju i dostupni su samo zaposlenima kojima su ti podaci nužni za obavljanje posla. Svi zaposleni Nexus Temporis Corporation d.o.o. (Aero Parking ogranak) (i poslovni partneri) odgovorni su za poštovanje načela zaštite privatnosti. Detaljnije informacije dostupne su u našoj <a href=":privacy_url">Politici privatnosti</a>.',
+        ],
+
+        'section_10' => [
+            'title' => '10. Povraćaj sredstava',
+            'content' => 'U slučaju vraćanja robe i povraćaja sredstava kupcu koji je prethodno platio nekom od platnih kartica, delimično ili u celosti, a bez obzira na razlog vraćanja, Nexus Temporis Corporation d.o.o. (Aero Parking ogranak) je u obavezi da povraćaj vrši isključivo preko Visa, Mastercard, DinaCard i Maestro metoda plaćanja, što znači da će banka na zahtev prodavca obaviti povraćaj sredstava na račun korisnika kartice.',
         ],
 
         'closing' => 'Ovi Uslovi mogu se menjati; obaveštavamo Korisnike email-om ili na Sajtu.',
+    ],
+
+    // Privacy Policy Page
+    'privacy' => [
+        'title' => 'Politika privatnosti',
+        'intro' => 'Ova Politika privatnosti (u daljem tekstu: „Politika") objašnjava kako Nexus Temporis Corporation d.o.o. (Aero Parking ogranak), sa sedištem u Beogradu, prikuplja, koristi i štiti lične podatke korisnika koji posećuju naš veb-sajt i koriste usluge rezervacije aerodromskog parkinga. Korišćenjem Sajta, korisnik potvrđuje da je upoznat sa ovom Politikom.',
+
+        'section_1' => [
+            'title' => '1. Zaštita privatnosti korisnika',
+            'content' => 'U ime Nexus Temporis Corporation d.o.o. (Aero Parking ogranak) obavezujemo se da ćemo čuvati privatnost svih naših kupaca. Prikupljamo samo neophodne, osnovne podatke o kupcima/korisnicima i podatke neophodne za poslovanje i informisanje korisnika u skladu sa dobrim poslovnim običajima i u cilju pružanja kvalitetne usluge. Dajemo kupcima mogućnost izbora uključujući mogućnost odluke da li žele ili ne da se izbrišu sa mailing lista koje se koriste za marketinške kampanje. Svi podaci o korisnicima/kupcima se strogo čuvaju i dostupni su samo zaposlenima kojima su ti podaci nužni za obavljanje posla. Svi zaposleni Nexus Temporis Corporation d.o.o. (Aero Parking ogranak) (i poslovni partneri) odgovorni su za poštovanje načela zaštite privatnosti.',
+        ],
+
+        'section_2' => [
+            'title' => '2. Koji podaci se prikupljaju',
+            'content' => 'Prilikom rezervacije prikupljamo: ime i prezime, email adresu, broj telefona, registarsku oznaku vozila, datume i vreme dolaska/odlaska i broj leta (opciono). Ne prikupljamo niti čuvamo podatke o platnoj kartici — oni se obrađuju isključivo preko WSpay/Monri sistema za plaćanje, direktno na stranici banke/procesora.',
+        ],
+
+        'section_3' => [
+            'title' => '3. Svrha obrade i pravni osnov',
+            'content' => 'Podatke obrađujemo radi realizacije rezervacije, slanja potvrde, kontakta u slučaju izmena (npr. kašnjenje leta) i unapređenja usluga. Ne koristimo podatke za marketing bez izričite saglasnosti korisnika. Pravni osnov obrade je izvršenje ugovorne obaveze (čl. 12 Zakona o zaštiti podataka o ličnosti), a za marketinšku komunikaciju — saglasnost korisnika.',
+        ],
+
+        'section_4' => [
+            'title' => '4. Zaštita poverljivih podataka o transakciji',
+            'content' => 'Prilikom unošenja podataka o platnoj kartici, poverljive informacije se prenose putem javne mreže u zaštićenoj (kriptovanoj) formi upotrebom SSL protokola i PKI sistema, kao trenutno najsavremenije kriptografske tehnologije. Sigurnost podataka prilikom kupovine garantuje procesor platnih kartica. Niti jednog trenutka podaci o platnoj kartici nisu dostupni našem sistemu.',
+        ],
+
+        'section_5' => [
+            'title' => '5. Deljenje, čuvanje i brisanje podataka',
+            'content' => 'Podatke delimo isključivo sa partnerima neophodnim za pružanje usluge (npr. payment provajder, vozač/kurir za transfer). Ne prodajemo podatke trećim licima. Podaci se čuvaju 2 godine nakon pružanja usluge (zbog poreskih obaveza), a zatim se trajno brišu.',
+        ],
+
+        'section_6' => [
+            'title' => '6. Prava korisnika i kontakt',
+            'content' => 'Korisnik u svakom trenutku može zatražiti pristup, ispravku, brisanje ili ograničenje obrade svojih ličnih podataka slanjem zahteva na rezervacije@aeroparking.rs. Na zahtev odgovaramo u roku od 30 dana. Za pitanja u vezi sa zaštitom podataka o ličnosti, korisnik se može obratiti i Povereniku za informacije od javnog značaja i zaštitu podataka o ličnosti Republike Srbije.',
+        ],
+
+        'closing' => 'Ova Politika privatnosti može se povremeno menjati radi usklađivanja sa zakonskim propisima ili promenama u poslovanju. O svim izmenama ćemo Vas obavestiti putem Sajta ili email-a.',
     ],
 ];

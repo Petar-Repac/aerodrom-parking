@@ -393,8 +393,11 @@ function updatePrice() {
     // Store current price
     currentPrice = price;
 
-    // Format price as decimal with RSD currency
-    var priceFormatted = price.toFixed(2).replace('.', ',') + ' RSD';
+    // Format price as decimal with RSD currency (e.g. 7.700,00 RSD)
+    var priceFormatted = new Intl.NumberFormat('sr-RS', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(price) + ' RSD';
 
     // correct string output
     if (numOfDays % 10 === 1 && numOfDays !== 11) {

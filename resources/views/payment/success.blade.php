@@ -32,6 +32,11 @@
                             </div>
 
                             <div class="detail-row">
+                                <span class="detail-label">{{ __('messages.payment.service') }}:</span>
+                                <span class="detail-value">{{ __('messages.payment.service_name') }}</span>
+                            </div>
+
+                            <div class="detail-row">
                                 <span class="detail-label">{{ __('messages.payment.name') }}:</span>
                                 <span class="detail-value">{{ $reservation['name'] }}</span>
                             </div>

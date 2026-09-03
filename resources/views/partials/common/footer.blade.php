@@ -20,6 +20,8 @@
                         <li><i class="bx bx-chevron-right"></i> <a href="#pogodnosti">{{ __('messages.footer.benefits') }}</a></li>
                         <li><i class="bx bx-chevron-right"></i> <a href="{{route('pricing')}}">{{ __('messages.nav.pricing') }}</a></li>
                         <li><i class="bx bx-chevron-right"></i> <a href="{{route('contact')}}">{{ __('messages.nav.contact') }}</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{{ App\Helpers\RouteHelper::localizedRoute('terms') }}">{{ __('messages.nav.terms') }}</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="{{ App\Helpers\RouteHelper::localizedRoute('privacy') }}">{{ __('messages.nav.privacy') }}</a></li>
                     </ul>
                 </div>
 
@@ -48,7 +50,22 @@
                         <div class="payment-logos-list">
                             <a href="https://www.visa.com" target="_blank" rel="noopener"><img src="/img/payment/Visa50.gif" alt="Visa" class="footer-card-logo"></a>
                             <a href="https://www.mastercard.com" target="_blank" rel="noopener"><img src="/img/payment/MasterCard50.gif" alt="Mastercard" class="footer-card-logo"></a>
+                            <img src="/img/payment/maestro50.gif" alt="Maestro" class="footer-card-logo">
+                            <img src="/img/payment/dinacard50.png" alt="DinaCard" class="footer-card-logo">
                             <a href="http://www.wspay.rs" title="Monri WSpay - Web Secure Payment Gateway" target="_blank"><img alt="Monri WSpay - Web Secure Payment Gateway" src="https://www.wspay.info/payment-info/wsPayWebSecureLogo-118x50-transparent.png" border="0"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Protocol & Business Bank Logos Row -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="footer-payment-logos">
+                        <div class="payment-logos-list">
+                            <a href="https://rs.visa.com/pay-with-visa/security-and-assistance/security.html" title="Bezbednost | Visa" target="_blank" rel="noopener"><img src="/img/payment/visa-secure.png" alt="Visa Secure" class="footer-card-logo"></a>
+                            <a href="https://www.mastercard.com/rs/sr/personalizovano/prona%C4%91i-karticu.html" title="Pronađite odgovarajuću vrstu Mastercard platne kartice za sebe" target="_blank" rel="noopener"><img src="/img/payment/mastercard-identity-check.png" alt="Mastercard ID Check" class="footer-card-logo"></a>
+                            <a href="https://www.raiffeisenbank.rs/" title="Raiffeisen banka a.d. Beograd" target="_blank" rel="noopener"><img src="/img/payment/raiffeisen.png" alt="Raiffeisen banka" class="footer-card-logo"></a>
                         </div>
                     </div>
                 </div>

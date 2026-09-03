@@ -38,7 +38,7 @@
 
                         <div class="detail-row">
                             <span class="detail-label">{{ __('messages.payment.total_amount') }}:</span>
-                            <span class="detail-value">{{ number_format($reservation['total_price'], 2) }} RSD</span>
+                            <span class="detail-value">{{ number_format($reservation['total_price'], 2, ',', '.') }} RSD</span>
                         </div>
                     </div>
 

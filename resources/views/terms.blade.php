@@ -39,6 +39,15 @@
                     <h3>{{ __('messages.terms.section_7.title') }}</h3>
                     <p>{!! __('messages.terms.section_7.content') !!}</p>
 
+                    <h3>{{ __('messages.terms.section_8.title') }}</h3>
+                    <p>{!! __('messages.terms.section_8.content') !!}</p>
+
+                    <h3>{{ __('messages.terms.section_9.title') }}</h3>
+                    <p>{!! __('messages.terms.section_9.content', ['privacy_url' => \App\Helpers\RouteHelper::localizedRoute('privacy')]) !!}</p>
+
+                    <h3>{{ __('messages.terms.section_10.title') }}</h3>
+                    <p>{!! __('messages.terms.section_10.content') !!}</p>
+
                     <p><em>{!! __('messages.terms.closing') !!}</em></p>
                 </div>
             </div>

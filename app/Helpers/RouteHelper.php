@@ -64,6 +64,11 @@ class RouteHelper
                 'en' => 'terms-and-conditions',
                 'ru' => 'usloviya-ispolzovaniya',
             ],
+            'privacy' => [
+                'sr' => 'politika-privatnosti',
+                'en' => 'privacy-policy',
+                'ru' => 'politika-konfidencialnosti',
+            ],
         ];
 
         return $paths[$routeKey][$locale] ?? $paths[$routeKey]['sr'];

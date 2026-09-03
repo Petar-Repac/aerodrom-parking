@@ -168,7 +168,7 @@
 
         <div class="detail-row">
             <span class="detail-label">Ukupna cena:</span>
-            <span class="detail-value"><strong>{{ number_format($reservation['total_price'], 2) }} RSD</strong></span>
+            <span class="detail-value"><strong>{{ number_format($reservation['total_price'], 2, ',', '.') }} RSD</strong></span>
         </div>
 
         @if(!empty($reservation['additional_info']))
@@ -204,7 +204,7 @@
 
                 <div class="detail-row">
                     <span class="detail-label">Plaćeni iznos:</span>
-                    <span class="detail-value">{{ number_format($reservation['payment_amount'], 2) }} RSD</span>
+                    <span class="detail-value">{{ number_format($reservation['payment_amount'], 2, ',', '.') }} RSD</span>
                 </div>
             </div>
         @endif

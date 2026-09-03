@@ -49,7 +49,7 @@ class Reservation extends Model
      */
     public function getFormattedTotalPriceAttribute(): string
     {
-        return number_format($this->total_price, 2) . ' RSD';
+        return number_format($this->total_price, 2, ',', '.') . ' RSD';
     }
 
     /**
@@ -57,7 +57,7 @@ class Reservation extends Model
      */
     public function getFormattedPaymentAmountAttribute(): ?string
     {
-        return $this->payment_amount ? number_format($this->payment_amount, 2) . ' RSD' : null;
+        return $this->payment_amount ? number_format($this->payment_amount, 2, ',', '.') . ' RSD' : null;
     }
 
     /**
