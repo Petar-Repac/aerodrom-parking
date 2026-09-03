@@ -184,6 +184,90 @@ const pickerTo = flatpickr("#departure-date", {
 const timeFromSelect = document.getElementById('arrival-time');
 const timeToSelect = document.getElementById('departure-time');
 
+// Current Belgrade wall-clock time - the parking is a physical service in
+// Serbia, so "now" means Belgrade's clock, not the visitor's own device
+// timezone (mirrors belgradeTodayString() above). hourCycle: 'h23' pins
+// midnight to "00" - some engines report "24" for hour:'2-digit' with
+// hour12:false depending on locale, which would break the minutes math.
+function getBelgradeNowParts() {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Europe/Belgrade',
+        hour: '2-digit',
+        minute: '2-digit',
+        hourCycle: 'h23'
+    }).formatToParts(new Date());
+
+    return {
+        hour: Number(parts.find(p => p.type === 'hour').value),
+        minute: Number(parts.find(p => p.type === 'minute').value)
+    };
+}
+
+function getBelgradeNowMinutes() {
+    const { hour, minute } = getBelgradeNowParts();
+    return hour * 60 + minute;
+}
+
+// "HH:MM" for the next bookable half-hour slot (current time rounded up),
+// or null once it's past 23:30 - there is no later slot left today.
+function getRoundedUpTimeString() {
+    const roundedMinutes = Math.ceil(getBelgradeNowMinutes() / 30) * 30;
+    if (roundedMinutes >= 24 * 60) return null;
+
+    const hour = Math.floor(roundedMinutes / 60);
+    const minute = roundedMinutes % 60;
+    return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+}
+
+// Defaults both time selects to "now" rounded up to the next half hour
+// instead of leaving the disabled placeholder selected - most bookings are
+// same-day, so this saves scrolling through the list in the common case
+// while leaving every option still free to change.
+function applyDefaultTimeSelections() {
+    const roundedNow = getRoundedUpTimeString();
+    if (!roundedNow) return;
+
+    if (timeFromSelect) timeFromSelect.value = roundedNow;
+    if (timeToSelect) timeToSelect.value = roundedNow;
+}
+applyDefaultTimeSelections();
+
+// When the arrival date is today (Belgrade calendar day), hide/disable any
+// arrival-time option that has already passed - no point offering a 09:00
+// arrival if it's currently 14:00. Any other arrival date leaves the full
+// list available again (this recomputes from scratch every call, so
+// switching back off "today" un-hides everything). Re-picks a valid
+// default if the previously-selected time is the one that just got hidden.
+function updateArrivalTimeOptions(arrivalDate) {
+    if (!timeFromSelect) return;
+
+    const isToday = !!arrivalDate && toLocalDateString(new Date(arrivalDate)) === belgradeTodayString();
+    const nowMinutes = isToday ? getBelgradeNowMinutes() : null;
+    const previousValue = timeFromSelect.value;
+    let previousValueStillValid = false;
+
+    Array.from(timeFromSelect.options).forEach(function (option) {
+        if (!option.value) return; // the disabled placeholder
+
+        const [h, m] = option.value.split(':').map(Number);
+        const isPast = isToday && (h * 60 + m) < nowMinutes;
+
+        // hidden removes it from the dropdown list itself; disabled is a
+        // fallback so it can't be selected even where hidden on <option>
+        // isn't honored.
+        option.hidden = isPast;
+        option.disabled = isPast;
+
+        if (option.value === previousValue && !isPast) {
+            previousValueStillValid = true;
+        }
+    });
+
+    if (!previousValueStillValid) {
+        timeFromSelect.value = (isToday ? getRoundedUpTimeString() : null) || '';
+    }
+}
+
 // Only create CTA pickers if the elements exist. CTA is date-only - it's
 // a landing-page teaser that feeds the sidebar's arrival/departure date
 // fields, not a full booking form, so it never collects time.
@@ -281,6 +365,7 @@ function syncInputs(date, fromOrTo) {
 
         lockDepartureMinDate(pickerTo, date);
         lockDepartureMinDate(cta_pickerTo, date);
+        updateArrivalTimeOptions(date);
     } else {
         pickerTo.setDate(date, false);
         if (cta_pickerTo) {
@@ -299,10 +384,10 @@ function syncInputs(date, fromOrTo) {
 function clearPickers() {
     pickerFrom.clear();
     pickerTo.clear();
-    if (timeFromSelect) timeFromSelect.value = '';
-    if (timeToSelect) timeToSelect.value = '';
     if (cta_pickerFrom) cta_pickerFrom.clear();
     if (cta_pickerTo) cta_pickerTo.clear();
+    updateArrivalTimeOptions(null);
+    applyDefaultTimeSelections();
 }
 
 let showReservationForm = true;
